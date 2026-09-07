@@ -1,0 +1,18 @@
+# Java / Spring
+backend/target/
+backend/build/
+*.class
+application-local.properties
+*.env
+
+# H2
+*.db
+*.mv.db
+*.trace.db
+
+# IDE
+.idea/
+*.iml
+
+# Sistema
+.DS_Store
