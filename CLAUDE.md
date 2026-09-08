@@ -66,6 +66,17 @@ videochamada, pagamento, app nativo, emissão de declaração de horas,
 área de empresas ou recrutadores, upload de arquivo no portfólio
 (projetos entram por link, não por upload).
 
+## Regra número 3 — alertar antes de implementar o caminho pior
+
+Quando o autor especificar algo que poderia ser feito de forma melhor, em usabilidade,
+arquitetura, segurança, acessibilidade ou escopo, **avise antes de implementar do jeito
+pedido**. Diga: o que foi pedido, o que você faria diferente, por quê, e o custo de cada
+caminho. O autor decide, mas quer saber quando está escolhendo o caminho pior sem perceber.
+
+Isso vale **especialmente** para o que o autor pediu com convicção. Não deixe de alertar
+só porque a decisão já foi tomada. Se, depois do alerta, o autor mantiver a escolha,
+implemente como pedido e siga em frente.
+
 ## Stack
 
 - **Front-end:** Angular 20, **standalone components**, TypeScript, SCSS
@@ -221,6 +232,10 @@ Dados de teste sempre fictícios.
 - Se o autor pedir algo fora do escopo acima, **lembre-o do escopo** antes de fazer.
 - Escreva o service já com `HttpClient` e `Observable` desde o mock, para que a troca
   para a API real seja mudança de URL.
+- **Divergência do caderno de IHC vai para o `DECISOES.md`** na raiz, antes de implementar.
+  Avise o autor, registre a entrada (data, o que o caderno previa, o que foi decidido,
+  por quê, impacto para o usuário) e só então escreva código. O arquivo vira capítulo
+  da monografia: escreva para quem vai ler na banca.
 
 ## Referência visual e benchmarking
 
