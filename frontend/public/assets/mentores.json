@@ -1,0 +1,146 @@
+[
+  {
+    "id": "m-ana",
+    "nome": "Ana Beatriz Cardoso",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 4,
+    "verificado": true,
+    "materias": ["poo", "logica"],
+    "descricao": "Explico POO com exemplos do dia a dia antes de entrar em código. Já passei pelo mesmo aperto no 2º semestre.",
+    "sessoesConcluidas": 12,
+    "selos": [
+      { "materiaId": "poo", "sessoesConcluidas": 9 },
+      { "materiaId": "logica", "sessoesConcluidas": 3 }
+    ],
+    "horariosLivres": [
+      { "id": "h-ana-1", "dia": "ter", "hora": "14:00", "turno": "tarde", "modalidade": "online" },
+      { "id": "h-ana-2", "dia": "ter", "hora": "15:00", "turno": "tarde", "modalidade": "presencial" },
+      { "id": "h-ana-3", "dia": "qui", "hora": "19:00", "turno": "noite", "modalidade": "online" }
+    ],
+    "respostaSimulada": { "acao": "aceita", "aposSegundos": 20 }
+  },
+  {
+    "id": "m-bruno",
+    "nome": "Bruno Nascimento",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 3,
+    "verificado": true,
+    "materias": ["poo"],
+    "descricao": "Gosto de resolver exercício junto, no papel, antes de abrir a IDE. Só presencial.",
+    "sessoesConcluidas": 3,
+    "selos": [
+      { "materiaId": "poo", "sessoesConcluidas": 3 }
+    ],
+    "horariosLivres": [
+      { "id": "h-bruno-1", "dia": "seg", "hora": "09:00", "turno": "manha", "modalidade": "presencial" },
+      { "id": "h-bruno-2", "dia": "sab", "hora": "10:00", "turno": "manha", "modalidade": "presencial" }
+    ],
+    "respostaSimulada": { "acao": "recusa", "aposSegundos": 15 }
+  },
+  {
+    "id": "m-carla",
+    "nome": "Carla Menezes",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 4,
+    "verificado": true,
+    "materias": ["poo", "banco-dados"],
+    "descricao": "Monitora de Banco de Dados. Em POO, foco em herança e interfaces, que é onde a turma mais trava.",
+    "sessoesConcluidas": 8,
+    "selos": [
+      { "materiaId": "poo", "sessoesConcluidas": 4 },
+      { "materiaId": "banco-dados", "sessoesConcluidas": 4 }
+    ],
+    "horariosLivres": [
+      { "id": "h-carla-1", "dia": "ter", "hora": "14:00", "turno": "tarde", "modalidade": "online" },
+      { "id": "h-carla-2", "dia": "qui", "hora": "14:00", "turno": "tarde", "modalidade": "online" }
+    ],
+    "respostaSimulada": { "acao": "aceita", "aposSegundos": 30 }
+  },
+  {
+    "id": "m-diego",
+    "nome": "Diego Farias",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": null,
+    "verificado": true,
+    "materias": ["logica"],
+    "descricao": "Egresso, hoje trabalho como desenvolvedor. Ajudo com lógica à noite, sempre online.",
+    "sessoesConcluidas": 20,
+    "selos": [
+      { "materiaId": "logica", "sessoesConcluidas": 20 }
+    ],
+    "horariosLivres": [
+      { "id": "h-diego-1", "dia": "qua", "hora": "19:00", "turno": "noite", "modalidade": "online" },
+      { "id": "h-diego-2", "dia": "sex", "hora": "19:00", "turno": "noite", "modalidade": "online" }
+    ],
+    "respostaSimulada": { "acao": "nenhuma" }
+  },
+  {
+    "id": "m-eduarda",
+    "nome": "Eduarda Lins",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 3,
+    "verificado": false,
+    "materias": ["banco-dados"],
+    "descricao": "Monitora de Banco de Dados no semestre passado.",
+    "sessoesConcluidas": 0,
+    "selos": [],
+    "horariosLivres": [
+      { "id": "h-edu-1", "dia": "seg", "hora": "09:00", "turno": "manha", "modalidade": "presencial" }
+    ],
+    "respostaSimulada": { "acao": "nenhuma" }
+  },
+  {
+    "id": "m-felipe",
+    "nome": "Felipe Andrade",
+    "curso": "Redes de Computadores",
+    "semestre": 4,
+    "verificado": false,
+    "materias": ["redes"],
+    "descricao": "Curso técnico de Redes. Posso ajudar com endereçamento IP e camadas do modelo OSI.",
+    "sessoesConcluidas": 4,
+    "selos": [
+      { "materiaId": "redes", "sessoesConcluidas": 4 }
+    ],
+    "horariosLivres": [
+      { "id": "h-felipe-1", "dia": "qua", "hora": "14:00", "turno": "tarde", "modalidade": "presencial" }
+    ],
+    "respostaSimulada": { "acao": "nenhuma" }
+  },
+  {
+    "id": "m-gabriela",
+    "nome": "Gabriela Souza",
+    "curso": "Engenharia de Computação",
+    "semestre": 6,
+    "verificado": true,
+    "materias": ["matematica", "logica"],
+    "descricao": "Graduanda. Ajudo com matemática aplicada e lógica aos sábados de manhã.",
+    "sessoesConcluidas": 5,
+    "selos": [
+      { "materiaId": "matematica", "sessoesConcluidas": 4 },
+      { "materiaId": "logica", "sessoesConcluidas": 1 }
+    ],
+    "horariosLivres": [
+      { "id": "h-gabi-1", "dia": "sab", "hora": "09:00", "turno": "manha", "modalidade": "online" },
+      { "id": "h-gabi-2", "dia": "sab", "hora": "10:00", "turno": "manha", "modalidade": "presencial" }
+    ],
+    "respostaSimulada": { "acao": "aceita", "aposSegundos": 20 }
+  },
+  {
+    "id": "m-henrique",
+    "nome": "Henrique Sales",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 4,
+    "verificado": true,
+    "materias": ["front-end"],
+    "descricao": "Comecei a ensinar este semestre. HTML, CSS e o básico de JavaScript.",
+    "sessoesConcluidas": 2,
+    "selos": [
+      { "materiaId": "front-end", "sessoesConcluidas": 2 }
+    ],
+    "horariosLivres": [
+      { "id": "h-henrique-1", "dia": "qua", "hora": "14:00", "turno": "tarde", "modalidade": "online" },
+      { "id": "h-henrique-2", "dia": "qua", "hora": "15:00", "turno": "tarde", "modalidade": "presencial" }
+    ],
+    "respostaSimulada": { "acao": "aceita", "aposSegundos": 25 }
+  }
+]

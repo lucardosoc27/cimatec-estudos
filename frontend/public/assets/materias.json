@@ -1,0 +1,9 @@
+[
+  { "id": "logica", "nome": "Lógica de Programação", "curso": "Desenvolvimento de Sistemas", "semestre": 1 },
+  { "id": "matematica", "nome": "Matemática Aplicada", "curso": "Desenvolvimento de Sistemas", "semestre": 1 },
+  { "id": "redes", "nome": "Redes de Computadores", "curso": "Desenvolvimento de Sistemas", "semestre": 1 },
+  { "id": "poo", "nome": "Programação Orientada a Objetos", "curso": "Desenvolvimento de Sistemas", "semestre": 2 },
+  { "id": "banco-dados", "nome": "Banco de Dados", "curso": "Desenvolvimento de Sistemas", "semestre": 2 },
+  { "id": "ingles-tecnico", "nome": "Inglês Técnico", "curso": "Desenvolvimento de Sistemas", "semestre": 2 },
+  { "id": "front-end", "nome": "Desenvolvimento Front-end", "curso": "Desenvolvimento de Sistemas", "semestre": 3 }
+]

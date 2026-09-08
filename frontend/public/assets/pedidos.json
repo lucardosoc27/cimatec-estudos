@@ -1,0 +1,42 @@
+[
+  {
+    "id": "p-001",
+    "alunoId": "aluno-1",
+    "mentorId": "m-henrique",
+    "mentorNome": "Henrique Sales",
+    "materiaId": "front-end",
+    "materiaNome": "Desenvolvimento Front-end",
+    "dia": "qua",
+    "hora": "14:00",
+    "modalidade": "online",
+    "status": "aguardando",
+    "criadoHaHoras": 3
+  },
+  {
+    "id": "p-002",
+    "alunoId": "aluno-1",
+    "mentorId": "m-ana",
+    "mentorNome": "Ana Beatriz Cardoso",
+    "materiaId": "poo",
+    "materiaNome": "Programação Orientada a Objetos",
+    "dia": "ter",
+    "hora": "14:00",
+    "modalidade": "online",
+    "status": "aceito",
+    "criadoHaHoras": 30,
+    "contatoMentor": { "email": "ana.cardoso@cimatec.example" }
+  },
+  {
+    "id": "p-003",
+    "alunoId": "aluno-1",
+    "mentorId": "m-diego",
+    "mentorNome": "Diego Farias",
+    "materiaId": "logica",
+    "materiaNome": "Lógica de Programação",
+    "dia": "sex",
+    "hora": "19:00",
+    "modalidade": "online",
+    "status": "expirado",
+    "criadoHaHoras": 60
+  }
+]
