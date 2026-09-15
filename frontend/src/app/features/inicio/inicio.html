@@ -1,0 +1,69 @@
+<h1 class="titulo">Seus pedidos de ajuda</h1>
+
+@switch (estado()) {
+  @case ('carregando') {
+    <p class="aviso" role="status">Carregando seus pedidos…</p>
+  }
+
+  @case ('erro') {
+    <div class="aviso aviso--erro" role="alert">
+      <p>Não foi possível carregar seus pedidos. Verifique sua conexão.</p>
+      <button type="button" class="botao botao--secundario" (click)="carregar()">
+        Tentar de novo
+      </button>
+    </div>
+  }
+
+  @case ('vazio') {
+    <div class="aviso">
+      <p>Você ainda não pediu ajuda a nenhum mentor.</p>
+      <p>Escolha uma matéria e um turno, e a gente mostra quem pode te ajudar.</p>
+      <a routerLink="/pedir-ajuda" class="botao">Pedir ajuda</a>
+    </div>
+  }
+
+  @case ('sucesso') {
+    <ul class="lista">
+      @for (pedido of pedidos(); track pedido.id) {
+        <li class="pedido">
+          <h2 class="pedido__materia">{{ pedido.materiaNome }}</h2>
+          <p class="pedido__mentor">com {{ pedido.mentorNome }}</p>
+          <p class="pedido__quando">
+            {{ pedido.data | date: 'EEEE, dd/MM' }} às {{ pedido.hora }}
+            · {{ rotuloModalidade[pedido.modalidade] }}
+          </p>
+
+          <p class="pedido__status" [attr.data-status]="pedido.status">
+            Status: <strong>{{ rotuloStatus[pedido.status] }}</strong>
+          </p>
+
+          @switch (pedido.status) {
+            @case ('aguardando') {
+              <p class="pedido__detalhe">
+                O mentor tem até {{ pedido.expiraEm | date: "EEEE, dd/MM 'às' HH:mm" }} para responder.
+              </p>
+            }
+            @case ('expirado') {
+              <p class="pedido__detalhe">
+                O mentor não respondeu no prazo.
+                <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
+                  Ver outros mentores de {{ pedido.materiaNome }}
+                </a>
+              </p>
+            }
+            @case ('recusado') {
+              <p class="pedido__detalhe">
+                Este mentor não pôde atender.
+                <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
+                  Ver outros mentores de {{ pedido.materiaNome }}
+                </a>
+              </p>
+            }
+          }
+
+          <a [routerLink]="['/pedidos', pedido.id]" class="pedido__link">Ver detalhes</a>
+        </li>
+      }
+    </ul>
+  }
+}

@@ -1,0 +1,19 @@
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-3);
+  max-width: var(--largura-conteudo);
+  margin: 0 auto;
+  padding: var(--espaco-2) var(--espaco-3);
+}
+
+.cabecalho__marca {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo-toque);
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--cor-texto);
+  text-decoration: none;
+}

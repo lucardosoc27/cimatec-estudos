@@ -1,1 +1,69 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --cor-primaria: #0f6e56;
+  --cor-primaria-escura: #0b5442;
+  --cor-texto: #1f2933;
+  --cor-texto-suave: #52606d;
+  --cor-borda: #7b8794;
+  --cor-fundo: #f5f7f6;
+  --cor-superficie: #ffffff;
+  --cor-erro: #b42318;
+  --cor-erro-fundo: #fdecea;
+  --cor-foco: #1d4ed8;
+
+  --raio: 8px;
+  --espaco-1: 4px;
+  --espaco-2: 8px;
+  --espaco-3: 16px;
+  --espaco-4: 24px;
+  --espaco-5: 32px;
+  --alvo-toque: 44px;
+  --largura-conteudo: 640px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;          /* 16px: mínimo do caderno */
+  line-height: 1.5;
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+}
+
+h1, h2, h3, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+a { color: var(--cor-primaria); }
+
+/* Foco visível para teclado, em todo elemento focável */
+:focus-visible {
+  outline: 3px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+/* Botão e link-botão compartilham a mesma aparência e o mesmo alvo de toque */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--alvo-toque);
+  min-width: var(--alvo-toque);
+  padding: 0 var(--espaco-4);
+  border: 2px solid var(--cor-primaria);
+  border-radius: var(--raio);
+  background: var(--cor-primaria);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover { background: var(--cor-primaria-escura); border-color: var(--cor-primaria-escura); }
+}
+
+.botao--secundario {
+  background: transparent;
+  color: var(--cor-primaria);
+
+  &:hover { background: transparent; color: var(--cor-primaria-escura); }
+}
