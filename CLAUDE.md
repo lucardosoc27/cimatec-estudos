@@ -237,6 +237,35 @@ Dados de teste sempre fictícios.
   por quê, impacto para o usuário) e só então escreva código. O arquivo vira capítulo
   da monografia: escreva para quem vai ler na banca.
 
+## Skills do plugin mattpocock (instalado em 2026-09-15)
+
+Categorização aceita pelo autor. Chamar pela ferramenta Skill com o prefixo
+`mattpocock-skills:`.
+
+**Usar por padrão, quando a situação aparecer:**
+
+- `grilling` — antes de fechar uma decisão que vai à banca (ex.: cookie httpOnly,
+  reputação por sessão confirmada). É ensaio de arguição.
+- `code-review` — autorrevisão antes do commit de cada bloco: eixo "padrões" contra
+  este arquivo, eixo "especificação" contra os requisitos de interface acima.
+- `diagnosing-bugs` — quando algo quebra sem erro no console (típico de zoneless:
+  "a tela não atualiza").
+- `writing-for-agents` — sempre que este arquivo for editado.
+
+**Só sob demanda do autor:**
+
+- `research` — fatos de documentação oficial na fase 2 (CSRF com cookie no Spring
+  Security, H2 em modo arquivo). O Markdown gerado vira material de monografia.
+- `tdd` — só em função pura, validada via Node porque o Karma não roda nesta máquina,
+  e no back-end com JUnit.
+- `domain-modeling` — `DECISOES.md` já é o registro de decisões; usar só para
+  vocabulário do domínio, sem criar um segundo lugar para a mesma decisão.
+- `prototype` — uma vez, se houver dúvida no modelo de estado de uma tela.
+
+**Fora do projeto agora:** `resolving-merge-conflicts` (uma pessoa, um branch),
+`wizard` (sem infraestrutura, CI ou segredos de nuvem), `codebase-design`
+(abstração que o autor teria de defender sem precisar).
+
 ## Referência visual e benchmarking
 
 O Superprof é o concorrente direto citado no trabalho e serve como **referência de
