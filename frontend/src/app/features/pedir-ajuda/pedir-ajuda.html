@@ -1,0 +1,88 @@
+<a routerLink="/" class="voltar">Voltar</a>
+<h1 class="titulo">Preciso de ajuda em…</h1>
+
+@switch (estado()) {
+  @case ('carregando') {
+    <p class="aviso" role="status">Carregando as matérias…</p>
+  }
+
+  @case ('erro') {
+    <div class="aviso aviso--erro" role="alert">
+      <p>Não foi possível carregar as matérias. Verifique sua conexão.</p>
+      <button type="button" class="botao botao--secundario" (click)="carregar()">
+        Tentar de novo
+      </button>
+    </div>
+  }
+
+  @case ('vazio') {
+    <div class="aviso">
+      <p>Nenhuma matéria cadastrada ainda. Fale com a coordenação do seu curso.</p>
+      <a routerLink="/" class="botao botao--secundario">Voltar ao início</a>
+    </div>
+  }
+
+  @case ('sucesso') {
+    <form (submit)="enviar($event)" novalidate>
+      <fieldset class="grupo">
+        <legend class="grupo__titulo">Matéria <span class="grupo__dica">(escolha uma)</span></legend>
+        @for (materia of materias(); track materia.id) {
+          <label class="opcao">
+            <input
+              type="radio"
+              name="materia"
+              [value]="materia.id"
+              [checked]="materiaId() === materia.id"
+              (change)="escolherMateria(materia.id)"
+            />
+            <span>{{ materia.nome }} <span class="opcao__detalhe">{{ materia.semestre }}º semestre</span></span>
+          </label>
+        }
+      </fieldset>
+
+      <fieldset class="grupo">
+        <legend class="grupo__titulo">Turnos em que você pode <span class="grupo__dica">(marque um ou mais)</span></legend>
+        @for (turno of opcoesTurno; track turno) {
+          <label class="opcao">
+            <input
+              type="checkbox"
+              name="turnos"
+              [value]="turno"
+              [checked]="turnos().includes(turno)"
+              (change)="alternarTurno(turno)"
+            />
+            <span>{{ rotuloTurno[turno] }}</span>
+          </label>
+        }
+      </fieldset>
+
+      <fieldset class="grupo">
+        <legend class="grupo__titulo">Modalidade <span class="grupo__dica">(opcional)</span></legend>
+        @for (opcao of opcoesModalidade; track opcao.valor) {
+          <label class="opcao">
+            <input
+              type="radio"
+              name="modalidade"
+              [value]="opcao.valor"
+              [checked]="modalidade() === opcao.valor"
+              (change)="escolherModalidade(opcao.valor)"
+            />
+            <span>{{ opcao.rotulo }}</span>
+          </label>
+        }
+      </fieldset>
+
+      @if (tentouEnviar() && !podeEnviar()) {
+        <div class="aviso aviso--erro" role="alert">
+          <p>Para continuar, falta:</p>
+          <ul class="faltando">
+            @if (faltaMateria()) { <li>escolher uma matéria</li> }
+            @if (faltaTurno()) { <li>marcar pelo menos um turno</li> }
+          </ul>
+        </div>
+      }
+
+      <button type="submit" class="botao">Ver mentores</button>
+    </form>
+  }
+}

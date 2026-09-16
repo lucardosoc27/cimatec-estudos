@@ -82,3 +82,44 @@ a migração na fase 2 seja uma obrigação, não uma melhoria opcional.
 não verificado. O impacto é de exposição de dados: no MVP, o nome de um mentor não
 verificado está no arquivo de mock. Por isso o mock usa apenas pessoas fictícias, e
 nenhum dado real entra no repositório, em conformidade com a política de LGPD do projeto.
+
+---
+
+## 2026-09-15 — Turno passa a ser obrigatório na tela "Preciso de ajuda em…"
+
+**O que o caderno previa.** Cadastro mínimo: matéria e turno bastam para usar; a regra
+de bloqueio citava apenas "não avançar sem ao menos uma matéria selecionada".
+
+**O que foi decidido.** Matéria e pelo menos um turno são obrigatórios para avançar.
+Modalidade é opcional, com "Tanto faz" como padrão. A tela continua sendo uma só, com
+três perguntas e sem campo de texto livre.
+
+**Por quê.** A ordenação da tela de mentores recomendados e o motivo exibido em cada
+recomendação ("livre terça à tarde") dependem do turno escolhido. A saída "disponíveis
+em outros turnos" da lista vazia também pressupõe que um turno foi escolhido. Sem turno,
+a lista viraria um catálogo sem critério, o que contraria o achado do caderno sobre
+motivo visível em cada recomendação.
+
+**Impacto para o usuário.** Um toque a mais antes do primeiro resultado. Quando o aluno
+tenta avançar sem preencher, a tela lista o que falta em texto, sem apagar o que já foi
+marcado. Modalidade não é exigida, então o mínimo continua pequeno: uma matéria e um turno.
+
+---
+
+## 2026-09-15 — "Pedir ajuda" é a ação de entrada; botões de etapa dizem o que vem a seguir
+
+**O que o caderno previa.** Ação principal chamada "Pedir ajuda" em todas as telas.
+
+**O que foi decidido.** "Pedir ajuda" é o botão do cabeçalho, presente em toda tela, e
+inicia o fluxo. Dentro do fluxo, o botão de cada etapa descreve o que acontece ao
+clicar: na tela "Preciso de ajuda em…" ele se chama "Ver mentores"; na tela do mentor,
+onde o pedido é de fato enviado, o botão volta a se chamar "Pedir ajuda".
+
+**Por quê.** Um botão "Pedir ajuda" que leva a uma lista de mentores, sem enviar pedido
+algum, promete o que não faz. A heurística de correspondência entre o sistema e o mundo
+real pede que o rótulo diga a consequência do clique. O nome único fica reservado para
+o ponto de entrada e para o envio, que são os momentos em que o aluno de fato pede.
+
+**Impacto para o usuário.** O aluno vê "Pedir ajuda" em todas as telas, no cabeçalho, como
+o caderno previa. Os botões intermediários ganham nomes mais precisos, e o botão que
+envia o pedido mantém o nome esperado.
