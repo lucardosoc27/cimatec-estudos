@@ -11,4 +11,9 @@ export const routes: Routes = [
     title: 'Pedir ajuda · Cimatec Estudos',
     loadComponent: () => import('./features/pedir-ajuda/pedir-ajuda').then((m) => m.PedirAjuda),
   },
+  {
+    path: 'mentores',
+    title: 'Mentores recomendados · Cimatec Estudos',
+    loadComponent: () => import('./features/mentores/mentores').then((m) => m.Mentores),
+  },
 ];

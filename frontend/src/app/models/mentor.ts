@@ -1,4 +1,5 @@
 import { HorarioLivre } from './disponibilidade';
+import { Materia } from './materia';
 
 /** Selo público por matéria: quantas sessões concluídas e confirmadas pelos dois lados. */
 export interface SeloMateria {
@@ -34,7 +35,22 @@ export interface Mentor {
  */
 export interface MentorRecomendado {
   mentor: Mentor;
-  /** Ex.: ['mesma matéria', 'livre terça à tarde', '8 sessões concluídas']. */
+  /** Ex.: ['mesma matéria', 'livre terça à tarde', '8 sessões concluídas nesta matéria']. */
   motivos: string[];
   horariosCompativeis: HorarioLivre[];
+}
+
+/** Outra matéria do mesmo semestre em que há mentor livre nos turnos pedidos. */
+export interface MateriaAlternativa {
+  materia: Materia;
+  quantidadeMentores: number;
+}
+
+/** Resposta completa da tela 3. Quando a API existir, é o JSON de GET /api/mentores/recomendados. */
+export interface Recomendacao {
+  materia: Materia;
+  recomendados: MentorRecomendado[];
+  /** Mentores da matéria sem horário nos turnos pedidos. Só aparecem na lista vazia. */
+  outrosTurnos: MentorRecomendado[];
+  alternativas: MateriaAlternativa[];
 }

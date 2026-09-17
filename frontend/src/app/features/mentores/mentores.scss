@@ -1,0 +1,39 @@
+.criterios {
+  color: var(--cor-texto-suave);
+  margin-bottom: var(--espaco-3);
+}
+
+.subtitulo {
+  font-size: 1.125rem;
+  margin: var(--espaco-4) 0 var(--espaco-2);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+}
+
+.mentor {
+  padding: var(--espaco-3);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+}
+
+.mentor__nome { font-size: 1.125rem; }
+.mentor__curso { color: var(--cor-texto-suave); }
+
+/* Motivos em linha. O "•" é decorativo: o texto alternativo vazio (`/ ''`) esconde-o do leitor de tela, que lê só os itens */
+.motivos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--espaco-2);
+  margin-top: var(--espaco-2);
+
+  li + li::before {
+    content: '•' / '';
+    margin-right: var(--espaco-2);
+    color: var(--cor-texto-suave);
+  }
+}

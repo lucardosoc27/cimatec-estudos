@@ -1,0 +1,98 @@
+<a routerLink="/pedir-ajuda" [queryParams]="queryParams()" class="link-acao">Voltar</a>
+<h1 class="titulo">Mentores recomendados</h1>
+
+@if (resultado(); as r) {
+  <p class="criterios">{{ r.materia.nome }} · {{ resumoCriterios() }}</p>
+}
+
+@switch (estado()) {
+  @case ('carregando') {
+    <p class="aviso" role="status">Procurando mentores…</p>
+  }
+
+  @case ('erro') {
+    <div class="aviso aviso--erro" role="alert">
+      <p>Não foi possível buscar os mentores. Verifique sua conexão.</p>
+      <button type="button" class="botao botao--secundario" (click)="carregar()">Tentar de novo</button>
+    </div>
+  }
+
+  @case ('vazio') {
+    @if (resultado(); as r) {
+      <div class="aviso">
+        <p>Nenhum mentor de {{ r.materia.nome }} está livre com o que você marcou: {{ resumoCriterios() }}.</p>
+        <a routerLink="/pedir-ajuda" [queryParams]="queryParams()" class="botao botao--secundario">
+          Mudar o turno
+        </a>
+      </div>
+
+      @if (r.outrosTurnos.length > 0) {
+        <h2 class="subtitulo">Disponíveis em outros turnos</h2>
+        <ul class="lista">
+          @for (item of r.outrosTurnos; track item.mentor.id) {
+            <li class="mentor">
+              <h3 class="mentor__nome">{{ item.mentor.nome }}</h3>
+              <p class="mentor__curso">
+                @if (item.mentor.semestre === null) {
+                  Egresso
+                } @else {
+                  {{ item.mentor.semestre }}º semestre
+                }
+                · {{ item.mentor.curso }}
+              </p>
+              <ul class="motivos" aria-label="Por que este mentor apareceu">
+                @for (motivo of item.motivos; track motivo) {
+                  <li>{{ motivo }}</li>
+                }
+              </ul>
+              <a [routerLink]="['/mentores', item.mentor.id]" [queryParams]="queryParams()" class="link-acao">
+                Ver perfil e horários
+              </a>
+            </li>
+          }
+        </ul>
+      }
+
+      @if (r.alternativas.length > 0) {
+        <h2 class="subtitulo">Matérias do {{ r.materia.semestre }}º semestre com mentor livre nesses turnos</h2>
+        <ul class="lista">
+          @for (alt of r.alternativas; track alt.materia.id) {
+            <li>
+              <a routerLink="/mentores" [queryParams]="paramsPara(alt.materia.id)" class="link-acao">
+                {{ alt.materia.nome }} ({{ alt.quantidadeMentores }} {{ alt.quantidadeMentores === 1 ? 'mentor' : 'mentores' }})
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    }
+  }
+
+  @case ('sucesso') {
+    @if (resultado(); as r) {
+      <ul class="lista">
+        @for (item of r.recomendados; track item.mentor.id) {
+          <li class="mentor">
+            <h2 class="mentor__nome">{{ item.mentor.nome }}</h2>
+            <p class="mentor__curso">
+              @if (item.mentor.semestre === null) {
+                Egresso
+              } @else {
+                {{ item.mentor.semestre }}º semestre
+              }
+              · {{ item.mentor.curso }}
+            </p>
+            <ul class="motivos" aria-label="Por que este mentor foi recomendado">
+              @for (motivo of item.motivos; track motivo) {
+                <li>{{ motivo }}</li>
+              }
+            </ul>
+            <a [routerLink]="['/mentores', item.mentor.id]" [queryParams]="queryParams()" class="link-acao">
+              Ver perfil e horários
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  }
+}
