@@ -67,3 +67,34 @@ a { color: var(--cor-primaria); }
 
   &:hover { background: transparent; color: var(--cor-primaria-escura); }
 }
+
+.titulo {
+  font-size: 1.5rem;
+  margin-bottom: var(--espaco-3);
+}
+
+/* Link com alvo de toque de 44px: "Voltar", "Ver detalhes", "Ver perfil e horários" */
+.link-acao {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--alvo-toque);
+  font-weight: 600;
+}
+
+/* Caixa de estado: carregando, vazio e erro */
+.aviso {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+  align-items: flex-start;
+  padding: var(--espaco-4);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+}
+
+.aviso--erro {
+  background: var(--cor-erro-fundo);
+  border-color: var(--cor-erro);
+  color: var(--cor-erro);
+}

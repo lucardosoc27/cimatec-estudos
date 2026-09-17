@@ -5,8 +5,7 @@ import { CriteriosBusca, MODALIDADES, TURNOS, deQueryParams, paraQueryParams } f
 import { Modalidade, ROTULO_MODALIDADE, ROTULO_TURNO, Turno } from '../../models/disponibilidade';
 import { Materia } from '../../models/materia';
 import { MateriasService } from '../../services/materias.service';
-
-type EstadoTela = 'carregando' | 'sucesso' | 'vazio' | 'erro';
+import { EstadoTela } from '../../shared/estado-tela';
 
 /** 'qualquer' é a opção "Tanto faz" da tela; na URL ela vira ausência de modalidade. */
 type EscolhaModalidade = Modalidade | 'qualquer';

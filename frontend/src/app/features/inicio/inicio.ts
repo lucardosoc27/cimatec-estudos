@@ -5,9 +5,7 @@ import { RouterLink } from '@angular/router';
 import { ROTULO_MODALIDADE } from '../../models/disponibilidade';
 import { Pedido, ROTULO_STATUS } from '../../models/pedido';
 import { PedidosService } from '../../services/pedidos.service';
-
-/** Os quatro estados obrigatórios de toda tela que busca dados. Nunca dois ao mesmo tempo. */
-type EstadoTela = 'carregando' | 'sucesso' | 'vazio' | 'erro';
+import { EstadoTela } from '../../shared/estado-tela';
 
 @Component({
   selector: 'app-inicio',
