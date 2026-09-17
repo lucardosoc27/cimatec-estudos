@@ -45,6 +45,8 @@ export class PedirAjuda {
 
   constructor() {
     // Pré-preenche com o que veio na URL: é o "voltar sem perder dados" da tela 3.
+    // Foto da URL (snapshot) basta aqui: esta tela só é aberta por navegação de fora,
+    // nunca reaberta com parâmetros diferentes enquanto está na tela. Compare com mentores.ts.
     const iniciais = deQueryParams(this.rota.snapshot.queryParamMap);
     this.materiaId.set(iniciais.materiaId ?? null);
     this.turnos.set(iniciais.turnos ?? []);

@@ -1,0 +1,64 @@
+.perfil {
+  padding: var(--espaco-3);
+  margin-bottom: var(--espaco-4);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+}
+
+.perfil__curso,
+.perfil__detalhe { color: var(--cor-texto-suave); }
+.perfil__verificado { margin-top: var(--espaco-1); font-weight: 600; color: var(--cor-primaria); }
+.perfil__descricao { margin-top: var(--espaco-2); }
+
+.subtitulo {
+  font-size: 1.125rem;
+  margin: var(--espaco-3) 0 var(--espaco-1);
+}
+
+.selos {
+  margin-top: var(--espaco-1);
+  padding-left: var(--espaco-4);
+  list-style: disc;
+}
+
+/* Formulário de horário: mesmos .grupo e .opcao da tela 2 (extração para o global fica para um commit à parte) */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+  align-items: flex-start;
+}
+
+.grupo {
+  width: 100%;
+  margin: 0;
+  padding: var(--espaco-3);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+
+.grupo__titulo { padding: 0 var(--espaco-1); font-weight: 700; }
+.grupo__secao { margin-top: var(--espaco-2); font-weight: 600; }
+.grupo__dica { color: var(--cor-texto-suave); }
+
+.opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  min-height: var(--alvo-toque);
+  cursor: pointer;
+
+  input {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    flex-shrink: 0;
+    accent-color: var(--cor-primaria);
+  }
+}
+
+.opcao__detalhe { color: var(--cor-texto-suave); }
+
+.botao[disabled] { cursor: wait; }

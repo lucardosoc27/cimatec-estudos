@@ -1,7 +1,7 @@
 import { HorarioLivre } from '../../models/disponibilidade';
 import { Materia } from '../../models/materia';
 import { Mentor } from '../../models/mentor';
-import { descreverHorario, materiasAlternativas, recomendarMentores } from './recomendacao';
+import { descreverHorario, materiasAlternativas, recomendarMentores, separarHorarios } from './recomendacao';
 
 function horario(id: string, dia: HorarioLivre['dia'], turno: HorarioLivre['turno'], modalidade: HorarioLivre['modalidade']): HorarioLivre {
   const hora = { manha: '09:00', tarde: '14:00', noite: '19:00' }[turno];
@@ -117,5 +117,19 @@ describe('materiasAlternativas', () => {
   it('devolve só matérias do mesmo semestre com mentor livre, excluindo a própria', () => {
     const r = materiasAlternativas(todos, materias, materias[0], { materiaId: 'poo', turnos: ['tarde'] });
     expect(r).toEqual([{ materia: materias[1], quantidadeMentores: 1 }]);
+  });
+});
+
+describe('separarHorarios', () => {
+  it('separa por turno e modalidade e mantém os demais em "outros"', () => {
+    const r = separarHorarios(ana.horariosLivres, { materiaId: 'poo', turnos: ['tarde'], modalidade: 'online' });
+    expect(r.compativeis.map((h) => h.id)).toEqual(['a1']);
+    expect(r.outros.map((h) => h.id)).toEqual(['a2', 'a3']);
+  });
+
+  it('ordena por dia da semana e depois por hora', () => {
+    const desordenados = [horario('q', 'qui', 'noite', 'online'), { ...horario('s2', 'seg', 'manha', 'online'), hora: '10:00' }, horario('s1', 'seg', 'manha', 'online')];
+    const r = separarHorarios(desordenados, { materiaId: 'poo', turnos: ['manha', 'noite'] });
+    expect(r.compativeis.map((h) => h.id)).toEqual(['s1', 's2', 'q']);
   });
 });

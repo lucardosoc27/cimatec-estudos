@@ -1,0 +1,121 @@
+<a routerLink="/mentores" [queryParams]="queryParams()" class="link-acao">Voltar</a>
+<h1 class="titulo">{{ mentor()?.nome ?? 'Perfil do mentor' }}</h1>
+
+@switch (estado()) {
+  @case ('carregando') {
+    <p class="aviso" role="status">Carregando o perfil…</p>
+  }
+
+  @case ('erro') {
+    <div class="aviso aviso--erro" role="alert">
+      <p>Não foi possível carregar o perfil do mentor. Verifique sua conexão.</p>
+      <button type="button" class="botao botao--secundario" (click)="carregar()">Tentar de novo</button>
+    </div>
+  }
+
+  @case ('vazio') {
+    <div class="aviso">
+      <p>Não encontramos este mentor para a matéria escolhida. O link pode estar desatualizado.</p>
+      <a routerLink="/mentores" [queryParams]="queryParams()" class="botao botao--secundario">
+        Ver mentores recomendados
+      </a>
+    </div>
+  }
+
+  @case ('sucesso') {
+    @if (mentor(); as m) {
+      <section class="perfil" aria-label="Sobre o mentor">
+        <p class="perfil__curso">
+          @if (m.semestre === null) {
+            Egresso
+          } @else {
+            {{ m.semestre }}º semestre
+          }
+          · {{ m.curso }}
+        </p>
+        <p class="perfil__verificado">Mentor verificado <span class="perfil__detalhe">(e-mail institucional confirmado)</span></p>
+        <p class="perfil__descricao">{{ m.descricao }}</p>
+
+        <h2 class="subtitulo">Sessões concluídas</h2>
+        <p>{{ m.sessoesConcluidas }} no total, confirmadas pelo aluno e pelo mentor.</p>
+        @if (selos().length > 0) {
+          <ul class="selos">
+            @for (selo of selos(); track selo.nome) {
+              <li>{{ selo.nome }}: {{ selo.sessoes }} {{ selo.sessoes === 1 ? 'sessão' : 'sessões' }}</li>
+            }
+          </ul>
+        }
+      </section>
+
+      @if (pedidoEmAberto(); as pedido) {
+        <div class="aviso" role="status">
+          <p>
+            Você já pediu ajuda a {{ m.nome }} em {{ pedido.materiaNome }}.
+            Status: <strong>{{ rotuloStatus[pedido.status] }}</strong>.
+          </p>
+          <p>Espere a resposta ou cancele aquele pedido antes de fazer outro.</p>
+          <a [routerLink]="['/pedidos', pedido.id]" class="botao">Ver pedido</a>
+          <a routerLink="/mentores" [queryParams]="queryParams()" class="link-acao">Ver outros mentores</a>
+        </div>
+      } @else if (m.horariosLivres.length === 0) {
+        <div class="aviso" role="status">
+          <p>{{ m.nome }} não tem nenhum horário livre no momento.</p>
+          <a routerLink="/mentores" [queryParams]="queryParams()" class="botao botao--secundario">Ver outros mentores</a>
+        </div>
+      } @else {
+        <form (submit)="enviar($event)" novalidate>
+          <fieldset class="grupo">
+            <legend class="grupo__titulo">Escolha um horário</legend>
+
+            <p class="grupo__secao">Nos turnos que você marcou</p>
+            @if (horarios().compativeis.length === 0) {
+              <p class="grupo__dica">Este mentor não tem horário livre nos turnos que você marcou. Veja os outros horários abaixo.</p>
+            }
+            @for (item of horarios().compativeis; track item.horario.id) {
+              <label class="opcao">
+                <input type="radio" name="horario" [value]="item.horario.id"
+                  [checked]="horarioId() === item.horario.id" (change)="escolherHorario(item.horario.id)" />
+                <span>
+                  {{ item.data | date: 'EEEE, dd/MM' }} às {{ item.horario.hora }}
+                  <span class="opcao__detalhe">· {{ rotuloModalidade[item.horario.modalidade] }}</span>
+                </span>
+              </label>
+            }
+
+            @if (horarios().outros.length > 0) {
+              <p class="grupo__secao">Outros horários deste mentor</p>
+              @for (item of horarios().outros; track item.horario.id) {
+                <label class="opcao">
+                  <input type="radio" name="horario" [value]="item.horario.id"
+                    [checked]="horarioId() === item.horario.id" (change)="escolherHorario(item.horario.id)" />
+                  <span>
+                    {{ item.data | date: 'EEEE, dd/MM' }} às {{ item.horario.hora }}
+                    <span class="opcao__detalhe">· {{ rotuloModalidade[item.horario.modalidade] }}</span>
+                  </span>
+                </label>
+              }
+            }
+          </fieldset>
+
+          @if (tentouEnviar() && horarioId() === null) {
+            <p class="aviso aviso--erro" role="alert">Para continuar, escolha um horário.</p>
+          }
+
+          @switch (erroEnvio()) {
+            @case ('horario-indisponivel') {
+              <p class="aviso aviso--erro" role="alert">Esse horário acabou de ficar indisponível. A lista foi atualizada; escolha outro.</p>
+            }
+            @case ('conexao') {
+              <p class="aviso aviso--erro" role="alert">Não foi possível enviar o pedido. Verifique sua conexão e tente de novo.</p>
+            }
+          }
+
+          <p class="grupo__dica">O mentor tem {{ prazoRespostaHoras }} horas para responder. O contato dele só aparece depois que ele aceitar.</p>
+          <button type="submit" class="botao" [disabled]="enviando()">
+            {{ enviando() ? 'Enviando…' : 'Pedir ajuda' }}
+          </button>
+        </form>
+      }
+    }
+  }
+}

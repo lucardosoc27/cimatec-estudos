@@ -32,6 +32,14 @@ export class MentoresService {
   }
 
   /**
+   * Tela 4. Quando a API existir, vira GET /api/mentores/:id, e o servidor responde 404
+   * para mentor não verificado. Emite `undefined` quando não encontra.
+   */
+  buscarPorId(id: string): Observable<Mentor | undefined> {
+    return this.listarVerificados().pipe(map((lista) => lista.find((m) => m.id === id)));
+  }
+
+  /**
    * Tela 3. Quando a API existir, vira um GET /api/mentores/recomendados?materia=...
    * e a função pura `recomendarMentores` some junto com o mock.
    * Emite `undefined` quando a matéria não existe.

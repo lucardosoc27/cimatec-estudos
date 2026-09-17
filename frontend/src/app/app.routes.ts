@@ -16,4 +16,9 @@ export const routes: Routes = [
     title: 'Mentores recomendados · Cimatec Estudos',
     loadComponent: () => import('./features/mentores/mentores').then((m) => m.Mentores),
   },
+  {
+    path: 'mentores/:id',
+    title: 'Perfil do mentor · Cimatec Estudos',
+    loadComponent: () => import('./features/mentor-perfil/mentor-perfil').then((m) => m.MentorPerfil),
+  },
 ];

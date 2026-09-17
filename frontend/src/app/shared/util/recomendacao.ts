@@ -1,5 +1,5 @@
 import { CriteriosBusca } from '../../models/busca';
-import { HorarioLivre, ROTULO_DIA, Turno } from '../../models/disponibilidade';
+import { DiaSemana, HorarioLivre, ROTULO_DIA, Turno } from '../../models/disponibilidade';
 import { Materia } from '../../models/materia';
 import { MateriaAlternativa, Mentor, MentorRecomendado } from '../../models/mentor';
 
@@ -14,8 +14,31 @@ function atendeModalidade(h: HorarioLivre, criterios: CriteriosBusca): boolean {
   return !criterios.modalidade || h.modalidade === criterios.modalidade;
 }
 
+const ORDEM_DIA = Object.keys(ROTULO_DIA) as DiaSemana[];
+
 function horarioCompativel(h: HorarioLivre, criterios: CriteriosBusca): boolean {
   return criterios.turnos.includes(h.turno) && atendeModalidade(h, criterios);
+}
+
+function porDiaEHora(a: HorarioLivre, b: HorarioLivre): number {
+  return ORDEM_DIA.indexOf(a.dia) - ORDEM_DIA.indexOf(b.dia) || a.hora.localeCompare(b.hora);
+}
+
+/**
+ * Tela 4: todos os horários do mentor, em ordem de dia e hora, separados entre os que
+ * batem com o que o aluno pediu e os demais. Os demais também aparecem, porque o aluno
+ * pode ter chegado por "disponíveis em outros turnos" e escolher um deles de propósito.
+ */
+export function separarHorarios(
+  horarios: HorarioLivre[],
+  criterios: CriteriosBusca,
+): { compativeis: HorarioLivre[]; outros: HorarioLivre[] } {
+  const compativeis: HorarioLivre[] = [];
+  const outros: HorarioLivre[] = [];
+  for (const h of [...horarios].sort(porDiaEHora)) {
+    (horarioCompativel(h, criterios) ? compativeis : outros).push(h);
+  }
+  return { compativeis, outros };
 }
 
 function sessoesNaMateria(mentor: Mentor, materiaId: string): number {
