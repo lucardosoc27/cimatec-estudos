@@ -21,4 +21,9 @@ export const routes: Routes = [
     title: 'Perfil do mentor · Cimatec Estudos',
     loadComponent: () => import('./features/mentor-perfil/mentor-perfil').then((m) => m.MentorPerfil),
   },
+  {
+    path: 'pedidos/:id',
+    title: 'Seu pedido · Cimatec Estudos',
+    loadComponent: () => import('./features/pedido-detalhe/pedido-detalhe').then((m) => m.PedidoDetalhe),
+  },
 ];

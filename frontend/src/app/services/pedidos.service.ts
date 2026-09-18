@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, map, of } from 'rxjs';
 
 import { Modalidade } from '../models/disponibilidade';
-import { Pedido, PRAZO_RESPOSTA_HORAS } from '../models/pedido';
+import { Pedido, PRAZO_RESPOSTA_HORAS, podeSerCancelado } from '../models/pedido';
 import { proximaData, somarHoras } from '../shared/util/datas';
 import { PedidoMock } from './mock/pedido-mock';
 
@@ -25,6 +25,13 @@ export interface NovoPedido {
 export class PedidoDuplicadoError extends Error {
   constructor(readonly pedidoExistente: Pedido) {
     super('Já existe um pedido aguardando resposta para este mentor nesta matéria.');
+  }
+}
+
+/** Erro tipado do cancelamento: o pedido já estava encerrado quando o aluno tentou cancelar. Na fase 2 é o HTTP 409. */
+export class PedidoEncerradoError extends Error {
+  constructor(readonly pedidoAtual: Pedido) {
+    super('Este pedido já está encerrado e não pode ser cancelado.');
   }
 }
 
@@ -89,6 +96,34 @@ export class PedidosService {
         };
         this.lista!.push(pedido);
         return pedido;
+      }),
+    );
+  }
+
+  /** Tela 5. Quando a API existir, vira GET /api/pedidos/:id. Emite `undefined` quando não encontra. */
+  buscarPorId(id: string): Observable<Pedido | undefined> {
+    return this.listar().pipe(map((lista) => lista.find((p) => p.id === id)));
+  }
+
+  /**
+   * Cancela um pedido aguardando resposta ou aceito. Pedido já encerrado (recusado, expirado,
+   * cancelado) lança `PedidoEncerradoError`. Na fase 2 vira PATCH /api/pedidos/:id/cancelar,
+   * e é o servidor quem confere o status: aqui a checagem é só interface.
+   */
+  cancelar(id: string): Observable<Pedido> {
+    return this.buscarPorId(id).pipe(
+      map((pedido) => {
+        if (!pedido) {
+          throw new Error('Pedido não encontrado.');
+        }
+        if (!podeSerCancelado(pedido.status)) {
+          throw new PedidoEncerradoError(pedido);
+        }
+        // Objeto novo em vez de `pedido.status = 'cancelado'`: um signal só avisa a tela quando a
+        // referência muda (compara com Object.is). Mutar o objeto que a tela já tem não redesenha nada.
+        const cancelado: Pedido = { ...pedido, status: 'cancelado' };
+        this.lista = this.lista!.map((p) => (p.id === id ? cancelado : p));
+        return cancelado;
       }),
     );
   }

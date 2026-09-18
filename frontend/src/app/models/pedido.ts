@@ -15,6 +15,11 @@ export const ROTULO_STATUS: Record<StatusPedido, string> = {
   cancelado: 'Cancelado',
 };
 
+/** Só aguardando e aceito podem ser cancelados; os outros três já estão encerrados. */
+export function podeSerCancelado(status: StatusPedido): boolean {
+  return status === 'aguardando' || status === 'aceito';
+}
+
 /** Prazo para o mentor responder. Depois disso o pedido expira. */
 export const PRAZO_RESPOSTA_HORAS = 48;
 

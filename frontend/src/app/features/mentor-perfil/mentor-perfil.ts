@@ -185,7 +185,9 @@ export class MentorPerfil {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
-        next: (pedido) => this.router.navigate(['/pedidos', pedido.id]),
+        // `state` vai para o histórico do navegador, não para a URL: a tela 5 lê em `history.state`
+        // e mostra "Pedido enviado". Ela mesma apaga a bandeira depois de ler, senão o F5 repetiria o título.
+        next: (pedido) => this.router.navigate(['/pedidos', pedido.id], { state: { recemEnviado: true } }),
         error: (erro: unknown) => {
           this.enviando.set(false);
           if (erro instanceof PedidoDuplicadoError) {

@@ -1,0 +1,129 @@
+<a routerLink="/" class="link-acao">Voltar ao início</a>
+<h1 class="titulo">{{ titulo() }}</h1>
+
+@switch (estado()) {
+  @case ('carregando') {
+    <p class="aviso" role="status">Carregando o pedido…</p>
+  }
+
+  @case ('erro') {
+    <div class="aviso aviso--erro" role="alert">
+      <p>Não foi possível carregar o pedido. Verifique sua conexão.</p>
+      <button type="button" class="botao botao--secundario" (click)="carregar()">Tentar de novo</button>
+    </div>
+  }
+
+  @case ('vazio') {
+    <div class="aviso">
+      <p>Não encontramos este pedido. O link pode estar desatualizado.</p>
+      <a routerLink="/" class="botao botao--secundario">Ver seus pedidos</a>
+    </div>
+  }
+
+  @case ('sucesso') {
+    @if (pedido(); as p) {
+      <section class="pedido" aria-label="Dados do pedido">
+        <h2 class="pedido__materia">{{ p.materiaNome }}</h2>
+        <p class="pedido__mentor">com {{ p.mentorNome }}</p>
+        <p class="pedido__quando">
+          {{ p.data | date: 'EEEE, dd/MM' }} às {{ p.hora }} · {{ rotuloModalidade[p.modalidade] }}
+        </p>
+        <!-- tabindex="-1": não entra na ordem do Tab, mas aceita foco por código depois do cancelamento -->
+        <p #statusPedido tabindex="-1" class="pedido__status" [attr.data-status]="p.status">
+          Status: <strong>{{ rotuloStatus[p.status] }}</strong>
+        </p>
+        @if (cancelamentoNaoAconteceu()) {
+          <p class="pedido__aviso" role="status">
+            O cancelamento não foi feito: o pedido já estava com status "{{ rotuloStatus[p.status] }}".
+          </p>
+        }
+      </section>
+
+      <div class="detalhe">
+        @switch (p.status) {
+          @case ('aguardando') {
+            <p>
+              O mentor tem até <strong>{{ p.expiraEm | date: "EEEE, dd/MM 'às' HH:mm" }}</strong> para responder.
+              Se não responder até lá, o pedido expira e a gente sugere outros mentores.
+            </p>
+            <p>O contato do mentor só aparece aqui depois que ele aceitar.</p>
+          }
+          @case ('aceito') {
+            <h2 class="subtitulo">Contato do mentor</h2>
+            <p>{{ p.mentorNome }} aceitou. Combine os detalhes da sessão por e-mail:</p>
+            @if (p.contatoMentor; as contato) {
+              <a class="link-acao" href="mailto:{{ contato.email }}">{{ contato.email }}</a>
+            }
+          }
+          @case ('recusado') {
+            <p>{{ p.mentorNome }} não pôde atender este pedido.</p>
+            <a routerLink="/pedir-ajuda" [queryParams]="{ materia: p.materiaId }" class="botao">
+              Ver outros mentores de {{ p.materiaNome }}
+            </a>
+          }
+          @case ('expirado') {
+            <p>O mentor não respondeu no prazo de {{ prazoRespostaHoras }} horas, e o pedido expirou.</p>
+            <a routerLink="/pedir-ajuda" [queryParams]="{ materia: p.materiaId }" class="botao">
+              Ver outros mentores de {{ p.materiaNome }}
+            </a>
+          }
+          @case ('cancelado') {
+            <p>Você cancelou este pedido. Se ainda precisar de ajuda, é só pedir de novo.</p>
+            <a routerLink="/pedir-ajuda" [queryParams]="{ materia: p.materiaId }" class="botao">
+              Pedir ajuda em {{ p.materiaNome }}
+            </a>
+          }
+        }
+      </div>
+
+      @if (podeCancelar()) {
+        @if (!confirmando()) {
+          <button #botaoCancelar type="button" class="botao botao--secundario" (click)="abrirConfirmacao()">
+            {{ p.status === 'aceito' ? 'Cancelar sessão' : 'Cancelar pedido' }}
+          </button>
+        } @else {
+          <section class="confirmacao" aria-labelledby="titulo-confirmacao">
+            <h2 #tituloConfirmacao id="titulo-confirmacao" tabindex="-1" class="subtitulo">
+              {{ p.status === 'aceito' ? 'Cancelar a sessão?' : 'Cancelar o pedido?' }}
+            </h2>
+
+            @if (p.status === 'aceito') {
+              <p>
+                {{ p.mentorNome }} reservou {{ p.data | date: 'EEEE, dd/MM' }} às {{ p.hora }} para você.
+                Cancelar libera esse horário para outros alunos.
+              </p>
+              <label class="opcao">
+                <input type="checkbox" [checked]="cienteDaReserva()" (change)="alternarCiencia($event)" />
+                <span>Entendo que o mentor reservou este horário para mim</span>
+              </label>
+            } @else {
+              <p>O pedido sai da lista do mentor. Você pode pedir de novo quando quiser.</p>
+            }
+
+            @switch (erroCancelamento()) {
+              @case ('ciencia') {
+                <p class="aviso aviso--erro" role="alert">Para cancelar a sessão, marque a caixa acima.</p>
+              }
+              @case ('falha') {
+                <p class="aviso aviso--erro" role="alert">Não foi possível cancelar agora. Tente de novo.</p>
+              }
+            }
+
+            <div class="confirmacao__acoes">
+              <button type="button" class="botao" [disabled]="cancelando()" (click)="confirmarCancelamento()">
+                @if (cancelando()) {
+                  Cancelando…
+                } @else {
+                  {{ p.status === 'aceito' ? 'Sim, cancelar sessão' : 'Sim, cancelar pedido' }}
+                }
+              </button>
+              <button type="button" class="botao botao--secundario" (click)="fecharConfirmacao()">
+                {{ p.status === 'aceito' ? 'Manter sessão' : 'Manter pedido' }}
+              </button>
+            </div>
+          </section>
+        }
+      }
+    }
+  }
+}
