@@ -98,3 +98,70 @@ a { color: var(--cor-primaria); }
   border-color: var(--cor-erro);
   color: var(--cor-erro);
 }
+
+/* Formulário em fieldsets: telas "Preciso de ajuda em…" e "Perfil do mentor e horários" */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+  align-items: flex-start;
+}
+
+.grupo {
+  width: 100%;
+  margin: 0;
+  padding: var(--espaco-3);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+
+.grupo__titulo {
+  padding: 0 var(--espaco-1);
+  font-weight: 700;
+}
+
+.grupo__dica {
+  font-weight: 400;
+  color: var(--cor-texto-suave);
+}
+
+/* O label inteiro é o alvo de toque; o input só fica maior para ser visível */
+.opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  min-height: var(--alvo-toque);
+  cursor: pointer;
+
+  input {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    flex-shrink: 0;
+    accent-color: var(--cor-primaria);
+  }
+}
+
+.opcao__detalhe {
+  color: var(--cor-texto-suave);
+}
+
+/* Cartão de pedido: telas "Início" e "Pedido enviado e status" */
+.pedido {
+  padding: var(--espaco-3);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+}
+
+.pedido__materia { font-size: 1.125rem; }
+.pedido__mentor,
+.pedido__quando { color: var(--cor-texto-suave); }
+
+.pedido__status {
+  margin-top: var(--espaco-2);
+  &[data-status='aceito'] strong { color: var(--cor-primaria); }
+  &[data-status='expirado'] strong,
+  &[data-status='recusado'] strong { color: var(--cor-erro); }
+}

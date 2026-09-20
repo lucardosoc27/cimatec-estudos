@@ -22,43 +22,8 @@
   list-style: disc;
 }
 
-/* Formulário de horário: mesmos .grupo e .opcao da tela 2 (extração para o global fica para um commit à parte) */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-3);
-  align-items: flex-start;
-}
-
-.grupo {
-  width: 100%;
-  margin: 0;
-  padding: var(--espaco-3);
-  border: 1px solid var(--cor-borda);
-  border-radius: var(--raio);
-  background: var(--cor-superficie);
-}
-
-.grupo__titulo { padding: 0 var(--espaco-1); font-weight: 700; }
+/* form, .grupo*, .opcao* agora são globais (src/styles.scss); mesmo desenho da tela 2.
+   .grupo__secao é só desta tela, por isso continua aqui. */
 .grupo__secao { margin-top: var(--espaco-2); font-weight: 600; }
-.grupo__dica { color: var(--cor-texto-suave); }
-
-.opcao {
-  display: flex;
-  align-items: center;
-  gap: var(--espaco-3);
-  min-height: var(--alvo-toque);
-  cursor: pointer;
-
-  input {
-    width: 24px;
-    height: 24px;
-    margin: 0;
-    flex-shrink: 0;
-    accent-color: var(--cor-primaria);
-  }
-}
-
-.opcao__detalhe { color: var(--cor-texto-suave); }
 
 .botao[disabled] { cursor: wait; }

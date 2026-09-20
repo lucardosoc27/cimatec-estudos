@@ -38,3 +38,19 @@ export function deQueryParams(params: ParamMap): Partial<CriteriosBusca> {
 
   return { materiaId, turnos, modalidade };
 }
+
+/**
+ * As telas 3 e 4 só têm o que recomendar com matéria e ao menos um turno; modalidade
+ * continua opcional. Usada nas duas para decidir se manda de volta para a tela 2.
+ */
+export function criteriosValidos(lidos: Partial<CriteriosBusca>): CriteriosBusca | null {
+  if (!lidos.materiaId || !lidos.turnos || lidos.turnos.length === 0) {
+    return null;
+  }
+  return { materiaId: lidos.materiaId, turnos: lidos.turnos, modalidade: lidos.modalidade };
+}
+
+/** Os critérios atuais em forma de query params, ou objeto vazio enquanto não há nenhum. */
+export function paramsDeCriterios(criterios: CriteriosBusca | null): Params {
+  return criterios ? paraQueryParams(criterios) : {};
+}

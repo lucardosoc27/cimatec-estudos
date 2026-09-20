@@ -3,11 +3,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, ParamMap, Params, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { CriteriosBusca, deQueryParams, paraQueryParams } from '../../models/busca';
+import { CriteriosBusca, criteriosValidos, deQueryParams, paramsDeCriterios, paraQueryParams } from '../../models/busca';
 import { ROTULO_MODALIDADE, ROTULO_TURNO } from '../../models/disponibilidade';
 import { Recomendacao } from '../../models/mentor';
 import { MentoresService } from '../../services/mentores.service';
 import { EstadoTela } from '../../shared/estado-tela';
+import { cursoSemestre } from '../../shared/util/formatacao';
 
 @Component({
   selector: 'app-mentores',
@@ -30,10 +31,9 @@ export class Mentores {
   protected readonly criterios = signal<CriteriosBusca | null>(null);
 
   /** Os mesmos critérios em forma de query params, para os links "Voltar" e "Ver perfil". */
-  protected readonly queryParams = computed<Params>(() => {
-    const c = this.criterios();
-    return c ? paraQueryParams(c) : {};
-  });
+  protected readonly queryParams = computed<Params>(() => paramsDeCriterios(this.criterios()));
+
+  protected readonly cursoSemestre = cursoSemestre;
 
   /** "tarde, noite · online", para o aluno saber o que está vendo. */
   protected readonly resumoCriterios = computed(() => {
@@ -66,15 +66,14 @@ export class Mentores {
   }
 
   private aplicarCriterios(params: ParamMap): void {
-    const lidos = deQueryParams(params);
-    if (!lidos.materiaId || !lidos.turnos || lidos.turnos.length === 0) {
+    const criterios = criteriosValidos(deQueryParams(params));
+    if (!criterios) {
       // Sem matéria ou sem turno não há o que recomendar: a tela 2 sabe explicar o que falta.
-      // Ainda não existe critério válido para derivar, então repasso a URL crua.
       // replaceUrl tira a URL inválida do histórico, senão o "voltar" cairia nela de novo.
       this.router.navigate(['/pedir-ajuda'], { queryParams: this.rota.snapshot.queryParams, replaceUrl: true });
       return;
     }
-    this.criterios.set({ materiaId: lidos.materiaId, turnos: lidos.turnos, modalidade: lidos.modalidade });
+    this.criterios.set(criterios);
     this.carregar();
   }
 

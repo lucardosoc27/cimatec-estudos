@@ -32,14 +32,7 @@
           @for (item of r.outrosTurnos; track item.mentor.id) {
             <li class="mentor">
               <h3 class="mentor__nome">{{ item.mentor.nome }}</h3>
-              <p class="mentor__curso">
-                @if (item.mentor.semestre === null) {
-                  Egresso
-                } @else {
-                  {{ item.mentor.semestre }}º semestre
-                }
-                · {{ item.mentor.curso }}
-              </p>
+              <p class="mentor__curso">{{ cursoSemestre(item.mentor) }}</p>
               <ul class="motivos" aria-label="Por que este mentor apareceu">
                 @for (motivo of item.motivos; track motivo) {
                   <li>{{ motivo }}</li>
@@ -74,14 +67,7 @@
         @for (item of r.recomendados; track item.mentor.id) {
           <li class="mentor">
             <h2 class="mentor__nome">{{ item.mentor.nome }}</h2>
-            <p class="mentor__curso">
-              @if (item.mentor.semestre === null) {
-                Egresso
-              } @else {
-                {{ item.mentor.semestre }}º semestre
-              }
-              · {{ item.mentor.curso }}
-            </p>
+            <p class="mentor__curso">{{ cursoSemestre(item.mentor) }}</p>
             <ul class="motivos" aria-label="Por que este mentor foi recomendado">
               @for (motivo of item.motivos; track motivo) {
                 <li>{{ motivo }}</li>

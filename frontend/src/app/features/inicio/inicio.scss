@@ -4,24 +4,8 @@
   gap: var(--espaco-3);
 }
 
-.pedido {
-  padding: var(--espaco-3);
-  border-radius: var(--raio);
-  background: var(--cor-superficie);
-  border: 1px solid var(--cor-borda);
-}
-
-.pedido__materia { font-size: 1.125rem; }
-.pedido__mentor,
-.pedido__quando { color: var(--cor-texto-suave); }
-
-.pedido__status {
-  margin-top: var(--espaco-2);
-  &[data-status='aceito'] strong { color: var(--cor-primaria); }
-  &[data-status='expirado'] strong,
-  &[data-status='recusado'] strong { color: var(--cor-erro); }
-}
-
+/* .pedido, .pedido__materia, .pedido__mentor, .pedido__quando e .pedido__status são globais
+   (src/styles.scss), mesmo desenho da tela 5. */
 .pedido__detalhe { margin-top: var(--espaco-1); }
 
 .pedido__link {

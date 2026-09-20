@@ -25,14 +25,7 @@
   @case ('sucesso') {
     @if (mentor(); as m) {
       <section class="perfil" aria-label="Sobre o mentor">
-        <p class="perfil__curso">
-          @if (m.semestre === null) {
-            Egresso
-          } @else {
-            {{ m.semestre }}º semestre
-          }
-          · {{ m.curso }}
-        </p>
+        <p class="perfil__curso">{{ cursoSemestre(m) }}</p>
         <p class="perfil__verificado">Mentor verificado <span class="perfil__detalhe">(e-mail institucional confirmado)</span></p>
         <p class="perfil__descricao">{{ m.descricao }}</p>
 

@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { forkJoin, map, switchMap } from 'rxjs';
 
-import { CriteriosBusca, deQueryParams, paraQueryParams } from '../../models/busca';
+import { CriteriosBusca, criteriosValidos, deQueryParams, paramsDeCriterios } from '../../models/busca';
 import { HorarioLivre, ROTULO_MODALIDADE } from '../../models/disponibilidade';
 import { Materia } from '../../models/materia';
 import { Mentor } from '../../models/mentor';
@@ -14,6 +14,7 @@ import { MentoresService } from '../../services/mentores.service';
 import { PedidoDuplicadoError, PedidosService } from '../../services/pedidos.service';
 import { EstadoTela } from '../../shared/estado-tela';
 import { proximaData } from '../../shared/util/datas';
+import { cursoSemestre } from '../../shared/util/formatacao';
 import { separarHorarios } from '../../shared/util/recomendacao';
 
 /** Horário do mentor com a próxima data concreta, para a tela mostrar "terça, 22/09". */
@@ -66,10 +67,9 @@ export class MentorPerfil {
   protected readonly prazoRespostaHoras = PRAZO_RESPOSTA_HORAS;
 
   /** Os mesmos critérios em forma de query params, para "Voltar" e "Ver outros mentores". */
-  protected readonly queryParams = computed<Params>(() => {
-    const c = this.criterios();
-    return c ? paraQueryParams(c) : {};
-  });
+  protected readonly queryParams = computed<Params>(() => paramsDeCriterios(this.criterios()));
+
+  protected readonly cursoSemestre = cursoSemestre;
 
   /** Selos do mentor com o nome da matéria no lugar do id. */
   protected readonly selos = computed(() =>
@@ -95,15 +95,15 @@ export class MentorPerfil {
     // Foto da URL (snapshot) basta: esta tela abre por navegação vinda da tela 3 e nunca
     // é reaberta com outro mentor enquanto está na tela. Compare com mentores.ts.
     const id = this.rota.snapshot.paramMap.get('id');
-    const lidos = deQueryParams(this.rota.snapshot.queryParamMap);
-    if (!id || !lidos.materiaId || !lidos.turnos || lidos.turnos.length === 0) {
+    const criterios = criteriosValidos(deQueryParams(this.rota.snapshot.queryParamMap));
+    if (!id || !criterios) {
       // Sem matéria e turno não dá para destacar horários nem montar o pedido: a tela 2 explica o que falta.
       this.router.navigate(['/pedir-ajuda'], { queryParams: this.rota.snapshot.queryParams, replaceUrl: true });
       this.mentorId = '';
       return;
     }
     this.mentorId = id;
-    this.criterios.set({ materiaId: lidos.materiaId, turnos: lidos.turnos, modalidade: lidos.modalidade });
+    this.criterios.set(criterios);
     this.carregar();
   }
 
