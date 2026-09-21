@@ -1,37 +1,96 @@
-:root {
-  --cor-primaria: #0f6e56;
-  --cor-primaria-escura: #0b5442;
-  --cor-texto: #1f2933;
-  --cor-texto-suave: #52606d;
-  --cor-borda: #7b8794;
-  --cor-fundo: #f5f7f6;
-  --cor-superficie: #ffffff;
-  --cor-erro: #b42318;
-  --cor-erro-fundo: #fdecea;
-  --cor-foco: #1d4ed8;
+/* Fonte auto-hospedada (licença OFL em public/assets/fonts/OFL.txt).
+   Um arquivo variável cobre os pesos 200 a 800; o subconjunto latin inclui todos os
+   acentos do português. Sem requisição externa: funciona offline e não envia o IP do
+   aluno a terceiro. Caminho absoluto: o Angular serve public/ na raiz e não reescreve. */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('/assets/fonts/plus-jakarta-sans-latin.woff2') format('woff2');
+}
 
-  --raio: 8px;
+:root {
+  /* Paleta: azul institucional SENAI CIMATEC como base, laranja como ação.
+     Contrastes medidos e registrados em DECISOES.md (2026-09-21). */
+  --cor-primaria: #1D4FA0;          /* azul principal: links, foco, marca (7,84:1 sobre branco) */
+  --cor-primaria-escura: #1B3E8C;   /* azul escuro: hover de link, fundos escuros */
+  --cor-primaria-suave: #E8EEF9;    /* azul clarinho: fundo do status Aguardando, hover do botão secundário */
+  --cor-acao: #BF4409;              /* laranja da ação principal (texto branco sobre ele: 5,19:1) */
+  --cor-acao-escura: #A83A07;       /* hover da ação principal (6,42:1) */
+  --cor-marca-laranja: #F26522;     /* laranja institucional exato: só decorativo, 3,15:1 não serve para texto */
+  --cor-marca-ciano: #00D4E8;       /* ciano institucional: só sobre azul escuro (5,48:1); sobre branco dá 1,81:1 */
+
+  --cor-texto: #172033;             /* 16,27:1 sobre branco */
+  --cor-texto-suave: #4A5568;       /* 7,53:1 sobre branco, 6,96:1 sobre o fundo */
+  --cor-borda: #7B8794;             /* borda de campo: 3,66:1 sobre branco, 3,39:1 sobre o fundo */
+  --cor-borda-suave: #DDE3EE;       /* fio de cartão: decorativo, o cartão se define pela sombra */
+  --cor-fundo: #F4F6FB;
+  --cor-superficie: #FFFFFF;
+
+  /* Semânticas: cada status do pedido usa um par texto/fundo daqui, sempre com o rótulo escrito */
+  --cor-sucesso: #0B6B3A;  --cor-sucesso-fundo: #DDF5E6;   /* Aceito, mentor verificado (5,75:1) */
+  --cor-erro: #B42318;     --cor-erro-fundo: #FDECEA;      /* Recusado, erro de tela (5,75:1) */
+  --cor-alerta: #8A4B00;   --cor-alerta-fundo: #FBEEDC;    /* Expirado (5,95:1) */
+  --cor-neutro: #4A5568;   --cor-neutro-fundo: #EDF0F4;    /* Cancelado (6,58:1) */
+  --cor-foco: #1D4FA0;                                     /* 7,25:1 sobre o fundo, onde o anel encosta */
+
+  /* Tipografia */
+  --fonte: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --texto-corpo: 1rem;        /* 16px: mínimo do caderno */
+  --texto-destaque: 1.125rem; /* 18px: nome da matéria, nome do mentor no cartão */
+  --texto-subtitulo: 1.25rem; /* 20px: h2 de seção */
+  --texto-titulo: 1.75rem;    /* 28px no celular; 34px em tela grande, abaixo */
+  --altura-linha: 1.55;
+  --altura-linha-titulo: 1.2;
+
+  /* Espaço: escala de 4px, com dois passos a mais para respiro em tela grande */
   --espaco-1: 4px;
   --espaco-2: 8px;
   --espaco-3: 16px;
   --espaco-4: 24px;
   --espaco-5: 32px;
+  --espaco-6: 48px;
+  --espaco-7: 64px;
+
+  /* Forma */
+  --raio: 12px;          /* cartões, avisos, grupos de formulário */
+  --raio-pequeno: 8px;   /* botões */
+  --raio-pilula: 999px;  /* selo de status */
+  --sombra-cartao: 0 1px 2px rgb(23 32 51 / 0.05), 0 4px 12px rgb(23 32 51 / 0.06);
+  --sombra-flutuante: 0 8px 24px rgb(23 32 51 / 0.12);  /* hover de botão e cartão */
+
   --alvo-toque: 44px;
-  --largura-conteudo: 640px;
+  --largura-conteudo: 720px;  /* largura de leitura confortável, centralizada */
+}
+
+/* Tela grande (a partir de 768px): só o título cresce aqui; o resto do respiro entra tela por tela.
+   Media query não aceita variável CSS, por isso o 48rem é escrito direto. */
+@media (min-width: 48rem) {
+  :root { --texto-titulo: 2.125rem; }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  font-size: 1rem;          /* 16px: mínimo do caderno */
-  line-height: 1.5;
+  font-family: var(--fonte);
+  font-size: var(--texto-corpo);
+  line-height: var(--altura-linha);
   color: var(--cor-texto);
   background: var(--cor-fundo);
 }
 
 h1, h2, h3, p, ul { margin: 0; }
+
+/* Hierarquia: título em peso 800 e espaçamento levemente negativo dá a personalidade da fonte;
+   subtítulos em 700. Tamanhos ficam nas classes (.titulo, .subtitulo) e nos cartões. */
+h1, h2, h3 {
+  line-height: var(--altura-linha-titulo);
+  letter-spacing: -0.02em;
+}
+h1 { font-weight: 800; }
+h2, h3 { font-weight: 700; }
 ul { padding: 0; list-style: none; }
 a { color: var(--cor-primaria); }
 

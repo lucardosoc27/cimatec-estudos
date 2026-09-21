@@ -339,3 +339,91 @@ original não muda, só ganha um caso de uso a mais para quando existir foto de 
 (arquivo local em `assets/`, ou outra forma) ficam para decidir na implementação. Nenhuma
 das nove decisões deste bloco foi implementada em código ainda — este registro é só a
 decisão, como o autor pediu.
+
+---
+
+## 2026-09-21 — Tratamento visual entra antes da resposta simulada e do back-end
+
+**Contexto.** A entrada de 2026-09-20 "Cadastro de mentor fica registrado como escopo
+futuro; a ordem combinada não muda" reafirmou a sequência: extração (feita), resposta
+simulada do mentor, back-end de autenticação. As cinco telas do fluxo principal foram
+construídas com uma base visual provisória (paleta verde, fonte do sistema, cartões com
+borda simples), suficiente para validar o fluxo, mas sem identidade.
+
+**O que foi decidido.** A ordem muda: o tratamento visual do projeto vem agora, antes da
+resposta simulada e antes do back-end. A resposta simulada continua sendo o passo seguinte;
+o back-end continua depois dela. Esta entrada substitui, só nesse ponto, a ordem registrada
+em 2026-09-20.
+
+O bloco é tratamento visual, não reconstrução: muda paleta, tipografia, espaçamento,
+cantos, sombra, estados de hover, tratamento de cada status e das telas vazias, e o
+aproveitamento de tela grande. Não muda a estrutura dos componentes, os signals, os quatro
+estados de tela, as regras de negócio nem o comportamento de foco. Qualquer mudança visual
+que exigisse alterar estrutura passa por decisão explícita antes.
+
+A base visual é o azul institucional do SENAI CIMATEC (azul escuro, azul principal, ciano
+e laranja como cores de partida), ajustado onde for preciso para atender os limites de
+contraste do projeto. Os ajustes de cor que se afastarem do tom institucional exato ficam
+registrados em entrada própria, com os valores de contraste medidos.
+
+**Por quê.** Com cinco telas prontas, trocar a base visual é barato; com as treze
+previstas (dez do escopo original mais landing, favoritos e "quero ser mentor"), seria
+mais que o dobro do trabalho, e cada tela nova teria de ser refeita. Fazendo agora, as
+telas seguintes já nascem no padrão certo. O custo é adiar a resposta simulada e o
+back-end por um bloco.
+
+**Impacto para o usuário.** Nenhum requisito de interface do caderno de IHC muda:
+contraste mínimo de 4,5:1 em texto e 3:1 em ícone e borda, alvo de toque de 44 px, corpo
+de texto a partir de 16 px, status sempre escrito por extenso, foco visível, 360 px sem
+rolagem horizontal. O que muda é a percepção: hierarquia mais clara, mais respiro, e
+telas de desktop com largura de leitura confortável em vez de conteúdo espremido.
+
+**Impacto no prazo.** Um bloco a mais antes da autenticação. O autor decidiu assumir
+esse custo conscientemente, pelo motivo acima.
+
+---
+
+## 2026-09-21 — Laranja institucional escurecido para a ação principal
+
+**Contexto.** A direção visual parte das cores do SENAI CIMATEC: azul escuro `#1B3E8C`,
+azul principal `#1D4FA0`, ciano `#00D4E8` e laranja `#F26522`. O laranja foi escolhido
+como cor da ação principal (botão "Pedir ajuda" e demais botões primários), para destacar
+da base azul. O projeto exige contraste mínimo de 4,5:1 em texto.
+
+**O que foi decidido.** O botão principal usa laranja escurecido `#BF4409` com texto
+branco, e `#A83A07` no hover. O laranja institucional exato `#F26522` continua existindo
+como token (`--cor-marca-laranja`), mas só para uso decorativo, nunca como fundo de texto
+nem como cor de texto.
+
+**Por quê.** Texto branco sobre `#F26522` dá **3,15:1**, abaixo do mínimo. Foram medidas
+três saídas: (A) escurecer o laranja até passar, (B) manter `#F26522` com texto escuro
+`#172033` (5,16:1) e (C) botão azul com laranja só em detalhe. A opção A foi escolhida
+porque mantém o laranja como cor de ação, com texto branco, que é a convenção que o
+usuário reconhece como botão. Na opção B, texto escuro sobre laranja lê mais como aviso do
+que como ação; na C, a ação deixa de se destacar da base azul. Valores medidos para a
+opção escolhida: branco sobre `#BF4409` = **5,19:1**; branco sobre `#A83A07` (hover) =
+**6,42:1**; `#BF4409` como texto sobre branco = 5,19:1 e sobre o fundo `#F4F6FB` = 4,80:1.
+
+**Impacto para o usuário.** O botão de ação lê como laranja, num tom um pouco mais
+fechado que o da marca. Ganha-se legibilidade do rótulo em qualquer tela, inclusive sob
+luz forte no celular.
+
+---
+
+## 2026-09-21 — Ciano institucional restrito a detalhe sobre azul escuro
+
+**Contexto.** Mesma direção visual da entrada anterior. O ciano `#00D4E8` é uma das
+quatro cores institucionais de partida.
+
+**O que foi decidido.** O ciano existe como token (`--cor-marca-ciano`), mas só pode ser
+usado como detalhe sobre fundo azul escuro `#1B3E8C`. Nunca aparece sobre branco nem sobre
+o fundo claro da página, nem como texto, nem como borda, nem como ícone.
+
+**Por quê.** Ciano sobre branco dá **1,81:1**, abaixo até do mínimo de 3:1 para ícone e
+borda de campo. Sobre o azul escuro `#1B3E8C` dá **5,48:1**, o que permite usá-lo como
+detalhe onde houver fundo azul escuro (por exemplo, um filete de destaque no cabeçalho, se
+o cabeçalho for escuro). Manter o ciano como cor de texto ou de borda em fundo claro
+violaria o requisito de contraste do caderno de IHC.
+
+**Impacto para o usuário.** Nenhum negativo: o ciano fica reservado para onde é legível.
+Toda informação continua vindo de texto e das outras cores, que passam nos limites.
