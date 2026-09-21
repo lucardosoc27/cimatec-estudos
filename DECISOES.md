@@ -123,3 +123,219 @@ o ponto de entrada e para o envio, que são os momentos em que o aluno de fato p
 **Impacto para o usuário.** O aluno vê "Pedir ajuda" em todas as telas, no cabeçalho, como
 o caderno previa. Os botões intermediários ganham nomes mais precisos, e o botão que
 envia o pedido mantém o nome esperado.
+
+---
+
+*As nove entradas abaixo, todas de 2026-09-20, vieram de uma rodada de decisões que o autor
+tomou de uma vez, antes de qualquer código. Diferem das anteriores porque não são
+divergências de uma prescrição do caderno de IHC: são escopo novo, que o caderno não
+cobria, e comportamento para esse escopo novo. Por isso "Contexto" substitui "O que o
+caderno previa" — não há prescrição anterior para comparar.*
+
+## 2026-09-20 — Landing page pública, antes do login
+
+**Contexto.** O escopo travado no `CLAUDE.md` começa no login: dez telas, sem página pública
+de entrada. Esta é uma tela nova, fora das dez originais.
+
+**O que foi decidido.** Existe uma landing page pública, antes do login, que mostra
+mentores como vitrine.
+
+**Por quê.** Um fluxo que começa direto no login é hostil para quem nunca ouviu falar do
+sistema: não há nada para ver antes de criar conta. A landing ataca o risco de mercado de
+dois lados — ninguém adere a um marketplace que parece vazio — porque quem chega vê, sem
+precisar se cadastrar, que há gente de verdade usando o sistema.
+
+**Impacto para o usuário.** Visitante sem conta passa a ver mentores e seus perfis (ver
+decisão de "perfil em modo sem critérios", abaixo) antes de decidir se cadastra. Para o
+aluno já cadastrado, a landing não muda o fluxo existente.
+
+**Impacto no prazo.** Mais uma tela fora do escopo original, num TCC individual com prazo
+de semanas. O autor foi alertado sobre esse custo antes de decidir manter o item.
+
+---
+
+## 2026-09-20 — Favoritar mentores
+
+**Contexto.** Fora do escopo original de dez telas.
+
+**O que foi decidido.** O card do mentor ganha um ícone de coração para favoritar,
+disponível em qualquer lugar onde o card aparece.
+
+**Por quê.** Permite ao aluno voltar a um mentor de interesse sem refazer a busca.
+
+**Impacto para o usuário.** Um alvo de toque novo no card, sempre acompanhado de texto
+(regra de acessibilidade do projeto: nenhum ícone de ação sozinho).
+
+**Detalhe em aberto.** Se favoritar exige cadastro, e onde o favorito fica guardado
+(conta do aluno, quando existir back-end, ou algo local antes disso) ficam para decidir
+na implementação.
+
+---
+
+## 2026-09-20 — Cadastro de mentor fica registrado como escopo futuro; a ordem combinada não muda
+
+**Contexto.** O autor trouxe um novo item de escopo: página explicando o que é ser mentor
+(responsabilidades, verificação de vínculo) e cadastro de mentor (matérias, descrição,
+horários livres). Isso conflita com o combinado desta mesma conversa: o próximo passo já
+decidido era uma resposta simulada do mentor, para a tela 5 poder mudar de status sem que
+o lado do mentor exista de verdade.
+
+**O que foi decidido.** O cadastro de mentor, e a página que o explica, ficam registrados
+como escopo futuro. Não são construídos agora. A ordem combinada — extração (feita),
+resposta simulada do mentor, back-end de autenticação — continua valendo sem mudança.
+
+**Por quê.** Construir o cadastro de mentor de verdade agora tornaria a resposta simulada
+desnecessária, mas é bem mais trabalho, e o prazo do TCC não permite abrir essa frente
+antes de terminar o que já estava em andamento. Adiar preserva o plano em curso e mantém o
+cadastro de mentor como decisão documentada, não esquecida.
+
+**Impacto para o usuário.** Nenhum agora: a tela 5 segue usando resposta simulada, como já
+estava planejado. Quando o cadastro de mentor for construído, ele deve alimentar o mesmo
+modelo de dados que a simulação já usa (`Mentor`, `SeloMateria`, `HorarioLivre`), então a
+migração deve ser só de origem do dado, não de modelo.
+
+---
+
+## 2026-09-20 — Cadastro sem escolha de papel; virar mentor é ação separada, com verificação automática
+
+**Contexto.** O modelo `Usuario` já representa papéis como lista (`papeis: Papel[]`),
+permitindo que a mesma pessoa seja aluno e mentor. Faltava decidir o fluxo de cadastro e o
+que dispara a verificação de mentor.
+
+**O que foi decidido.** Todo cadastro entra como aluno. Virar mentor é uma ação separada,
+que dispara a verificação de vínculo institucional. Essa verificação é automática, por
+confirmação do e-mail institucional — sem espera nem aprovação manual.
+
+**Por quê.** Mantém o cadastro mínimo, no mesmo espírito da regra já existente para o
+fluxo principal, e evita construir um painel de aprovação manual — que exigiria uma conta
+de staff fora do escopo do MVP.
+
+**Limitação conhecida — antifraude.** Assumindo má-fé, como a seção de reputação do
+projeto pede: verificação só por e-mail institucional confirma que a pessoa é da
+instituição, não que ela sabe a matéria que diz ensinar. Qualquer aluno matriculado pode
+se declarar mentor de qualquer matéria e aparecer verificado na hora. Isso fica registrado
+como limitação aceita do MVP, não como algo resolvido. Um jeito futuro de atenuar isso sem
+aprovação manual: a reputação por sessão confirmada (já decidida) já sinaliza ao aluno
+quando um mentor é novo, porque aparece sem nenhum selo.
+
+**Impacto para o usuário.** Sem campo novo obrigatório no cadastro. Virar mentor é
+imediato depois de confirmar o e-mail institucional.
+
+---
+
+## 2026-09-20 — Perfil do mentor em "modo sem critérios"
+
+**Contexto.** O perfil do mentor (tela 4) hoje só existe a partir de uma busca com matéria
+e turno já escolhidos (tela 3), e destaca os horários compatíveis com esses critérios. Com
+a landing pública (decisão acima), um visitante pode chegar direto ao perfil sem ter
+escolhido nada.
+
+**O que foi decidido.** Sem critérios de busca, o perfil mostra nome, curso, semestre,
+selo de verificado, descrição, matérias com contagem de sessões e todos os horários
+livres, sem destacar compatibilidade com nada.
+
+**Por quê.** Não existe "horário compatível" para destacar quando não existe critério
+vindo da tela 2. Mostrar tudo, sem destaque, evita fingir uma comparação que não
+aconteceu.
+
+**Impacto para o usuário.** O visitante vê o perfil completo, mas para pedir ajuda precisa
+dizer matéria e disponibilidade (ver decisão sobre o botão "Pedir ajuda", abaixo).
+
+---
+
+## 2026-09-20 — Botão "Pedir ajuda" não aparece no perfil para visitante sem cadastro
+
+**Contexto.** Foram consideradas duas formas de o visitante sair do perfil de um mentor em
+direção a pedir ajuda: (a) esconder o botão "Pedir ajuda" e apontar para a busca na
+landing; (b) manter o botão visível, levando ao fluxo de pedir ajuda com a matéria
+pré-preenchida, e só exigir cadastro/login na hora do envio. A opção (b) preserva mais o
+contexto de quem já está vendo um mentor específico, e foi apontada como a mais usável
+antes desta decisão ser fechada.
+
+**O que foi decidido.** Opção (a): o botão não aparece para quem não tem cadastro. No
+lugar dele, uma linha curta com link para a landing: "Para pedir ajuda, comece pela busca
+na página inicial." A opção (b) fica registrada como alternativa considerada e **guardada
+em reserva**, não descartada — pode voltar a ser avaliada depois.
+
+**Por quê.** O autor optou por manter o fluxo de pedido de ajuda inteiramente dentro da
+conta logada, sem pré-visualizar o formulário para quem ainda não tem cadastro, mesmo
+sabendo do custo de usabilidade da opção (a) frente à (b).
+
+**Impacto para o usuário.** Visitante sem cadastro vê o perfil, mas precisa voltar à
+página inicial e refazer a escolha de matéria e disponibilidade para pedir ajuda; o
+contexto de estar vendo aquele mentor específico não é preservado automaticamente nessa
+volta.
+
+---
+
+## 2026-09-20 — Selo qualitativo de destaque na recomendação, sem número
+
+**Contexto.** O caderno de IHC já pede motivo em texto para cada recomendação, e o projeto
+proíbe explicitamente vocabulário de "match"/"score" na interface — regra já implementada
+na tela 3, com a lista de motivos ("mesma matéria • livre terça à tarde • 8 sessões"). Foi
+cogitado acrescentar um indicador de compatibilidade em percentual ou selo numérico.
+
+**O que foi decidido.** Um selo qualitativo, sem número — por exemplo "Combina bem com
+você" — aparece nos primeiros resultados da lista de recomendados. Os motivos em texto
+continuam exatamente como já construídos, logo abaixo do selo.
+
+**Por quê.** Um percentual passaria uma precisão que o cálculo de recomendação não tem: a
+ordenação é por regra (mais horários compatíveis, depois mais sessões concluídas na
+matéria, depois nome), não uma pontuação fracionária que justifique um número. **O
+percentual foi considerado e descartado por esse motivo.** O selo qualitativo cumpre o
+mesmo objetivo — deixar visível que a ordem vem de cálculo, não de acaso — sem número e
+sem entrar no vocabulário já proibido no projeto.
+
+**Impacto para o usuário.** Nenhuma mudança na lista de motivos já existente. Os primeiros
+mentores da lista de recomendados ganham um selo textual adicional; os demais (inclusive
+"disponíveis em outros turnos") não.
+
+**Detalhe em aberto.** Quantos mentores no topo recebem o selo (por exemplo, só o
+primeiro, ou os três primeiros) fica para decidir na implementação.
+
+---
+
+## 2026-09-20 — Portfólio e "projetos" são a mesma peça
+
+**Contexto.** O escopo original (telas 9 e 10) já previa portfólio público e sua edição,
+para aluno e mentor.
+
+**O que foi decidido.** Portfólio e "projetos" não são seções separadas: são a mesma peça,
+com uma prévia no perfil e uma página própria, valendo tanto para aluno quanto para
+mentor.
+
+**Por quê.** Evita duplicar o mesmo conteúdo (descrição, habilidades, link, contato) em
+dois lugares com nomes diferentes, o que confundiria tanto quem edita quanto quem lê.
+
+**Impacto para o usuário.** Nenhuma mudança no que já estava previsto para as telas 9 e
+10; só evita um formulário duplicado.
+
+---
+
+## 2026-09-20 — Fotos de perfil geradas por IA nos dados de teste, com avatar de iniciais como reserva
+
+**Contexto.** Mais cedo nesta mesma conversa, antes deste bloco de decisões, ficou fechado
+que o cartão do mentor usa avatar com iniciais e paleta fixa de cores no MVP, sem foto e
+sem upload, justamente para não depender de arquivo de imagem nem abrir questão de
+armazenamento ou LGPD antes do back-end existir.
+
+**O que foi decidido.** Fotos de perfil geradas por IA, com uso autorizado pelo professor,
+passam a ser a imagem principal do mentor em todos os lugares onde ele aparece: cards da
+landing, lista de mentores, perfil e carrossel. O avatar com iniciais não é substituído:
+continua existindo como reserva, para quando o mentor não tiver foto — o caso de qualquer
+usuário novo.
+
+**Por quê.** Reforça a identidade visual do mentor mais do que iniciais sozinhas
+conseguem, sem reabrir o problema que a decisão original evitava: como as fotos são
+geradas por IA para dados de teste, e não fotos reais de pessoas, não há dado pessoal
+sensível em mock nem exposição de imagem de aluno de verdade — o que mantém a conformidade
+com a regra de LGPD do projeto ("dados de teste sempre fictícios").
+
+**Impacto para o usuário.** Nenhum na fase de mock: são dados de teste. Quando o back-end
+existir, um mentor sem foto enviada continua caindo no avatar de iniciais — a decisão
+original não muda, só ganha um caso de uso a mais para quando existir foto de verdade.
+
+**Pendência.** Origem e forma de guardar as imagens de IA usadas nos dados de teste
+(arquivo local em `assets/`, ou outra forma) ficam para decidir na implementação. Nenhuma
+das nove decisões deste bloco foi implementada em código ainda — este registro é só a
+decisão, como o autor pediu.
