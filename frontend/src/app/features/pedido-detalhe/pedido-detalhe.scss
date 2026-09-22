@@ -3,8 +3,6 @@
    o cartão do bloco .detalhe logo abaixo. */
 .pedido { margin-bottom: var(--espaco-4); }
 
-.subtitulo { font-size: 1.125rem; }
-
 .detalhe {
   display: flex;
   flex-direction: column;
@@ -15,15 +13,12 @@
 
 .pedido__aviso { margin-top: var(--espaco-2); }
 
+/* .confirmacao é cartão: padding, borda, fundo e sombra vêm da regra global (src/styles.scss) */
 .confirmacao {
   display: flex;
   flex-direction: column;
   gap: var(--espaco-3);
   align-items: flex-start;
-  padding: var(--espaco-3);
-  border: 1px solid var(--cor-borda);
-  border-radius: var(--raio);
-  background: var(--cor-superficie);
 }
 
 .confirmacao__acoes {
@@ -33,5 +28,3 @@
 }
 
 /* .opcao agora é global (src/styles.scss); mesmo desenho das telas 2 e 4 */
-
-.botao[disabled] { cursor: wait; }

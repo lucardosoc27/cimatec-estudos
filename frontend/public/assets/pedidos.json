@@ -38,5 +38,18 @@
     "modalidade": "online",
     "status": "expirado",
     "criadoHaHoras": 60
+  },
+  {
+    "id": "p-004",
+    "alunoId": "aluno-1",
+    "mentorId": "m-bruno",
+    "mentorNome": "Bruno Nascimento",
+    "materiaId": "poo",
+    "materiaNome": "Programação Orientada a Objetos",
+    "dia": "sab",
+    "hora": "10:00",
+    "modalidade": "presencial",
+    "status": "recusado",
+    "criadoHaHoras": 20
   }
 ]

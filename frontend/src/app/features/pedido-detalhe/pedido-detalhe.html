@@ -110,7 +110,7 @@
             }
 
             <div class="confirmacao__acoes">
-              <button type="button" class="botao" [disabled]="cancelando()" (click)="confirmarCancelamento()">
+              <button type="button" class="botao botao--perigo" [disabled]="cancelando()" (click)="confirmarCancelamento()">
                 @if (cancelando()) {
                   Cancelando…
                 } @else {

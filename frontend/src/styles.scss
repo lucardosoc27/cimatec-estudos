@@ -31,6 +31,7 @@
   /* Semânticas: cada status do pedido usa um par texto/fundo daqui, sempre com o rótulo escrito */
   --cor-sucesso: #0B6B3A;  --cor-sucesso-fundo: #DDF5E6;   /* Aceito, mentor verificado (5,75:1) */
   --cor-erro: #B42318;     --cor-erro-fundo: #FDECEA;      /* Recusado, erro de tela (5,75:1) */
+  --cor-erro-escura: #9E1E13;                              /* hover e "ocupado" do botão de perigo (branco sobre ele: 7,93:1) */
   --cor-alerta: #8A4B00;   --cor-alerta-fundo: #FBEEDC;    /* Expirado (5,95:1) */
   --cor-neutro: #4A5568;   --cor-neutro-fundo: #EDF0F4;    /* Cancelado (6,58:1) */
   --cor-foco: #1D4FA0;                                     /* 7,25:1 sobre o fundo, onde o anel encosta */
@@ -100,7 +101,9 @@ a { color: var(--cor-primaria); }
   outline-offset: 2px;
 }
 
-/* Botão e link-botão compartilham a mesma aparência e o mesmo alvo de toque */
+/* Botão e link-botão compartilham a mesma aparência e o mesmo alvo de toque.
+   Base laranja = ação principal ("Pedir ajuda", "Ver mentores", "Ver pedido"…).
+   Contrastes em DECISOES.md (2026-09-21). */
 .botao {
   display: inline-flex;
   align-items: center;
@@ -108,28 +111,75 @@ a { color: var(--cor-primaria); }
   min-height: var(--alvo-toque);
   min-width: var(--alvo-toque);
   padding: 0 var(--espaco-4);
-  border: 2px solid var(--cor-primaria);
-  border-radius: var(--raio);
-  background: var(--cor-primaria);
+  border: 2px solid var(--cor-acao);
+  border-radius: var(--raio-pequeno);
+  background: var(--cor-acao);
   color: #fff;
   font: inherit;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   cursor: pointer;
+  transition: background-color 120ms, box-shadow 120ms;
 
-  &:hover { background: var(--cor-primaria-escura); border-color: var(--cor-primaria-escura); }
+  &:hover {
+    background: var(--cor-acao-escura);
+    border-color: var(--cor-acao-escura);
+    box-shadow: var(--sombra-flutuante);
+  }
+
+  /* Só durante "Enviando…" / "Cancelando…". Usa o tom do hover, sem sombra: o rótulo continua
+     em 6,42:1. Opacidade foi medida e descartada: clareia fundo e texto juntos e cai para 3,1:1. */
+  &:disabled {
+    background: var(--cor-acao-escura);
+    border-color: var(--cor-acao-escura);
+    cursor: wait;
+    box-shadow: none;
+  }
 }
 
+/* Secundário: contorno azul; no hover, texto escuro sobre azul-clarinho (8,53:1) */
 .botao--secundario {
+  border-color: var(--cor-primaria);
   background: transparent;
   color: var(--cor-primaria);
 
-  &:hover { background: transparent; color: var(--cor-primaria-escura); }
+  &:hover {
+    background: var(--cor-primaria-suave);
+    border-color: var(--cor-primaria-escura);
+    color: var(--cor-primaria-escura);
+    box-shadow: none;
+  }
+
+  /* Desabilitado ("Enviando…" num secundário): sem esta regra, .botao:disabled pintaria fundo e
+     borda de laranja escuro por baixo do texto azul (1,22:1). O texto continua --cor-primaria da
+     regra base, sobre --cor-primaria-suave: 6,73:1, o mesmo par da pílula "Aguardando". */
+  &:disabled {
+    background: var(--cor-primaria-suave);
+    border-color: var(--cor-primaria);
+  }
+}
+
+/* Perigo: confirmação de cancelamento ("Sim, cancelar sessão"). Branco sobre --cor-erro: 6,57:1;
+   sobre --cor-erro-escura (hover e ocupado): 7,93:1. Registrado em DECISOES.md (2026-09-21). */
+.botao--perigo {
+  border-color: var(--cor-erro);
+  background: var(--cor-erro);
+
+  &:hover,
+  &:disabled {
+    background: var(--cor-erro-escura);
+    border-color: var(--cor-erro-escura);
+  }
 }
 
 .titulo {
-  font-size: 1.5rem;
-  margin-bottom: var(--espaco-3);
+  font-size: var(--texto-titulo);
+  margin-bottom: var(--espaco-4);
+}
+
+/* Só o tamanho é global; a margem de cada .subtitulo depende de onde ele está e fica na tela */
+.subtitulo {
+  font-size: var(--texto-subtitulo);
 }
 
 /* Link com alvo de toque de 44px: "Voltar", "Ver detalhes", "Ver perfil e horários" */
@@ -140,18 +190,43 @@ a { color: var(--cor-primaria); }
   font-weight: 600;
 }
 
+/* Cartão: todo cartão do sistema tem o mesmo acabamento — caixa de estado, grupo de formulário,
+   cartão de pedido, cartão de mentor (tela 3), perfil (tela 4) e confirmação de cancelamento
+   (tela 5). O fio (--cor-borda-suave) é decorativo; quem separa o cartão da página é o fundo
+   branco sobre o cinza e a sombra. Em tela grande o cartão ganha mais respiro interno. */
+.aviso,
+.grupo,
+.pedido,
+.mentor,
+.perfil,
+.confirmacao {
+  padding: var(--espaco-3);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda-suave);
+  box-shadow: var(--sombra-cartao);
+}
+
+@media (min-width: 48rem) {
+  .aviso,
+  .grupo,
+  .pedido,
+  .mentor,
+  .perfil,
+  .confirmacao {
+    padding: var(--espaco-4);
+  }
+}
+
 /* Caixa de estado: carregando, vazio e erro */
 .aviso {
   display: flex;
   flex-direction: column;
   gap: var(--espaco-3);
   align-items: flex-start;
-  padding: var(--espaco-4);
-  border-radius: var(--raio);
-  background: var(--cor-superficie);
-  border: 1px solid var(--cor-borda);
 }
 
+/* Aqui a borda carrega informação (é um erro), por isso usa a cor de erro, que passa de 3:1 */
 .aviso--erro {
   background: var(--cor-erro-fundo);
   border-color: var(--cor-erro);
@@ -169,16 +244,21 @@ form {
 .grupo {
   width: 100%;
   margin: 0;
-  padding: var(--espaco-3);
-  border: 1px solid var(--cor-borda);
-  border-radius: var(--raio);
-  background: var(--cor-superficie);
 }
 
+/* <legend> é desenhado pelo navegador sobre a borda do fieldset; com cartão de fundo e sombra,
+   uma legenda de duas linhas invadia a área branca. Pela especificação HTML, legenda flutuada
+   perde esse tratamento especial e vira um bloco comum no topo do conteúdo. O `clear` no irmão
+   seguinte garante que a primeira opção comece abaixo dela. */
 .grupo__titulo {
-  padding: 0 var(--espaco-1);
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: var(--espaco-2);
   font-weight: 700;
 }
+
+.grupo__titulo + * { clear: left; }
 
 .grupo__dica {
   font-weight: 400;
@@ -207,20 +287,25 @@ form {
 }
 
 /* Cartão de pedido: telas "Início" e "Pedido enviado e status" */
-.pedido {
-  padding: var(--espaco-3);
-  border-radius: var(--raio);
-  background: var(--cor-superficie);
-  border: 1px solid var(--cor-borda);
-}
-
-.pedido__materia { font-size: 1.125rem; }
+.pedido__materia { font-size: var(--texto-destaque); }
 .pedido__mentor,
 .pedido__quando { color: var(--cor-texto-suave); }
 
+/* Status: o rótulo por extenso ("Aguardando resposta") é o que comunica; a pílula colorida
+   é reforço. Cada status usa um par texto/fundo dos tokens, todos acima de 4,5:1. */
 .pedido__status {
   margin-top: var(--espaco-2);
-  &[data-status='aceito'] strong { color: var(--cor-primaria); }
-  &[data-status='expirado'] strong,
-  &[data-status='recusado'] strong { color: var(--cor-erro); }
+
+  strong {
+    display: inline-block;
+    padding: var(--espaco-1) var(--espaco-3);
+    border-radius: var(--raio-pilula);
+    font-weight: 700;
+  }
+
+  &[data-status='aguardando'] strong { color: var(--cor-primaria); background: var(--cor-primaria-suave); } /* 6,73:1 */
+  &[data-status='aceito']     strong { color: var(--cor-sucesso);  background: var(--cor-sucesso-fundo); }  /* 5,75:1 */
+  &[data-status='recusado']   strong { color: var(--cor-erro);     background: var(--cor-erro-fundo); }     /* 5,75:1 */
+  &[data-status='expirado']   strong { color: var(--cor-alerta);   background: var(--cor-alerta-fundo); }   /* 5,95:1 */
+  &[data-status='cancelado']  strong { color: var(--cor-neutro);   background: var(--cor-neutro-fundo); }   /* 6,58:1 */
 }

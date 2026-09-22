@@ -3,8 +3,8 @@
   margin-bottom: var(--espaco-3);
 }
 
+/* .subtitulo (tamanho) é global (src/styles.scss); aqui só a margem desta tela */
 .subtitulo {
-  font-size: 1.125rem;
   margin: var(--espaco-4) 0 var(--espaco-2);
 }
 
@@ -14,26 +14,17 @@
   gap: var(--espaco-3);
 }
 
-.mentor {
-  padding: var(--espaco-3);
-  border-radius: var(--raio);
-  background: var(--cor-superficie);
-  border: 1px solid var(--cor-borda);
-}
+/* .mentor é cartão: padding, borda, fundo e sombra vêm da regra global (src/styles.scss) */
 
-.mentor__nome { font-size: 1.125rem; }
+.mentor__nome { font-size: var(--texto-destaque); }
 .mentor__curso { color: var(--cor-texto-suave); }
 
-/* Motivos em linha. O "•" é decorativo: o texto alternativo vazio (`/ ''`) esconde-o do leitor de tela, que lê só os itens */
+/* Lista vertical com marcador nativo: o marcador fica no padding e a segunda linha de um
+   motivo longo alinha com a primeira (recuo pendente), sem parecer item novo. Os motivos
+   ficam na mesma posição em todo cartão, o que facilita comparar mentores descendo a coluna.
+   Mesmo desenho de .selos na tela 4. */
 .motivos {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 var(--espaco-2);
   margin-top: var(--espaco-2);
-
-  li + li::before {
-    content: '•' / '';
-    margin-right: var(--espaco-2);
-    color: var(--cor-texto-suave);
-  }
+  padding-left: var(--espaco-4);
+  list-style: disc;
 }

@@ -427,3 +427,34 @@ violaria o requisito de contraste do caderno de IHC.
 
 **Impacto para o usuário.** Nenhum negativo: o ciano fica reservado para onde é legível.
 Toda informação continua vindo de texto e das outras cores, que passam nos limites.
+
+---
+
+## 2026-09-21 — Vermelho escuro como token para o botão de perigo
+
+**Contexto.** As classes globais ganharam um terceiro modificador de botão, `.botao--perigo`,
+para a confirmação de cancelamento na tela "Pedido enviado e status" ("Sim, cancelar
+sessão" / "Sim, cancelar pedido"). O fundo é o vermelho de erro já existente, `#B42318`,
+com texto branco (6,57:1). Faltava um tom para o hover e para o estado "ocupado"
+(`Cancelando…`), porque a paleta só tinha tom escuro para o azul e para o laranja.
+
+**O que foi decidido.** Entra o token `--cor-erro-escura: #9E1E13`, obtido aplicando ao
+vermelho a mesma proporção de escurecimento que já existe entre `--cor-acao` (`#BF4409`) e
+`--cor-acao-escura` (`#A83A07`). Branco sobre `#9E1E13` mede **7,93:1**. O token serve ao
+hover e ao `:disabled` do botão de perigo; não é cor de texto nem de borda de campo.
+
+Na mesma passada, o estado `:disabled` de todo `.botao` deixou de usar `opacity: 0.7`.
+Medido: com opacidade, o rótulo "Enviando…" caía para **3,14:1** sobre a página e
+**3,11:1** sobre cartão branco, abaixo do mínimo de 4,5:1. O botão ocupado passa a usar o
+tom escuro do hover (laranja `#A83A07`, 6,42:1; vermelho `#9E1E13`, 7,93:1), sem sombra e
+com `cursor: wait`. A opacidade não carregava informação: o rótulo já muda para
+"Enviando…", o cursor já muda e o atributo `disabled` já bloqueia o segundo clique.
+
+**Por quê.** O botão destrutivo é o que mais precisa de retorno claro no hover, e
+escurecer o vermelho só aumenta o contraste do texto branco. Criar o token, em vez de
+escrever o valor direto na classe, mantém todas as cores do projeto num só lugar, com o
+contraste medido ao lado.
+
+**Impacto para o usuário.** O botão que confirma o cancelamento lê como vermelho, diferente
+do laranja de "Pedir ajuda", e escurece ao passar o mouse ou o foco. O botão ocupado
+continua legível em qualquer tela.
