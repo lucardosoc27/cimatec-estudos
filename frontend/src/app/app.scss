@@ -3,3 +3,8 @@
   margin: 0 auto;
   padding: var(--espaco-3);
 }
+
+/* Em tela grande sobra largura: o respiro vertical cresce um passo a mais que o lateral */
+@media (min-width: 48rem) {
+  .conteudo { padding: var(--espaco-5) var(--espaco-4); }
+}

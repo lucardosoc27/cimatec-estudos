@@ -1,3 +1,12 @@
+/* :host é o próprio elemento <app-cabecalho>, que ocupa a largura toda da página. A faixa azul
+   e o filete ciano ficam nele; o <header> de dentro continua limitado a 720px e centralizado.
+   Sem isso o azul pararia nos 720px e sobraria cinza nas laterais em tela grande. */
+:host {
+  display: block;
+  background: var(--cor-primaria-escura);
+  border-bottom: 3px solid var(--cor-marca-ciano);  /* 5,48:1 sobre o azul: o único fundo onde o ciano é legível */
+}
+
 .cabecalho {
   display: flex;
   align-items: center;
@@ -14,6 +23,33 @@
   min-height: var(--alvo-toque);
   font-weight: 700;
   font-size: var(--texto-marca);
-  color: var(--cor-texto);
+  color: #fff;  /* 9,93:1 sobre o azul */
   text-decoration: none;
+}
+
+/* Sem esta regra a marca sumiria: o hover global (a:not(.botao):hover, 0-2-1) pinta o link de
+   --cor-primaria-escura, que aqui é a cor da própria faixa — 1:1, invisível. O seletor é
+   descendente para vencer os 0-2-1 com folga; a afordância passa a ser o sublinhado, que não
+   depende de cor, e o branco fica. */
+.cabecalho .cabecalho__marca:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* O laranja do botão contra o azul escuro dá 1,91:1, abaixo dos 3:1 que o contorno de um
+   controle precisa: é a borda branca (9,93:1) que torna o botão perceptível aqui.
+   O seletor é descendente de propósito. Escrito só como `.botao`, o Angular geraria
+   `.botao[_ngcontent-x]`, 0-2-0, empatado com o `.botao:hover` global — e empate quem decide é
+   a ordem de injeção dos estilos, que é detalhe de implementação, não garantia. Com
+   `.cabecalho .botao` a regra ganha por especificidade, e a borda segue branca também no hover. */
+.cabecalho .botao {
+  border-color: #fff;
+}
+
+/* Anel de foco branco dentro da faixa: o anel padrão é --cor-foco (azul), que daria 1,27:1
+   contra o azul escuro — foco praticamente invisível para quem navega por teclado. Branco dá
+   9,93:1. O outline-offset de 2px do anel global mantém um respiro azul entre ele e a borda
+   branca do botão, então os dois não se fundem. */
+.cabecalho :focus-visible {
+  outline-color: #fff;
 }

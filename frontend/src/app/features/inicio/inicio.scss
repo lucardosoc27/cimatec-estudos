@@ -4,10 +4,15 @@
   gap: var(--espaco-3);
 }
 
+@media (min-width: 48rem) {
+  .lista { gap: var(--espaco-4); }
+}
+
 /* .pedido, .pedido__materia, .pedido__mentor, .pedido__quando e .pedido__status são globais
    (src/styles.scss), mesmo desenho da tela 5. */
 .pedido__detalhe { margin-top: var(--espaco-1); }
 
+/* "Ver detalhes" é a ação do cartão, não continuação do texto */
 .pedido__link {
-  margin-top: var(--espaco-2);
+  margin-top: var(--espaco-3);
 }

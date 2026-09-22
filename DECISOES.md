@@ -533,3 +533,144 @@ agiria nos `<a>` — quem lesse a classe não teria como saber por que aquela li
 todos os estados. E fica registrada a armadilha: quem "simplificar" o seletor para `a:hover`
 derruba o texto do botão mais usado do sistema para 1,91:1, sem erro de build, sem aviso no
 console e sem nada quebrar na tela — só o contraste indo embora.
+
+---
+
+## 2026-09-22 — Cabeçalho azul escuro, com exceção consciente à regra da etapa 3
+
+**Contexto.** A etapa 3 do tratamento visual (tela por tela) começou com uma regra de proteção:
+não mexer em estrutura, signals, estados, regras de negócio nem foco, para que o acabamento
+visual não quebrasse comportamento sem querer. Ao chegar na tela 1, o cabeçalho — que aparece
+nas cinco telas e é a primeira coisa que alguém vê — não tinha superfície própria: marca e botão
+flutuavam sobre o mesmo cinza da página. A entrada de 2026-09-21 restringiu o ciano institucional
+a fundo azul escuro, e nenhuma superfície azul escura existia no sistema.
+
+**O que foi decidido.** O cabeçalho passa a ser uma faixa `#1B3E8C` (`--cor-primaria-escura`) de
+largura total, com marca branca, filete ciano de 3px na base, borda branca no botão "Pedir ajuda"
+e anel de foco branco escopado à faixa. A exceção à regra da etapa 3 — mexer em foco — é
+consciente e está registrada aqui.
+
+**Por quê.** Três razões, nesta ordem. Primeira: sem nenhuma superfície escura no sistema, a
+entrada que restringe o ciano descreveria uma regra para uma situação que nunca acontece — o
+projeto teria três cores institucionais aplicadas e uma documentada e invisível. O cabeçalho é o
+único lugar onde o azul escuro faz sentido. Segunda: trocar a cor do anel de foco não quebra
+comportamento. O foco continua existindo, visível e navegável; anel claro sobre superfície escura
+não é exceção de acabamento, é a variante que a própria WCAG pede, porque o critério é contraste
+do indicador contra as cores vizinhas, e não uma cor fixa. Terceira: deixar o cabeçalho branco
+agora provavelmente significaria refazê-lo quando a landing pública entrar.
+
+Os números que obrigam cada regra, medidos: o laranja da ação contra o azul escuro dá **1,91:1**,
+abaixo dos 3:1 que o contorno de um controle precisa — por isso a borda do botão passa a branca,
+**9,93:1**. O anel de foco padrão é azul (`--cor-foco`) e contra o azul escuro daria **1,27:1**,
+foco praticamente invisível para quem navega por teclado — por isso o anel branco, **9,93:1**.
+Marca branca sobre a faixa: **9,93:1**. Filete ciano: **5,48:1**.
+
+Na implementação apareceu uma armadilha criada pela combinação de duas decisões já tomadas: o
+hover global de link (`a:not(.botao):hover`) pinta o link de `--cor-primaria-escura`, que passou a
+ser exatamente a cor da faixa — a marca ficaria **1:1**, invisível sob o ponteiro. Corrigido com
+uma regra escopada em que a marca mantém o branco e a afordância de hover passa a ser sublinhado,
+que não depende de cor.
+
+**Impacto para o usuário.** A identidade institucional fica visível já na primeira dobra, e o
+cabeçalho passa a ter limite claro com o conteúdo. Quem navega por teclado continua vendo onde o
+foco está, agora em branco sobre a faixa. Nenhuma informação foi retirada de nenhuma tela.
+
+---
+
+## 2026-09-22 — Reflow a 320px: medido e conforme (WCAG 1.4.10, AA)
+
+**Contexto.** O caderno de IHC desenha a partir de 360px de largura. Ao tratar o cabeçalho, a
+pergunta apareceu de forma concreta: marca mais botão cabem, ou estouram a largura? Em vez de
+estimar, as larguras foram medidas em Chromium headless, com a fonte real do projeto.
+
+**O que foi medido.** A 360px: marca "Cimatec Estudos" **149,0px**, botão "Pedir ajuda"
+**138,3px**, mais 16px de espaçamento entre eles, somando **303,3px** dos **328px** disponíveis —
+folga de **24,7px**, tudo em uma linha. A 320px: os dois quebram em duas linhas (marca com 55,8px
+de altura, botão com 53,6px) e **não há rolagem horizontal** — o flex encolhe em vez de estourar.
+A borda branca do botão não altera nenhuma dessas medidas, porque a borda de 2px já existia: só
+muda de cor.
+
+**Por quê isso importa.** O critério Reflow (WCAG 2.1, 1.4.10, nível AA) exige que o conteúdo
+funcione a 320px de largura sem rolagem horizontal. Ele não exige caber em uma linha: exige
+quebrar em vez de estourar. É exatamente o comportamento medido. Portanto 320px não é "limite
+conhecido" do projeto — é um critério AA que o layout cumpre, agora com número registrado.
+
+**Impacto para o usuário.** Aluno com aparelho estreito, ou com zoom alto (que produz o mesmo
+efeito de largura reduzida), continua com o cabeçalho inteiro utilizável, sem precisar arrastar a
+tela para o lado para ler ou alcançar o botão.
+
+---
+
+## 2026-09-22 — Fundo da página escurecido e dessaturado, com o fio e o hover do secundário atrás dele
+
+**Contexto.** O fundo era `#F4F6FB`, quase branco. Contra o cartão branco ele media **1,08:1**,
+ou seja, praticamente nada: quem separava cartão de página eram a sombra e o fio, sozinhos. A
+proposta foi escurecer o fundo para que a diferença de superfície fizesse esse trabalho. Nenhum
+valor foi chutado: todas as cores que encostam no fundo foram medidas antes.
+
+**O que foi decidido.** O fundo passa a ser **`#DEE2EB`** — mesmo matiz (222,9°), luz de 97,1%
+para 89,6% e **saturação de 46,7% para 25%**. Junto vão duas mudanças que o novo fundo obriga: o
+fio do cartão passa a `#CBD1DE` e o preenchimento do hover do botão secundário ganha token
+próprio, `--cor-secundario-hover: #BCC8E7`.
+
+**Por quê, e com quais números.**
+
+*O fundo.* Contra o fundo novo: texto 12,54:1, texto secundário 5,80:1, azul de link 6,04:1,
+hover de link 7,65:1, laranja do botão 4,00:1, laranja escuro 4,94:1, vermelho de erro 5,07:1.
+Todo texto continua acima de 4,5:1 e todo contorno acima de 3:1, com folga mínima de **1,00**
+sobre o mínimo — não é um valor no limite. O cartão branco contra a página sobe de 1,08:1 para
+**1,30:1**. O fundo mais escuro que a paleta aguentaria seria `#BDC9E7`, onde o texto secundário
+cai a 4,54:1 — folga de 0,04, recusado justamente por viver no limite.
+
+Um achado mudou a conta: `--cor-acao` **nunca é cor de texto** no sistema. Ele aparece só como
+`background` e `border` do `.botao`, e o rótulo branco vive *dentro* do botão (5,19:1 contra o
+laranja), sem depender da página. Então o laranja está preso ao mínimo de 3:1 de contorno, não
+ao de 4,5:1 de texto, o que liberou a maior parte do escurecimento.
+
+*A dessaturação.* Manter a saturação enquanto a luz cai deixa a cor mais visível: `#D8DFF1`, a
+versão saturada da mesma luz, tem 25 pontos entre o canal mais alto e o mais baixo, e ao lado do
+cabeçalho azul escuro puxava a página inteira para o azul. A 25% de saturação a amplitude cai
+para 13, e todos os contrastes **melhoram** (o texto secundário vai de 5,64 para 5,80; o laranja
+de 3,89 para 4,00), ao custo de 0,03 na separação do cartão (1,33 para 1,30). A escolha final foi
+por comparação visual, em página de teste com os três fundos lado a lado.
+
+*O fio.* Com o fundo escuro, `#DDE3EE` media 1,04:1 contra a página: o fundo o alcançou e ele
+sumiu. O trabalho do fio mudou — antes dividia com a sombra a tarefa de definir o cartão, agora o
+fundo define sozinho e o fio serve só para a borda ficar nítida, o que pesa mais a 360px. Fio de
+nitidez pode ser sutil: `#CBD1DE` dá **1,53:1 contra o branco** e 1,18:1 contra a página. Ficou
+dessaturado junto com o fundo, porque fio mais saturado que a página chamaria atenção para si.
+
+*O hover do secundário.* `--cor-primaria-suave` servia dois trabalhos: fundo da pílula
+"Aguardando", que mora dentro de cartão branco, e preenchimento do hover do botão secundário. Eram
+o mesmo valor só enquanto a página era quase branca; com o fundo novo, o hover media **1,03:1**
+contra a página — invisível. Levantamento: dos onze botões secundários do sistema, **dez moram
+dentro de cartão branco** e **um fica direto sobre a página** — o "Cancelar pedido" / "Cancelar
+sessão" da tela 5, que é o secundário mais importante do fluxo. Pelo critério de 2026-09-22
+(apelido quando a relação é real, token próprio quando a igualdade é coincidência), entra
+`--cor-secundario-hover: #BCC8E7`: **1,29:1 contra a página**, 1,67:1 contra o cartão branco (os
+outros dez ganham hover mais perceptível também) e texto do hover em 5,94:1. O nome diz o estado
+em que ele age; a convenção `-fundo` do projeto não se aplica, porque ela nomeia preenchimento
+permanente de pílula e o secundário tem fundo transparente. O estado **ocupado** do secundário
+continua em `--cor-primaria-suave`, e por isso o par documentado de 6,73:1 segue valendo, assim
+como todos os números da pílula "Aguardando".
+
+**Armadilha registrada: `--cor-borda` e o login.** O token de borda de campo de texto (`#7B8794`)
+media 3,39:1 contra o fundo antigo e mede **2,82:1** contra o novo, abaixo do mínimo de 3:1 para
+borda de campo. Ele continua válido porque o campo de texto tem de morar **dentro de cartão
+branco**, onde mede 3,66:1 — e é assim que os formulários do projeto já são montados, em `.grupo`.
+Condição explícita para quem implementar o login: **se algum campo de texto ficar direto sobre a
+página, este token tem de ir para `#6B7684`** (3,56:1 contra a página, 4,62:1 contra o cartão).
+
+**Números de entradas anteriores que esta substitui.** Estas entradas não são reescritas — são
+registro do que foi medido quando foram tomadas. Passam a valer, contra o fundo novo: o laranja
+`#BF4409` contra a página, de 4,80:1 para **4,00:1** (entrada de 2026-09-21 sobre a paleta); o
+hover de link contra a página, de 9,19:1 para **7,65:1** (entrada de 2026-09-22 sobre o escopo do
+hover); e a medição do `opacity: 0.7` que motivou abandonar a opacidade no botão ocupado, de
+3,14:1 para **3,23:1** — continua abaixo de 4,5:1, então a decisão de abandonar a opacidade não
+muda. Os comentários do `styles.scss`, que descrevem o presente e não o histórico, foram
+corrigidos na mesma passada.
+
+**Impacto para o usuário.** O cartão passa a se destacar da página por diferença de superfície, e
+não só por sombra, o que ajuda principalmente em tela pequena e em brilho alto de sol. O hover do
+"Cancelar pedido" volta a dar retorno visível. Nenhum texto perdeu contraste abaixo do mínimo, e
+a folga mínima do sistema inteiro ficou em 1,00 acima do exigido.

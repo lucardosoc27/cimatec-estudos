@@ -15,17 +15,21 @@
      Contrastes medidos e registrados em DECISOES.md (2026-09-21). */
   --cor-primaria: #1D4FA0;          /* azul: link, seleção de rádio, botão secundário, pílula "Aguardando" (7,84:1 sobre branco) */
   --cor-primaria-escura: #1B3E8C;   /* azul escuro: hover de link e do botão secundário */
-  --cor-primaria-suave: #E8EEF9;    /* azul clarinho: fundo do status Aguardando, hover e ocupado do botão secundário */
+  --cor-primaria-suave: #E8EEF9;    /* azul clarinho: fundo do status Aguardando e do secundário ocupado, dentro de cartão */
+  --cor-secundario-hover: #BCC8E7;  /* preenchimento do hover do secundário: precisa registrar contra a PÁGINA (1,29:1), não contra o cartão */
   --cor-acao: #BF4409;              /* laranja da ação principal (texto branco sobre ele: 5,19:1) */
   --cor-acao-escura: #A83A07;       /* hover da ação principal (6,42:1) */
   --cor-marca-laranja: #F26522;     /* laranja institucional exato: só decorativo, 3,15:1 não serve para texto */
   --cor-marca-ciano: #00D4E8;       /* ciano institucional: só sobre azul escuro (5,48:1); sobre branco dá 1,81:1 */
 
   --cor-texto: #172033;             /* 16,27:1 sobre branco */
-  --cor-texto-suave: #4A5568;       /* 7,53:1 sobre branco, 6,96:1 sobre o fundo */
-  --cor-borda: #7B8794;             /* borda de campo de texto, primeiro uso no login (tela 6): 3,66:1 sobre branco, 3,39:1 sobre o fundo */
-  --cor-borda-suave: #DDE3EE;       /* fio de cartão: decorativo, o cartão se define pela sombra */
-  --cor-fundo: #F4F6FB;
+  --cor-texto-suave: #4A5568;       /* 7,53:1 sobre branco, 5,80:1 sobre o fundo */
+  /* Borda de campo de texto, primeiro uso no login (tela 6): 3,66:1 sobre o cartão branco, que é
+     onde o campo tem de morar. Sobre o fundo da página dá 2,82:1, abaixo do mínimo de 3:1 — campo
+     direto sobre a página exige trocar este token por #6B7684 (3,56:1). Ver DECISOES.md. */
+  --cor-borda: #7B8794;
+  --cor-borda-suave: #CBD1DE;       /* fio de cartão: 1,53:1 contra o branco, 1,18:1 contra o fundo — nitidez de borda, não separação */
+  --cor-fundo: #DEE2EB;              /* página: escurecido em 2026-09-22 para o cartão branco separar sozinho (1,30:1) */
   --cor-superficie: #FFFFFF;
 
   /* Semânticas: cada status do pedido usa um par texto/fundo daqui, sempre com o rótulo escrito */
@@ -37,7 +41,7 @@
   /* Apelido de --cor-primaria: o anel de foco segue a marca. Tem nome próprio porque responde
      a outra pergunta e carrega restrição própria — a WCAG cobra 3:1 do anel contra o que estiver
      em volta. Se um dia as duas restrições divergirem, volta a ser hex, com registro. */
-  --cor-foco: var(--cor-primaria);                         /* 7,25:1 sobre o fundo, onde o anel encosta */
+  --cor-foco: var(--cor-primaria);                         /* 6,04:1 sobre o fundo, onde o anel encosta */
 
   /* Tipografia */
   --fonte: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -99,10 +103,11 @@ h2, h3 { font-weight: 700; }
 ul { padding: 0; list-style: none; }
 a { color: var(--cor-primaria); }
 
-/* Hover de link: escurece e sobe o contraste (9,93:1 sobre cartão branco, 9,19:1 sobre o fundo).
+/* Hover de link: escurece e sobe o contraste (9,93:1 sobre cartão branco, 7,65:1 sobre o fundo).
    Exclui .botao de propósito: a:hover (0-1-1) vence o color branco de .botao (0-1-0), e
    .botao:hover só mexe em fundo, borda e sombra, então o rótulo do botão laranja viraria azul
-   escuro — 1,91:1. A marca do cabeçalho entra na regra: é um link para o início (9,19:1). */
+   escuro — 1,91:1. A marca do cabeçalho ficou de fora por regra própria no componente (branco com
+   sublinhado): a faixa é --cor-primaria-escura, e este hover a deixaria 1:1. */
 a:not(.botao):hover { color: var(--cor-primaria-escura); }
 
 /* Foco visível para teclado, em todo elemento focável */
@@ -147,14 +152,16 @@ a:not(.botao):hover { color: var(--cor-primaria-escura); }
   }
 }
 
-/* Secundário: contorno azul; no hover, texto escuro sobre azul-clarinho (8,53:1) */
+/* Secundário: contorno azul e fundo transparente. O preenchimento do hover usa token próprio porque
+   o "Cancelar pedido" fica direto sobre a página, onde o antigo --cor-primaria-suave dava 1,03:1 —
+   mudança invisível. Texto escuro sobre o preenchimento novo: 5,94:1. */
 .botao--secundario {
   border-color: var(--cor-primaria);
   background: transparent;
   color: var(--cor-primaria);
 
   &:hover {
-    background: var(--cor-primaria-suave);
+    background: var(--cor-secundario-hover);
     border-color: var(--cor-primaria-escura);
     color: var(--cor-primaria-escura);
     box-shadow: none;
@@ -202,8 +209,8 @@ a:not(.botao):hover { color: var(--cor-primaria-escura); }
 
 /* Cartão: todo cartão do sistema tem o mesmo acabamento — caixa de estado, grupo de formulário,
    cartão de pedido, cartão de mentor (tela 3), perfil (tela 4) e confirmação de cancelamento
-   (tela 5). O fio (--cor-borda-suave) é decorativo; quem separa o cartão da página é o fundo
-   branco sobre o cinza e a sombra. Em tela grande o cartão ganha mais respiro interno. */
+   (tela 5). Quem separa o cartão da página é o próprio fundo (branco contra #DEE2EB: 1,30:1); o fio
+   dá nitidez à borda e a sombra reforça. Em tela grande o cartão ganha mais respiro interno. */
 .aviso,
 .grupo,
 .pedido,
@@ -300,11 +307,13 @@ form {
 .pedido__materia { font-size: var(--texto-destaque); }
 .pedido__mentor,
 .pedido__quando { color: var(--cor-texto-suave); }
+.pedido__mentor { margin-top: var(--espaco-1); }  /* matéria, mentor e data são um bloco: 4px separa sem soltar */
 
 /* Status: o rótulo por extenso ("Aguardando resposta") é o que comunica; a pílula colorida
    é reforço. Cada status usa um par texto/fundo dos tokens, todos acima de 4,5:1. */
 .pedido__status {
-  margin-top: var(--espaco-2);
+  /* O status é o que precisa estar sempre visível, então descola do bloco de cima */
+  margin-top: var(--espaco-3);
 
   strong {
     display: inline-block;
