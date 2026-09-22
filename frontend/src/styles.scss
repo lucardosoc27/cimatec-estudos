@@ -13,9 +13,9 @@
 :root {
   /* Paleta: azul institucional SENAI CIMATEC como base, laranja como ação.
      Contrastes medidos e registrados em DECISOES.md (2026-09-21). */
-  --cor-primaria: #1D4FA0;          /* azul principal: links, foco, marca (7,84:1 sobre branco) */
-  --cor-primaria-escura: #1B3E8C;   /* azul escuro: hover de link, fundos escuros */
-  --cor-primaria-suave: #E8EEF9;    /* azul clarinho: fundo do status Aguardando, hover do botão secundário */
+  --cor-primaria: #1D4FA0;          /* azul: link, seleção de rádio, botão secundário, pílula "Aguardando" (7,84:1 sobre branco) */
+  --cor-primaria-escura: #1B3E8C;   /* azul escuro: hover de link e do botão secundário */
+  --cor-primaria-suave: #E8EEF9;    /* azul clarinho: fundo do status Aguardando, hover e ocupado do botão secundário */
   --cor-acao: #BF4409;              /* laranja da ação principal (texto branco sobre ele: 5,19:1) */
   --cor-acao-escura: #A83A07;       /* hover da ação principal (6,42:1) */
   --cor-marca-laranja: #F26522;     /* laranja institucional exato: só decorativo, 3,15:1 não serve para texto */
@@ -23,18 +23,21 @@
 
   --cor-texto: #172033;             /* 16,27:1 sobre branco */
   --cor-texto-suave: #4A5568;       /* 7,53:1 sobre branco, 6,96:1 sobre o fundo */
-  --cor-borda: #7B8794;             /* borda de campo: 3,66:1 sobre branco, 3,39:1 sobre o fundo */
+  --cor-borda: #7B8794;             /* borda de campo de texto, primeiro uso no login (tela 6): 3,66:1 sobre branco, 3,39:1 sobre o fundo */
   --cor-borda-suave: #DDE3EE;       /* fio de cartão: decorativo, o cartão se define pela sombra */
   --cor-fundo: #F4F6FB;
   --cor-superficie: #FFFFFF;
 
   /* Semânticas: cada status do pedido usa um par texto/fundo daqui, sempre com o rótulo escrito */
   --cor-sucesso: #0B6B3A;  --cor-sucesso-fundo: #DDF5E6;   /* Aceito, mentor verificado (5,75:1) */
-  --cor-erro: #B42318;     --cor-erro-fundo: #FDECEA;      /* Recusado, erro de tela (5,75:1) */
+  --cor-erro: #B42318;     --cor-erro-fundo: #FDECEA;      /* Recusado, erro de tela, botão de perigo (5,75:1) */
   --cor-erro-escura: #9E1E13;                              /* hover e "ocupado" do botão de perigo (branco sobre ele: 7,93:1) */
   --cor-alerta: #8A4B00;   --cor-alerta-fundo: #FBEEDC;    /* Expirado (5,95:1) */
   --cor-neutro: #4A5568;   --cor-neutro-fundo: #EDF0F4;    /* Cancelado (6,58:1) */
-  --cor-foco: #1D4FA0;                                     /* 7,25:1 sobre o fundo, onde o anel encosta */
+  /* Apelido de --cor-primaria: o anel de foco segue a marca. Tem nome próprio porque responde
+     a outra pergunta e carrega restrição própria — a WCAG cobra 3:1 do anel contra o que estiver
+     em volta. Se um dia as duas restrições divergirem, volta a ser hex, com registro. */
+  --cor-foco: var(--cor-primaria);                         /* 7,25:1 sobre o fundo, onde o anel encosta */
 
   /* Tipografia */
   --fonte: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -42,6 +45,7 @@
   --texto-destaque: 1.125rem; /* 18px: nome da matéria, nome do mentor no cartão */
   --texto-subtitulo: 1.25rem; /* 20px: h2 de seção */
   --texto-titulo: 1.75rem;    /* 28px no celular; 34px em tela grande, abaixo */
+  --texto-marca: 1.125rem;    /* 18px: marca do cabeçalho. Igual ao destaque por coincidência, não por relação */
   --altura-linha: 1.55;
   --altura-linha-titulo: 1.2;
 
@@ -57,9 +61,9 @@
   /* Forma */
   --raio: 12px;          /* cartões, avisos, grupos de formulário */
   --raio-pequeno: 8px;   /* botões */
-  --raio-pilula: 999px;  /* selo de status */
+  --raio-pilula: 999px;  /* pílula de status */
   --sombra-cartao: 0 1px 2px rgb(23 32 51 / 0.05), 0 4px 12px rgb(23 32 51 / 0.06);
-  --sombra-flutuante: 0 8px 24px rgb(23 32 51 / 0.12);  /* hover de botão e cartão */
+  --sombra-flutuante: 0 8px 24px rgb(23 32 51 / 0.12);  /* hover de botão */
 
   --alvo-toque: 44px;
   --largura-conteudo: 720px;  /* largura de leitura confortável, centralizada */
@@ -94,6 +98,12 @@ h1 { font-weight: 800; }
 h2, h3 { font-weight: 700; }
 ul { padding: 0; list-style: none; }
 a { color: var(--cor-primaria); }
+
+/* Hover de link: escurece e sobe o contraste (9,93:1 sobre cartão branco, 9,19:1 sobre o fundo).
+   Exclui .botao de propósito: a:hover (0-1-1) vence o color branco de .botao (0-1-0), e
+   .botao:hover só mexe em fundo, borda e sombra, então o rótulo do botão laranja viraria azul
+   escuro — 1,91:1. A marca do cabeçalho entra na regra: é um link para o início (9,19:1). */
+a:not(.botao):hover { color: var(--cor-primaria-escura); }
 
 /* Foco visível para teclado, em todo elemento focável */
 :focus-visible {

@@ -458,3 +458,44 @@ contraste medido ao lado.
 **Impacto para o usuário.** O botão que confirma o cancelamento lê como vermelho, diferente
 do laranja de "Pedir ajuda", e escurece ao passar o mouse ou o foco. O botão ocupado
 continua legível em qualquer tela.
+
+---
+
+## 2026-09-22 — Apelido quando a relação é real, token próprio quando a igualdade é coincidência
+
+**Contexto.** Antes de aplicar o tratamento visual tela por tela, os comentários do bloco
+`:root` de `styles.scss` foram varridos um a um: para cada token cujo comentário afirma onde
+ele é usado, foi conferido se aqueles lugares usam mesmo o token. A varredura anterior já
+havia produzido três correções desse tipo. Nesta, oito comentários divergiam do código, e
+dois achados eram da mesma família — valor repetido com nomes diferentes. `--cor-foco` e
+`--cor-primaria` guardavam o mesmo `#1D4FA0` em dois hexes independentes, e a marca do
+cabeçalho trazia `font-size: 1.125rem` escrito na mão, o mesmo valor de `--texto-destaque`.
+
+**O que foi decidido.** Passa a valer um critério único para valor repetido na paleta:
+
+- Quando a igualdade expressa uma **relação real** — um valor é o que é *porque* o outro é —,
+  o segundo token vira **apelido** do primeiro: `--cor-foco: var(--cor-primaria)`. O anel de
+  foco é da cor da marca por decisão de identidade; se a marca mudar, o anel acompanha.
+- Quando a igualdade é **coincidência** — os dois valores respondem a perguntas sem relação
+  entre si —, cada um fica com **token próprio** e valor próprio, livres para mudar separados.
+  Entra `--texto-marca: 1.125rem` para o logotipo, independente de `--texto-destaque`, que é
+  o tamanho do nome da matéria e do nome do mentor. Pelo mesmo critério, `--cor-neutro`
+  (status "Cancelado") e `--cor-texto-suave` (texto secundário) continuam independentes,
+  apesar de os dois valerem `#4A5568` hoje.
+
+**Por quê.** Dois valores iguais com nomes diferentes são duas verdades esperando para
+discordar: no dia em que uma das restrições mudar, a outra fica para trás em silêncio, e foi
+isso que produziu os achados das duas varreduras. O apelido elimina a duplicação onde a
+dependência é real e faz o código dizer o porquê — `var(--cor-foco)` lê-se como "a cor do
+anel de foco", que é informação; `var(--cor-primaria)` no mesmo lugar leria-se como "um azul
+qualquer" e perderia o aviso de que aquele valor tem regra de contraste própria: a WCAG cobra
+3:1 do indicador de foco contra o que estiver em volta, exigência independente da cor da
+marca. Se um dia as duas restrições divergirem, o apelido volta a ser hex e entra nova
+entrada aqui. O token próprio, do outro lado, faz valer sem exceção a regra "todo tamanho vem
+de um token": o `1.125rem` do logotipo era o último número mágico de tipografia do projeto, e
+ele apareceu justamente no bloco que varreu o `:root` atrás desse tipo de coisa.
+
+**Impacto para o usuário.** Nenhum imediato: por esta decisão nenhum token muda de valor e
+nenhum pixel muda de cor ou de tamanho. O efeito é de manutenção — a próxima mudança de
+identidade visual não deixa o anel de foco para trás, e o tamanho do logotipo pode mudar
+sem arrastar junto o nome da matéria.
