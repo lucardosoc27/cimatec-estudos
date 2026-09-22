@@ -16,3 +16,7 @@ application-local.properties
 
 # Sistema
 .DS_Store
+
+# Documentos de trabalho do autor (existem no disco, fora do versionamento)
+CLAUDE.md
+DECISOES.md
