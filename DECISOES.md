@@ -499,3 +499,37 @@ ele apareceu justamente no bloco que varreu o `:root` atrás desse tipo de coisa
 nenhum pixel muda de cor ou de tamanho. O efeito é de manutenção — a próxima mudança de
 identidade visual não deixa o anel de foco para trás, e o tamanho do logotipo pode mudar
 sem arrastar junto o nome da matéria.
+
+---
+
+## 2026-09-22 — O hover de link exclui `.botao`, e a exclusão não pode ser "limpada"
+
+**Contexto.** A varredura do `:root` (entrada anterior) mostrou que `--cor-primaria-escura`
+prometia no comentário um "hover de link" que não existia em regra nenhuma. A forma direta de
+cumprir a promessa seria `a:hover { color: var(--cor-primaria-escura); }`.
+
+**O que foi decidido.** A regra é `a:not(.botao):hover`. O `:not(.botao)` é parte da decisão,
+não ruído do seletor.
+
+**Por quê.** Onze dos vinte e quatro links dos templates são botões — `<a class="botao">` e
+`<a class="botao botao--secundario">`. A cascata resolve propriedade por propriedade, e
+`.botao:hover` não protege o rótulo: ele é mais específico (0-2-0), mas declara `background`,
+`border-color` e `box-shadow`, não `color`. Quem não declara a propriedade não participa da
+disputa por ela. A disputa pela cor do texto fica então entre `.botao` (0-1-0, que declara
+`color: #fff`) e `a:hover` (0-1-1), e o `a:hover` vence pelo elemento a mais. Estar depois no
+arquivo não ajuda: ordem só desempata especificidade igual. Medido: o rótulo do botão laranja
+viraria azul escuro sobre `#BF4409`, **1,91:1**, e **1,55:1** sobre o laranja do hover. Com o
+escopo, o hover de link mede 9,93:1 sobre cartão branco e 9,19:1 sobre o fundo da página.
+
+A alternativa era declarar `color: #fff` dentro de `.botao:hover`. Descartada por quatro
+motivos: resolveria um caso só, e `.botao--perigo` e toda variante futura precisariam repetir a
+linha; seria declaração defensiva, escrita não porque o desenho pede, mas para se proteger de
+outra regra do mesmo arquivo; inverteria a responsabilidade, porque quem toma território demais
+é o `a:hover`, e o conserto pertence ao lugar do excesso, não a quem é atropelado; e seria
+invisível de propósito, porque `.botao` veste `<button>` e `<a>`, e um `color` defensivo só
+agiria nos `<a>` — quem lesse a classe não teria como saber por que aquela linha existe.
+
+**Impacto para o usuário.** Link comum escurece sob o ponteiro; botão mantém o rótulo branco em
+todos os estados. E fica registrada a armadilha: quem "simplificar" o seletor para `a:hover`
+derruba o texto do botão mais usado do sistema para 1,91:1, sem erro de build, sem aviso no
+console e sem nada quebrar na tela — só o contraste indo embora.
