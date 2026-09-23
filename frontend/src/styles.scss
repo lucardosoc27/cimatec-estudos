@@ -65,9 +65,9 @@
   --espaco-7: 64px;
 
   /* Forma */
-  --raio: 12px;          /* cartões, avisos, grupos de formulário */
-  --raio-pequeno: 8px;   /* botões */
-  --raio-pilula: 999px;  /* pílula de status */
+  --raio: 20px;          /* cartões, avisos, grupos de formulário */
+  --raio-pequeno: 8px;   /* linha de opção marcada (tela 2, commit seguinte) */
+  --raio-pilula: 999px;  /* botões e pílula de status */
   --sombra-cartao: 0 1px 2px rgb(23 32 51 / 0.05), 0 4px 12px rgb(23 32 51 / 0.06);
   --sombra-flutuante: 0 8px 24px rgb(23 32 51 / 0.12);  /* hover de botão */
 
@@ -134,7 +134,7 @@ a:not(.botao):hover { color: var(--cor-primaria-escura); }
   min-width: var(--alvo-toque);
   padding: 0 var(--espaco-4);
   border: 2px solid var(--cor-acao);
-  border-radius: var(--raio-pequeno);
+  border-radius: var(--raio-pilula);
   background: var(--cor-acao);
   color: #fff;
   font: inherit;
