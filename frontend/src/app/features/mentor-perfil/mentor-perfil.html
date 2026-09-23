@@ -30,7 +30,7 @@
         <p class="perfil__descricao">{{ m.descricao }}</p>
 
         <h2 class="subtitulo">Sessões concluídas</h2>
-        <p>{{ m.sessoesConcluidas }} no total, confirmadas pelo aluno e pelo mentor.</p>
+        <p>{{ m.sessoesConcluidas }} no total.</p>
         @if (selos().length > 0) {
           <ul class="selos">
             @for (selo of selos(); track selo.nome) {

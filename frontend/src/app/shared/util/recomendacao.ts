@@ -70,9 +70,9 @@ function montarRecomendado(mentor: Mentor, horarios: HorarioLivre[], materiaId: 
  * receber uma lista crua. Coberta por teste.
  *
  * Ordenação: mais horários compatíveis primeiro, depois mais sessões concluídas nesta
- * matéria, depois nome. Assumindo má-fé: `sessoesConcluidas` vem do servidor e só conta
- * sessão confirmada pelos dois lados; no mock é um número editável, e nada aqui no cliente
- * consegue impedir isso. A garantia é do servidor, não desta função.
+ * matéria, depois nome. Assumindo má-fé: `sessoesConcluidas` terá de vir do servidor contando
+ * só sessão confirmada pelos dois lados, o que ainda não existe; no mock é um número editável,
+ * e nada aqui no cliente consegue impedir isso. A garantia é do servidor, não desta função.
  */
 export function recomendarMentores(
   mentores: Mentor[],

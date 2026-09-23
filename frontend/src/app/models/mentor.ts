@@ -1,7 +1,10 @@
 import { HorarioLivre } from './disponibilidade';
 import { Materia } from './materia';
 
-/** Selo público por matéria: quantas sessões concluídas e confirmadas pelos dois lados. */
+/**
+ * Selo público por matéria: quantas sessões concluídas. A confirmação pelos dois lados é
+ * regra do projeto, mas ainda não existe no dado; até existir, a interface diz "concluídas".
+ */
 export interface SeloMateria {
   materiaId: string;
   sessoesConcluidas: number;
@@ -23,7 +26,7 @@ export interface Mentor {
   /** Ids de `Materia`. */
   materias: string[];
   descricao: string;
-  /** Total de sessões concluídas e confirmadas pelos dois lados. */
+  /** Total de sessões concluídas (ainda sem confirmação pelos dois lados; ver `SeloMateria`). */
   sessoesConcluidas: number;
   selos: SeloMateria[];
   horariosLivres: HorarioLivre[];
