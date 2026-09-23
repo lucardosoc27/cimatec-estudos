@@ -61,6 +61,14 @@ function montarRecomendado(mentor: Mentor, horarios: HorarioLivre[], materiaId: 
   };
 }
 
+/** Critérios que vêm de cálculo: mais horários compatíveis, depois mais sessões concluídas na matéria. */
+function compararPorCriterios(a: MentorRecomendado, b: MentorRecomendado, materiaId: string): number {
+  return (
+    b.horariosCompativeis.length - a.horariosCompativeis.length ||
+    sessoesNaMateria(b.mentor, materiaId) - sessoesNaMateria(a.mentor, materiaId)
+  );
+}
+
 /**
  * Separa os mentores da matéria em "recomendados" (têm horário nos turnos pedidos) e
  * "outros turnos" (têm a matéria, mas só em turno diferente).
@@ -97,11 +105,27 @@ export function recomendarMentores(
   }
 
   const porRelevancia = (a: MentorRecomendado, b: MentorRecomendado) =>
-    b.horariosCompativeis.length - a.horariosCompativeis.length ||
-    sessoesNaMateria(b.mentor, criterios.materiaId) - sessoesNaMateria(a.mentor, criterios.materiaId) ||
-    a.mentor.nome.localeCompare(b.mentor.nome);
+    compararPorCriterios(a, b, criterios.materiaId) || a.mentor.nome.localeCompare(b.mentor.nome);
 
   return { recomendados: recomendados.sort(porRelevancia), outrosTurnos: outrosTurnos.sort(porRelevancia) };
+}
+
+/**
+ * Selo "Combina bem com você" (DECISOES.md, 2026-09-22): só o primeiro recomendado, e só se
+ * ele vencer o segundo por horários compatíveis ou por sessões concluídas na matéria.
+ * Empate nos dois = nenhum selo. O nome desempata a ordem da lista, mas não dá destaque,
+ * senão a ordem alfabética viraria mérito. Sem segundo também não há selo: não há contra
+ * quem vencer, e o mentor sozinho na matéria teria o selo por estar sozinho.
+ * Recebe `recomendados` já ordenado por `recomendarMentores`; `outrosTurnos` nunca recebe selo.
+ * Assumindo má-fé: quem marca todos os horários como livres sobe e ganha o selo. Risco
+ * conhecido e registrado, sem mitigação nesta etapa.
+ */
+export function idDoMentorComSelo(recomendados: MentorRecomendado[], materiaId: string): string | null {
+  const [primeiro, segundo] = recomendados;
+  if (!primeiro || !segundo) {
+    return null;
+  }
+  return compararPorCriterios(primeiro, segundo, materiaId) < 0 ? primeiro.mentor.id : null;
 }
 
 /**
