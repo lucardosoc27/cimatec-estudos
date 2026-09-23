@@ -103,7 +103,12 @@ h1, h2, h3 {
 h1 { font-weight: 800; }
 h2, h3 { font-weight: 700; }
 ul { padding: 0; list-style: none; }
-a { color: var(--cor-primaria); }
+/* Sublinhado declarado: o preflight do Tailwind zera o padrão do navegador, e sem ele o link
+   dentro de frase só se distingue pela cor — 2,07:1 contra o texto, abaixo dos 3:1 da WCAG 1.4.1. */
+a {
+  color: var(--cor-primaria);
+  text-decoration: underline;
+}
 
 /* Hover de link: escurece e sobe o contraste (9,93:1 sobre cartão branco, 7,65:1 sobre o fundo).
    Exclui .botao de propósito: a:hover (0-1-1) vence o color branco de .botao (0-1-0), e
