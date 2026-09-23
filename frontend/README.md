@@ -1,5 +1,13 @@
 # Frontend
 
+## Dados de teste
+
+Todos os mentores, alunos e pedidos em `public/assets/*.json` são **fictícios**. As fotos em
+`public/assets/mentores/` foram **geradas por IA**, com uso autorizado pelo professor, e não
+retratam pessoas reais. Estão versionadas porque fazem parte do app rodando: sem elas, quem
+clona o repositório abre o app sem rosto nenhum.
+
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.34.
 
 ## Development server
