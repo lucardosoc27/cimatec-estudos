@@ -16,6 +16,21 @@ export interface Usuario {
   /** Lista, não valor único: um veterano pode pedir ajuda em uma matéria e ensinar outra. */
   papeis: Papel[];
   verificacao: SituacaoVerificacao;
-  /** Data e hora (ISO) em que o usuário deu o consentimento LGPD no cadastro. */
-  consentimentoLgpdEm: string;
+  consentimentos: Consentimentos;
+}
+
+/**
+ * Cada consentimento guarda a data e hora (ISO) em que foi dado; null = não deu.
+ * Guardar a data em vez de um booleano é o que a LGPD pede: provar QUANDO o titular consentiu.
+ */
+export interface Consentimentos {
+  /** Obrigatório no cadastro: sem ele a conta não existe. */
+  termosEPoliticaEm: string;
+  /**
+   * Foto visível só para quem está logado. Não vale para a vitrine pública, que usa sempre
+   * iniciais (DECISOES.md, 2026-09-22); o nome existe para impedir essa confusão.
+   */
+  fotoParaLogadosEm: string | null;
+  /** Aparecer na vitrine pública da landing, só com iniciais. */
+  vitrinePublicaEm: string | null;
 }

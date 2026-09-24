@@ -26,6 +26,8 @@ export interface Mentor {
   /** Ids de `Materia`. */
   materias: string[];
   descricao: string;
+  /** null = sem foto ou sem consentimento; a tela cai no avatar de iniciais. */
+  foto: string | null;
   /** Total de sessões concluídas (ainda sem confirmação pelos dois lados; ver `SeloMateria`). */
   sessoesConcluidas: number;
   selos: SeloMateria[];

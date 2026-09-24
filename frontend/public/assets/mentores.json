@@ -7,6 +7,7 @@
     "verificado": true,
     "materias": ["poo", "logica"],
     "descricao": "Explico POO com exemplos do dia a dia antes de entrar em código. Já passei pelo mesmo aperto no 2º semestre.",
+    "foto": "assets/mentores/m-ana.jpg",
     "sessoesConcluidas": 12,
     "selos": [
       { "materiaId": "poo", "sessoesConcluidas": 9 },
@@ -17,6 +18,11 @@
       { "id": "h-ana-2", "dia": "ter", "hora": "15:00", "turno": "tarde", "modalidade": "presencial" },
       { "id": "h-ana-3", "dia": "qui", "hora": "19:00", "turno": "noite", "modalidade": "online" }
     ],
+    "consentimentos": {
+      "termosEPoliticaEm": "2026-08-03T10:00:00-03:00",
+      "fotoParaLogadosEm": "2026-08-03T10:00:00-03:00",
+      "vitrinePublicaEm": "2026-08-03T10:00:00-03:00"
+    },
     "respostaSimulada": { "acao": "aceita", "aposSegundos": 20 }
   },
   {
@@ -27,6 +33,7 @@
     "verificado": true,
     "materias": ["poo"],
     "descricao": "Gosto de resolver exercício junto, no papel, antes de abrir a IDE. Só presencial.",
+    "foto": "assets/mentores/m-bruno.jpg",
     "sessoesConcluidas": 3,
     "selos": [
       { "materiaId": "poo", "sessoesConcluidas": 3 }
@@ -35,6 +42,11 @@
       { "id": "h-bruno-1", "dia": "seg", "hora": "09:00", "turno": "manha", "modalidade": "presencial" },
       { "id": "h-bruno-2", "dia": "sab", "hora": "10:00", "turno": "manha", "modalidade": "presencial" }
     ],
+    "consentimentos": {
+      "termosEPoliticaEm": "2026-08-03T10:00:00-03:00",
+      "fotoParaLogadosEm": null,
+      "vitrinePublicaEm": "2026-08-03T10:00:00-03:00"
+    },
     "respostaSimulada": { "acao": "recusa", "aposSegundos": 15 }
   },
   {
@@ -45,6 +57,7 @@
     "verificado": true,
     "materias": ["poo", "banco-dados"],
     "descricao": "Monitora de Banco de Dados. Em POO, foco em herança e interfaces, que é onde a turma mais trava.",
+    "foto": "assets/mentores/m-carla.jpg",
     "sessoesConcluidas": 8,
     "selos": [
       { "materiaId": "poo", "sessoesConcluidas": 4 },
@@ -54,6 +67,11 @@
       { "id": "h-carla-1", "dia": "ter", "hora": "14:00", "turno": "tarde", "modalidade": "online" },
       { "id": "h-carla-2", "dia": "qui", "hora": "14:00", "turno": "tarde", "modalidade": "online" }
     ],
+    "consentimentos": {
+      "termosEPoliticaEm": "2026-08-03T10:00:00-03:00",
+      "fotoParaLogadosEm": "2026-08-03T10:00:00-03:00",
+      "vitrinePublicaEm": null
+    },
     "respostaSimulada": { "acao": "aceita", "aposSegundos": 30 }
   },
   {
@@ -64,6 +82,7 @@
     "verificado": true,
     "materias": ["logica"],
     "descricao": "Egresso, hoje trabalho como desenvolvedor. Ajudo com lógica à noite, sempre online.",
+    "foto": "assets/mentores/m-diego.jpg",
     "sessoesConcluidas": 20,
     "selos": [
       { "materiaId": "logica", "sessoesConcluidas": 20 }
@@ -72,6 +91,11 @@
       { "id": "h-diego-1", "dia": "qua", "hora": "19:00", "turno": "noite", "modalidade": "online" },
       { "id": "h-diego-2", "dia": "sex", "hora": "19:00", "turno": "noite", "modalidade": "online" }
     ],
+    "consentimentos": {
+      "termosEPoliticaEm": "2026-08-03T10:00:00-03:00",
+      "fotoParaLogadosEm": null,
+      "vitrinePublicaEm": null
+    },
     "respostaSimulada": { "acao": "nenhuma" }
   },
   {
@@ -82,11 +106,17 @@
     "verificado": false,
     "materias": ["banco-dados"],
     "descricao": "Monitora de Banco de Dados no semestre passado.",
+    "foto": "assets/mentores/m-eduarda.jpg",
     "sessoesConcluidas": 0,
     "selos": [],
     "horariosLivres": [
       { "id": "h-edu-1", "dia": "seg", "hora": "09:00", "turno": "manha", "modalidade": "presencial" }
     ],
+    "consentimentos": {
+      "termosEPoliticaEm": "2026-08-03T10:00:00-03:00",
+      "fotoParaLogadosEm": null,
+      "vitrinePublicaEm": null
+    },
     "respostaSimulada": { "acao": "nenhuma" }
   },
   {
@@ -97,6 +127,7 @@
     "verificado": false,
     "materias": ["redes"],
     "descricao": "Curso técnico de Redes. Posso ajudar com endereçamento IP e camadas do modelo OSI.",
+    "foto": "assets/mentores/m-felipe.jpg",
     "sessoesConcluidas": 4,
     "selos": [
       { "materiaId": "redes", "sessoesConcluidas": 4 }
@@ -104,6 +135,11 @@
     "horariosLivres": [
       { "id": "h-felipe-1", "dia": "qua", "hora": "14:00", "turno": "tarde", "modalidade": "presencial" }
     ],
+    "consentimentos": {
+      "termosEPoliticaEm": "2026-08-03T10:00:00-03:00",
+      "fotoParaLogadosEm": null,
+      "vitrinePublicaEm": null
+    },
     "respostaSimulada": { "acao": "nenhuma" }
   },
   {
@@ -114,6 +150,7 @@
     "verificado": true,
     "materias": ["matematica", "logica"],
     "descricao": "Graduanda. Ajudo com matemática aplicada e lógica aos sábados de manhã.",
+    "foto": "assets/mentores/m-gabriela.jpg",
     "sessoesConcluidas": 5,
     "selos": [
       { "materiaId": "matematica", "sessoesConcluidas": 4 },
@@ -123,6 +160,11 @@
       { "id": "h-gabi-1", "dia": "sab", "hora": "09:00", "turno": "manha", "modalidade": "online" },
       { "id": "h-gabi-2", "dia": "sab", "hora": "10:00", "turno": "manha", "modalidade": "presencial" }
     ],
+    "consentimentos": {
+      "termosEPoliticaEm": "2026-08-03T10:00:00-03:00",
+      "fotoParaLogadosEm": "2026-08-03T10:00:00-03:00",
+      "vitrinePublicaEm": "2026-08-03T10:00:00-03:00"
+    },
     "respostaSimulada": { "acao": "aceita", "aposSegundos": 20 }
   },
   {
@@ -133,6 +175,7 @@
     "verificado": true,
     "materias": ["front-end"],
     "descricao": "Comecei a ensinar este semestre. HTML, CSS e o básico de JavaScript.",
+    "foto": null,
     "sessoesConcluidas": 2,
     "selos": [
       { "materiaId": "front-end", "sessoesConcluidas": 2 }
@@ -141,6 +184,11 @@
       { "id": "h-henrique-1", "dia": "qua", "hora": "14:00", "turno": "tarde", "modalidade": "online" },
       { "id": "h-henrique-2", "dia": "qua", "hora": "15:00", "turno": "tarde", "modalidade": "presencial" }
     ],
+    "consentimentos": {
+      "termosEPoliticaEm": "2026-08-03T10:00:00-03:00",
+      "fotoParaLogadosEm": "2026-08-03T10:00:00-03:00",
+      "vitrinePublicaEm": null
+    },
     "respostaSimulada": { "acao": "aceita", "aposSegundos": 25 }
   }
 ]

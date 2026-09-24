@@ -15,6 +15,7 @@ function mentor(parcial: Partial<Mentor> & { id: string; nome: string }): Mentor
     verificado: true,
     materias: ['poo'],
     descricao: '',
+    foto: null,
     sessoesConcluidas: 0,
     selos: [],
     horariosLivres: [],

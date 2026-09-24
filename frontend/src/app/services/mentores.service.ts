@@ -17,7 +17,7 @@ export class MentoresService {
   private readonly url = 'assets/mentores.json';
 
   /**
-   * Mentores verificados, sem o campo de simulação do mock.
+   * Mentores verificados, sem os campos que só o mock tem (simulação e consentimentos).
    * No MVP o filtro roda aqui; na fase 2 o servidor simplesmente não devolve
    * mentor não verificado (ver DECISOES.md, 2026-09-07).
    */
@@ -26,7 +26,12 @@ export class MentoresService {
       map((lista) =>
         lista
           .filter((m) => m.verificado)
-          .map(({ respostaSimulada, ...mentor }) => mentor),
+          .map(({ respostaSimulada, consentimentos, ...mentor }) => ({
+            ...mentor,
+            // Sem consentimento a foto nem sai daqui: esconder no template ainda deixaria a URL
+            // na aba Rede. No mock é simulado, porque o JSON bruto já chegou (DECISOES.md).
+            foto: consentimentos.fotoParaLogadosEm ? mentor.foto : null,
+          })),
       ),
     );
   }
