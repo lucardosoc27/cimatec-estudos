@@ -20,3 +20,4 @@ application-local.properties
 # Documentos de trabalho do autor (existem no disco, fora do versionamento)
 CLAUDE.md
 DECISOES.md
+docs/telas/**/*.html
