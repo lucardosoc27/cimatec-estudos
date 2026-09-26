@@ -2,7 +2,7 @@
   <a routerLink="/inicio" class="link-acao mb-4">← Voltar ao início</a>
   <section class="formulario-cartao p-5 md:p-10">
     <header class="cabecalho-formulario pb-6 mb-7">
-      <h1 class="titulo mb-2!">Pedir ajuda</h1>
+      <h1 class="titulo titulo--compacto">Pedir ajuda</h1>
       <p class="texto-suave">Conte o que você precisa e a gente mostra quem pode ajudar</p>
     </header>
     @switch (estado()) {
@@ -18,7 +18,7 @@
       }
       @case ('sucesso') {
         @if (formulario(); as f) {
-          <form (submit)="enviar($event)" novalidate class="gap-7!">
+          <form (submit)="enviar($event)" novalidate class="formulario">
             <div class="w-full">
               <label for="curso-ajuda" class="campo-titulo">Curso</label>
               <select id="curso-ajuda" [value]="f.curso" (change)="trocarCurso($event)" class="campo-select w-full">
@@ -51,7 +51,7 @@
               @if (tentouEnviar() && faltaMateria()) { <p id="erro-materia" class="erro-campo mt-2" role="alert">Escolha uma matéria para continuar.</p> }
             </fieldset>
             <fieldset class="w-full">
-              <legend class="campo-titulo">O que você precisa <span class="texto-suave font-normal">(opcional)</span></legend>
+              <legend class="campo-titulo">O que você precisa <span class="texto-suave">(opcional)</span></legend>
               <div class="flex flex-wrap gap-2">
                 @for (necessidade of necessidades; track necessidade) {
                   <button type="button" class="escolha escolha--chip" [attr.aria-pressed]="f.necessidade === necessidade" (click)="atualizar({ necessidade: f.necessidade === necessidade ? null : necessidade })">
@@ -62,10 +62,10 @@
             </fieldset>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-7 w-full">
               <fieldset [attr.aria-describedby]="tentouEnviar() && faltaTurno() ? 'erro-turno' : null">
-                <legend class="campo-titulo">Turnos disponíveis <span class="texto-suave font-normal">(marque um ou mais)</span></legend>
+                <legend class="campo-titulo">Turnos disponíveis <span class="texto-suave">(marque um ou mais)</span></legend>
                 <div class="flex flex-wrap gap-2">
                   @for (turno of opcoesTurno; track turno) {
-                    <button type="button" class="escolha capitalize" [attr.aria-pressed]="f.turnos.includes(turno)" (click)="alternarTurno(turno)">
+                    <button type="button" class="escolha capitalizado" [attr.aria-pressed]="f.turnos.includes(turno)" (click)="alternarTurno(turno)">
                       @if (f.turnos.includes(turno)) { <span aria-hidden="true">✓ </span> }{{ rotuloTurno[turno] }}
                     </button>
                   }
@@ -75,7 +75,7 @@
               <fieldset>
                 <legend class="campo-titulo">Modalidade de encontro</legend>
                 <div class="grid grid-cols-2 gap-2">
-                  <button type="button" class="escolha text-left" [attr.aria-pressed]="f.modalidade === 'presencial'" (click)="atualizar({ modalidade: 'presencial' })">
+                  <button type="button" class="escolha escolha--duas-linhas" [attr.aria-pressed]="f.modalidade === 'presencial'" (click)="atualizar({ modalidade: 'presencial' })">
                     @if (f.modalidade === 'presencial') { <span aria-hidden="true">✓ </span> }Presencial <span class="block texto-suave">CIMATEC - Orlando Gomes</span>
                   </button>
                   <button type="button" class="escolha" [attr.aria-pressed]="f.modalidade === 'online'" (click)="atualizar({ modalidade: 'online' })">@if (f.modalidade === 'online') { <span aria-hidden="true">✓ </span> }Online</button>

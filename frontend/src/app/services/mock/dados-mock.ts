@@ -1,0 +1,180 @@
+import {
+  HttpBackend,
+  HttpClient,
+  HttpErrorResponse,
+  HttpInterceptorFn,
+  HttpRequest,
+  HttpResponse,
+} from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Observable, delay, forkJoin, map, of, shareReplay, switchMap, throwError } from 'rxjs';
+
+import { Materia } from '../../models/materia';
+import { Mentor } from '../../models/mentor';
+import { PRAZO_RESPOSTA_HORAS, Pedido, podeSerCancelado } from '../../models/pedido';
+import { proximaData, somarHoras } from '../../shared/util/datas';
+import { MentorMock } from './mentor-mock';
+import { PedidoMock } from './pedido-mock';
+import { contaSimulada } from './sessao-simulada';
+
+/*
+ * MOCK DE DADOS: responde a /api/materias, /api/mentores, /api/vitrine e /api/pedidos
+ * lendo assets/*.json. Os serviços continuam chamando /api: quando o Spring tiver esses
+ * endpoints, basta USAR_MOCK = false. Nenhum serviço muda.
+ * Os pedidos dependem da sessão simulada para saber quem está logado.
+ */
+export const USAR_MOCK = true;
+
+const LOCAL_PRESENCIAL = 'CIMATEC - Orlando Gomes';
+
+interface Base { mentores: MentorMock[]; materias: Materia[]; }
+
+// Os JSON são lidos uma vez e reaproveitados (shareReplay guarda a última resposta).
+let base$: Observable<Base> | null = null;
+/** Pedidos em memória, como o serviço fazia antes: somem ao recarregar a página. */
+let pedidos: Pedido[] | null = null;
+
+export const dadosMockInterceptor: HttpInterceptorFn = (req, next) => {
+  const rota = req.url.split('?')[0];
+  const nossa = ['/api/materias', '/api/mentores', '/api/vitrine', '/api/pedidos'].some((r) => rota.startsWith(r));
+  if (!nossa) return next(req);
+
+  // HttpClient ligado direto ao HttpBackend: lê os assets sem passar de novo pelos interceptors.
+  const http = new HttpClient(inject(HttpBackend));
+  base$ ??= forkJoin({
+    mentores: http.get<MentorMock[]>('/assets/mentores.json'),
+    materias: http.get<Materia[]>('/assets/materias.json'),
+    pedidosMock: http.get<PedidoMock[]>('/assets/pedidos.json'),
+  }).pipe(
+    map(({ mentores, materias, pedidosMock }) => {
+      const agora = new Date();
+      pedidos ??= pedidosMock.map((p) => converter(p, agora));
+      return { mentores, materias };
+    }),
+    shareReplay(1),
+  );
+  return base$.pipe(switchMap((base) => responder(req, rota, base)), delay(300));
+};
+
+function responder(req: HttpRequest<unknown>, rota: string, base: Base): Observable<HttpResponse<unknown>> {
+  if (req.method === 'GET' && rota === '/api/materias') return ok(base.materias);
+  if (req.method === 'GET' && rota === '/api/mentores') return ok(verificados(base).map(publico));
+  if (req.method === 'GET' && rota === '/api/vitrine') return ok(vitrine(base));
+
+  const conta = contaSimulada();
+  if (!conta) return erro(401);
+  const lista = atualizarExpirados(pedidos ?? []);
+  pedidos = lista;
+
+  if (req.method === 'GET' && rota === '/api/pedidos') return ok(ordenar(lista.filter((p) => p.alunoId === conta.usuarioId)));
+  if (req.method === 'GET' && rota === '/api/pedidos/recebidos') return ok(ordenar(lista.filter((p) => p.mentorId === conta.mentorId)));
+  if (req.method === 'POST' && rota === '/api/pedidos') return criar(req.body as Record<string, string>, conta, base);
+
+  const partes = rota.match(/^\/api\/pedidos\/([^/]+)(?:\/(cancelar|aceitar|recusar))?$/);
+  if (!partes) return erro(404);
+  const [, id, acao] = partes;
+  const pedido = lista.find((p) => p.id === decodeURIComponent(id));
+  const ehAluno = pedido?.alunoId === conta.usuarioId;
+  const ehMentor = !!conta.mentorId && pedido?.mentorId === conta.mentorId;
+  if (!pedido || (!ehAluno && !ehMentor)) return erro(404);
+
+  if (req.method === 'GET' && !acao) return ok(pedido);
+  if (req.method !== 'PATCH') return erro(405);
+  if (acao === 'cancelar') {
+    if (!ehAluno) return erro(403);
+    if (!podeSerCancelado(pedido.status)) return erro(409, { codigo: 'PEDIDO_ENCERRADO', pedido });
+    return ok(trocar({ ...pedido, status: 'cancelado' }));
+  }
+  if (!ehMentor) return erro(403);
+  if (pedido.status !== 'aguardando') return erro(409, { codigo: 'PEDIDO_ENCERRADO', pedido });
+  // O contato só passa a existir no pedido depois do aceite.
+  return ok(trocar(acao === 'aceitar'
+    ? { ...pedido, status: 'aceito', contatoMentor: { email: conta.email } }
+    : { ...pedido, status: 'recusado' }));
+}
+
+function criar(corpo: Record<string, string>, conta: NonNullable<ReturnType<typeof contaSimulada>>, base: Base) {
+  const mentor = verificados(base).find((m) => m.id === corpo['mentorId']);
+  const materia = base.materias.find((m) => m.id === corpo['materiaId']);
+  if (!mentor || !materia || !mentor.materias.includes(materia.id)) return erro(404);
+  // Revalida no envio: o horário precisa continuar na agenda do mentor.
+  const horario = mentor.horariosLivres.find((h) => h.id === corpo['horarioId']);
+  if (!horario) return erro(409, { codigo: 'HORARIO_OCUPADO' });
+  const existente = pedidos!.find((p) => p.alunoId === conta.usuarioId && p.status === 'aguardando'
+    && p.mentorId === mentor.id && p.materiaId === materia.id);
+  if (existente) return erro(409, { codigo: 'PEDIDO_DUPLICADO', pedido: existente });
+
+  const agora = new Date();
+  const pedido: Pedido = {
+    id: `p-${agora.getTime()}`,
+    alunoId: conta.usuarioId, alunoNome: conta.nome, alunoCurso: conta.curso, alunoFoto: null,
+    mentorId: mentor.id, mentorNome: mentor.nome, mentorCurso: mentor.curso, mentorFoto: publico(mentor).foto,
+    materiaId: materia.id, materiaNome: materia.nome,
+    horarioId: horario.id, data: corpo['data'], hora: horario.hora, modalidade: horario.modalidade,
+    local: horario.modalidade === 'online' ? 'Online' : LOCAL_PRESENCIAL,
+    necessidade: corpo['necessidade'] || undefined,
+    status: 'aguardando',
+    criadoEm: agora.toISOString(),
+    expiraEm: somarHoras(agora, PRAZO_RESPOSTA_HORAS).toISOString(),
+  };
+  pedidos = [...pedidos!, pedido];
+  return ok(pedido);
+}
+
+/** Mentor não verificado nunca sai do "servidor". */
+function verificados(base: Base): MentorMock[] {
+  return base.mentores.filter((m) => m.verificado);
+}
+
+/** Visão pública: sem consentimentos nem simulação, e foto null sem consentimento. */
+function publico({ respostaSimulada, consentimentos, ...mentor }: MentorMock): Mentor {
+  return { ...mentor, foto: consentimentos.fotoParaLogadosEm ? mentor.foto : null };
+}
+
+/** Vitrine da landing: só quem consentiu, primeiro nome, sem horário. Foto só com o consentimento de foto. */
+function vitrine(base: Base) {
+  return verificados(base)
+    .filter((m) => m.consentimentos.vitrinePublicaEm)
+    .map((m) => ({
+      id: m.id,
+      nome: m.nome.split(' ')[0],
+      curso: m.curso,
+      foto: publico(m).foto,
+      descricao: m.descricao,
+      materias: m.materias.map((id) => base.materias.find((x) => x.id === id)?.nome).filter(Boolean),
+    }));
+}
+
+/** Expiração em 48h calculada na leitura: prazo vencido sem resposta vira "expirado". */
+function atualizarExpirados(lista: Pedido[]): Pedido[] {
+  const agora = new Date().toISOString();
+  return lista.map((p) => (p.status === 'aguardando' && p.expiraEm < agora ? { ...p, status: 'expirado' } : p));
+}
+
+function trocar(novo: Pedido): Pedido {
+  pedidos = pedidos!.map((p) => (p.id === novo.id ? novo : p));
+  return novo;
+}
+
+function ordenar(lista: Pedido[]): Pedido[] {
+  return [...lista].sort((a, b) => b.criadoEm.localeCompare(a.criadoEm));
+}
+
+/** Transforma o tempo relativo do mock em datas absolutas. */
+function converter({ dia, criadoHaHoras, ...campos }: PedidoMock, agora: Date): Pedido {
+  const criadoEm = somarHoras(agora, -criadoHaHoras);
+  return {
+    ...campos,
+    data: proximaData(dia, campos.hora, agora),
+    criadoEm: criadoEm.toISOString(),
+    expiraEm: somarHoras(criadoEm, PRAZO_RESPOSTA_HORAS).toISOString(),
+  };
+}
+
+function ok(body: unknown): Observable<HttpResponse<unknown>> {
+  return of(new HttpResponse({ status: 200, body }));
+}
+
+function erro(status: number, error: unknown = null): Observable<never> {
+  return throwError(() => new HttpErrorResponse({ status, error }));
+}

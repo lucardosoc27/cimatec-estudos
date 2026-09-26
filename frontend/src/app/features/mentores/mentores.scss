@@ -14,3 +14,9 @@
 .link-botao:disabled { color: var(--cor-texto-suave); cursor: default; text-decoration: none; }
 .botao:disabled { cursor: default; }
 @media (max-width: 380px) { .alternador button { padding-inline: 10px; } }
+
+/* Tipografia e alinhamento ficam aqui, não em utilitário do Tailwind (regra A do CLAUDE.md) */
+.capitalizado { text-transform: capitalize; }
+.centralizado { text-align: center; }
+/* Classe de componente vence o .aviso global sem precisar do modificador "!" */
+.aviso--centralizado { padding-block: var(--espaco-6); align-items: center; text-align: center; }

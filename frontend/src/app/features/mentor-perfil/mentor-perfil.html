@@ -8,10 +8,10 @@
     @case ('sucesso') {
       @if (mentor(); as m) {
         <div class="grid lg:grid-cols-[0.95fr_1.05fr] gap-6 items-start">
-          <article class="perfil p-5! md:p-8!">
-            <div class="text-center flex flex-col items-center">
+          <article class="perfil perfil--principal">
+            <div class="identificacao flex flex-col items-center">
               <div class="relative mb-4"><app-avatar [nome]="m.nome" [foto]="m.foto" [tamanho]="112" /><span class="chapeu" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m2 9 10-5 10 5-10 5L2 9Z"/><path d="M6 11v6c4 3 8 3 12 0v-6M22 9v7"/></svg></span></div>
-              <h1 class="titulo mb-2!">{{ m.nome }}</h1>
+              <h1 class="titulo titulo--compacto">{{ m.nome }}</h1>
               <p class="texto-suave">Técnico em {{ m.curso }}</p>
               <p class="texto-suave mt-3">SENAI CIMATEC - Orlando Gomes</p>
               <p class="sessoes mt-3">{{ m.sessoesConcluidas }} sessões concluídas</p>
@@ -23,22 +23,22 @@
             <section class="bloco-suave mt-6"><h2 class="subtitulo mb-3">Um pouco sobre mim</h2><p class="texto-suave">{{ m.descricao || 'Este mentor ainda não adicionou uma apresentação.' }}</p></section>
           </article>
           <div class="grid gap-5">
-            <section class="perfil p-5! md:p-6!" aria-labelledby="resumo-pedido">
+            <section class="perfil" aria-labelledby="resumo-pedido">
               <div class="flex justify-between items-center gap-3"><h2 id="resumo-pedido" class="subtitulo">Resumo do seu pedido</h2><a routerLink="/pedir-ajuda" class="link-acao">Alterar</a></div>
-              <p class="font-bold mt-3">{{ materia()?.nome }}</p>
-              <div class="flex flex-wrap gap-2 mt-3">@if (formulario()?.necessidade) { <span class="materia-chip">{{ formulario()?.necessidade }}</span> }<span class="materia-chip capitalize">{{ formulario()?.modalidade === 'ambos' ? 'Ambos' : formulario()?.modalidade }}</span></div>
+              <p class="materia-resumo mt-3">{{ materia()?.nome }}</p>
+              <div class="flex flex-wrap gap-2 mt-3">@if (formulario()?.necessidade) { <span class="materia-chip">{{ formulario()?.necessidade }}</span> }<span class="materia-chip capitalizado">{{ formulario()?.modalidade === 'ambos' ? 'Ambos' : formulario()?.modalidade }}</span></div>
             </section>
             @if (pedidoEmAberto(); as existente) {
               <div class="aviso" role="status"><h2 class="subtitulo">Você já pediu ajuda a {{ m.nome }} nesta matéria.</h2><p>O pedido ainda aguarda uma resposta.</p><a [routerLink]="['/pedidos', existente.id]" class="botao">Ver pedido →</a></div>
             } @else {
-              <form (submit)="enviar($event)" class="w-full gap-5!">
-                <section class="perfil w-full p-5! md:p-6!" aria-labelledby="escolher-horario">
+              <form (submit)="enviar($event)" class="w-full">
+                <section class="perfil w-full" aria-labelledby="escolher-horario">
                   <h2 id="escolher-horario" class="subtitulo mb-5">Escolha um horário</h2>
                   @for (dia of dias(); track dia.data) {
-                    <fieldset class="mb-5 last:mb-0"><legend class="font-bold mb-3 capitalize">{{ dia.data | date: 'EEEE, dd/MM' }}</legend>
+                    <fieldset class="mb-5 last:mb-0"><legend class="dia-legenda mb-3">{{ dia.data | date: 'EEEE, dd/MM' }}</legend>
                       <div class="grid gap-3">
                         @for (opcao of dia.horarios; track opcao.horario.id) {
-                          <button type="button" class="horario flex items-center justify-between gap-3 text-left" [class.horario--ocupado]="ocupados().includes(opcao.horario.id)" [disabled]="ocupados().includes(opcao.horario.id) || enviando()" [attr.aria-pressed]="horarioId() === opcao.horario.id" (click)="escolherHorario(opcao.horario.id)">
+                          <button type="button" class="horario flex items-center justify-between gap-3" [class.horario--ocupado]="ocupados().includes(opcao.horario.id)" [disabled]="ocupados().includes(opcao.horario.id) || enviando()" [attr.aria-pressed]="horarioId() === opcao.horario.id" (click)="escolherHorario(opcao.horario.id)">
                             <span><strong class="block">{{ intervalo(opcao.horario.hora) }}</strong><span class="texto-suave">{{ opcao.horario.modalidade === 'online' ? 'Online' : 'CIMATEC - Orlando Gomes' }}</span></span>
                             @if (ocupados().includes(opcao.horario.id)) { <span>Ocupado</span> } @else { <span class="marcador" aria-hidden="true">{{ horarioId() === opcao.horario.id ? '✓' : '' }}</span> }
                           </button>

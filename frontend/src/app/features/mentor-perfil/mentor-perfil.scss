@@ -8,10 +8,16 @@
 .etiqueta { background: white; color: var(--cor-primaria); }
 .materia-chip,.sessoes { background: var(--cor-primaria-suave); }
 fieldset { min-width: 0; padding: 0; border: 0; }
-.horario { min-height: 78px; padding: 12px 16px; border: 1px solid var(--cor-borda); border-radius: 14px; background: white; cursor: pointer; }
+.horario { text-align: left; min-height: 78px; padding: 12px 16px; border: 1px solid var(--cor-borda); border-radius: 14px; background: white; cursor: pointer; }
 .horario[aria-pressed='true'] { background: var(--cor-primaria-suave); border: 2px solid var(--cor-primaria); padding: 11px 15px; color: var(--cor-primaria); }
 .marcador { display: grid; place-items: center; width: 27px; height: 27px; flex-shrink: 0; border: 1px solid var(--cor-borda); border-radius: 50%; }
 [aria-pressed='true'] .marcador { background: var(--cor-primaria); border-color: var(--cor-primaria); color: white; }
 .horario--ocupado { cursor: default; color: var(--cor-texto-suave); background: var(--cor-neutro-fundo); }
 .horario--ocupado strong { text-decoration: line-through; }
 .erro { color: var(--cor-erro); }
+
+/* Tipografia e espaçamento que brigavam com classe do projeto ficam aqui (regra A do CLAUDE.md) */
+.identificacao { text-align: center; }
+.materia-resumo, .dia-legenda { font-weight: 700; }
+.capitalizado, .dia-legenda { text-transform: capitalize; }
+@media (min-width: 48rem) { .perfil--principal { padding: var(--espaco-5); } }

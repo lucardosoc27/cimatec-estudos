@@ -10,3 +10,9 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 .escolha:hover { background: var(--cor-primaria-suave); }
 .escolha[aria-pressed='true'] { border: 2px solid var(--cor-primaria); padding: 9px 13px; background: var(--cor-primaria-suave); color: var(--cor-primaria); font-weight: 600; }
 .erro-campo { color: var(--cor-erro); }
+
+/* Tipografia e espaçamento que brigavam com classe do projeto ficam aqui (regra A do CLAUDE.md) */
+.formulario { gap: var(--espaco-5); }
+.campo-titulo .texto-suave { font-weight: 400; }
+.escolha--duas-linhas { text-align: left; }
+.capitalizado { text-transform: capitalize; }

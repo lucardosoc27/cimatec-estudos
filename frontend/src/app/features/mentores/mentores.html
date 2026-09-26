@@ -2,8 +2,8 @@
   <a routerLink="/pedir-ajuda" class="link-acao mb-3">← Alterar pedido</a>
   <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
     <header class="max-w-2xl">
-      <h1 class="titulo mb-2!">Mentores para {{ resultado()?.materia?.nome ?? 'você' }}</h1>
-      <p class="texto-suave capitalize">{{ resumo() }}</p>
+      <h1 class="titulo titulo--compacto">Mentores para {{ resultado()?.materia?.nome ?? 'você' }}</h1>
+      <p class="texto-suave capitalizado">{{ resumo() }}</p>
     </header>
     @if (estado() === 'sucesso') {
       <div class="alternador flex shrink-0 self-start" role="group" aria-label="Forma de exibir os mentores">
@@ -18,7 +18,7 @@
       <div class="aviso aviso--erro" role="alert"><p>Não foi possível carregar os mentores. Seu pedido foi mantido.</p><button class="botao botao--secundario" type="button" (click)="carregar()">Tentar de novo</button></div>
     }
     @case ('vazio') {
-      <section class="aviso py-12! items-center! text-center">
+      <section class="aviso aviso--centralizado">
         <h2 class="subtitulo">Nenhum mentor nesse turno.</h2>
         <p class="texto-suave">Tente marcar mais turnos ou escolher Ambos na modalidade.</p>
         <a routerLink="/pedir-ajuda" class="link-acao">← Alterar pedido</a>
@@ -29,7 +29,7 @@
         @if (exibicao() === 'pilha') {
           @if (atual(); as item) {
             <div class="mx-auto max-w-lg px-2 sm:px-4">
-              <p class="text-center mb-5 texto-suave" aria-live="polite">{{ indice() + 1 }} de {{ resultado.recomendados.length }}</p>
+              <p class="centralizado mb-5 texto-suave" aria-live="polite">{{ indice() + 1 }} de {{ resultado.recomendados.length }}</p>
               <div class="pilha relative" (touchstart)="iniciarToque($event)" (touchend)="terminarToque($event)">
                 @if (resultado.recomendados.length > 1) { <div class="pilha__fundo pilha__fundo--um" inert aria-hidden="true"></div> }
                 @if (resultado.recomendados.length > 2) { <div class="pilha__fundo pilha__fundo--dois" inert aria-hidden="true"></div> }
@@ -43,7 +43,7 @@
                     </ul>
                   </div>
                   <div class="p-5 sm:p-6">
-                    <div class="flex flex-wrap justify-between gap-3 items-baseline"><h2 #nomeMentor tabindex="-1" class="text-2xl">{{ item.mentor.nome }}</h2><p class="texto-suave">{{ item.mentor.sessoesConcluidas }} sessões concluídas</p></div>
+                    <div class="flex flex-wrap justify-between gap-3 items-baseline"><h2 #nomeMentor tabindex="-1" class="subtitulo">{{ item.mentor.nome }}</h2><p class="texto-suave">{{ item.mentor.sessoesConcluidas }} sessões concluídas</p></div>
                     <p class="curso mt-2">Técnico em {{ item.mentor.curso }}</p>
                     <p class="texto-suave mt-4">{{ motivo(item) }}</p>
                   </div>
@@ -53,9 +53,9 @@
                 <button type="button" class="botao botao--secundario" [disabled]="indice() === resultado.recomendados.length - 1" (click)="mover(1)">Pular</button>
                 <button type="button" class="botao" (click)="verPerfil(item.mentor.id)">Ver perfil e horários →</button>
               </div>
-              <div class="text-center mt-3"><button type="button" class="link-botao" [disabled]="indice() === 0" (click)="mover(-1)">↺ Voltar ao anterior</button></div>
-              <p class="text-center texto-suave mt-2">Pular não avisa ninguém e não fica registrado.</p>
-              <p class="text-center texto-suave md:hidden mt-2">ou arraste o cartão para o lado</p>
+              <div class="centralizado mt-3"><button type="button" class="link-botao" [disabled]="indice() === 0" (click)="mover(-1)">↺ Voltar ao anterior</button></div>
+              <p class="centralizado texto-suave mt-2">Pular não avisa ninguém e não fica registrado.</p>
+              <p class="centralizado texto-suave md:hidden mt-2">ou arraste o cartão para o lado</p>
             </div>
           }
         } @else {
@@ -65,7 +65,7 @@
                 <app-avatar [nome]="item.mentor.nome" [foto]="item.mentor.foto" [tamanho]="80" />
                 <div class="flex-1 min-w-0">
                   @if (idComSelo() === item.mentor.id) { <span class="selo-combina mb-3"><span aria-hidden="true">✓</span> Combina bem com você</span> }
-                  <h2 class="text-2xl">{{ item.mentor.nome }}</h2><p class="curso mt-1">Técnico em {{ item.mentor.curso }}</p>
+                  <h2 class="subtitulo">{{ item.mentor.nome }}</h2><p class="curso mt-1">Técnico em {{ item.mentor.curso }}</p>
                   <p class="texto-suave mt-2">{{ item.mentor.sessoesConcluidas }} sessões concluídas</p><p class="texto-suave mt-2">{{ motivo(item) }}</p>
                 </div>
                 <button type="button" class="botao botao--secundario" (click)="verPerfil(item.mentor.id)">Ver perfil e horários →</button>

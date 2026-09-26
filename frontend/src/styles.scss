@@ -208,6 +208,12 @@ a:not(.botao):hover { color: var(--cor-primaria-escura); }
   margin-bottom: var(--espaco-4);
 }
 
+/* Título seguido de uma linha de apoio (telas 2, 3 e 4). Vem depois de .titulo: mesma
+   especificidade, então a ordem decide. Substitui o utilitário mb-2!, que furava a cascata. */
+.titulo--compacto {
+  margin-bottom: var(--espaco-2);
+}
+
 /* Só o tamanho é global; a margem de cada .subtitulo depende de onde ele está e fica na tela */
 .subtitulo {
   font-size: var(--texto-subtitulo);
