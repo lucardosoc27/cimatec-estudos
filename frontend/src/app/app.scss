@@ -1,10 +1,17 @@
+:host { display: flex; flex-direction: column; min-height: 100dvh; }
 .conteudo {
+  width: 100%;
+  flex: 1;
   max-width: var(--largura-conteudo);
   margin: 0 auto;
   padding: var(--espaco-3);
 }
 
+.pular-conteudo { position: fixed; top: -100px; left: 16px; z-index: 100; padding: 12px 20px; background: var(--cor-superficie); border: 2px solid var(--cor-primaria); border-radius: var(--raio-pequeno); }
+.pular-conteudo:focus { top: 12px; }
+
 /* Em tela grande sobra largura: o respiro vertical cresce um passo a mais que o lateral */
 @media (min-width: 48rem) {
   .conteudo { padding: var(--espaco-5) var(--espaco-4); }
 }
+.conteudo.conteudo--autenticacao { max-width: none; padding: 0; }

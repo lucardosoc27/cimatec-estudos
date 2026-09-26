@@ -8,8 +8,8 @@ import { Materia } from '../models/materia';
 export class MateriasService {
   private readonly http = inject(HttpClient);
 
-  /** Quando a API existir, vira '/api/materias'. */
-  private readonly url = 'assets/materias.json';
+  /** Catálogo de matérias: não contém dados pessoais. */
+  private readonly url = '/api/materias';
 
   listar(): Observable<Materia[]> {
     return this.http.get<Materia[]>(this.url);

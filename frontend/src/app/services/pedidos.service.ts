@@ -1,16 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map, of } from 'rxjs';
-
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { Modalidade } from '../models/disponibilidade';
-import { Pedido, PRAZO_RESPOSTA_HORAS, podeSerCancelado } from '../models/pedido';
-import { proximaData, somarHoras } from '../shared/util/datas';
-import { PedidoMock } from './mock/pedido-mock';
+import { Pedido } from '../models/pedido';
 
-/** Aluno logado no mock. Na fase 2 vem da sessão, nunca do cliente. */
-const ALUNO_LOGADO = 'aluno-1';
-
-/** O que a tela 4 manda. O resto (id, status, datas de controle) é o servidor quem define. */
+/** O servidor valida os ids e calcula nomes, status, prazos e contato. */
 export interface NovoPedido {
   mentorId: string;
   mentorNome: string;
@@ -19,128 +13,45 @@ export interface NovoPedido {
   data: string;
   hora: string;
   modalidade: Modalidade;
+  horarioId?: string;
+  necessidade?: string;
+  mentorFoto?: string | null;
+  local?: string;
+  mentorCurso?: string;
+  alunoCurso?: string;
 }
-
-/** Erro tipado: a tela distingue "já existe pedido" de "sem conexão" sem comparar texto. Na fase 2 é o HTTP 409. */
 export class PedidoDuplicadoError extends Error {
-  constructor(readonly pedidoExistente: Pedido) {
-    super('Já existe um pedido aguardando resposta para este mentor nesta matéria.');
-  }
+  constructor(readonly pedidoExistente: Pedido) { super('Já existe um pedido aguardando resposta para este mentor nesta matéria.'); }
 }
-
-/** Erro tipado do cancelamento: o pedido já estava encerrado quando o aluno tentou cancelar. Na fase 2 é o HTTP 409. */
 export class PedidoEncerradoError extends Error {
-  constructor(readonly pedidoAtual: Pedido) {
-    super('Este pedido já está encerrado e não pode ser cancelado.');
-  }
+  constructor(readonly pedidoAtual: Pedido) { super('Este pedido já está encerrado.'); }
 }
-
 @Injectable({ providedIn: 'root' })
 export class PedidosService {
   private readonly http = inject(HttpClient);
-
-  /** Quando a API existir, vira algo como '/api/pedidos'. É a única linha que muda. */
-  private readonly url = 'assets/pedidos.json';
-
-  /**
-   * Decisão de 2026-09-17: o JSON é só leitura, então os pedidos criados vivem aqui, em
-   * memória, e somem ao recarregar a página. O service é singleton (providedIn: 'root'),
-   * por isso a lista sobrevive à troca de tela. Some junto com o mock.
-   */
-  private lista: Pedido[] | null = null;
-
-  /** Pedidos do aluno logado, do mais recente para o mais antigo. */
-  listar(): Observable<Pedido[]> {
-    if (this.lista) {
-      // `of` embrulha um valor pronto num Observable, para quem chama não saber se veio do cache ou do HTTP.
-      return of(this.ordenar(this.lista));
-    }
-    return this.http.get<PedidoMock[]>(this.url).pipe(
-      map((mocks) => {
-        const agora = new Date();
-        this.lista = mocks.map((mock) => this.converterMock(mock, agora));
-        return this.ordenar(this.lista);
-      }),
-    );
-  }
-
-  /** Pedido "em aberto" = aguardando resposta. Aceito é sessão marcada e não impede outro pedido. */
+  private readonly url = '/api/pedidos';
+  listar(): Observable<Pedido[]> { return this.http.get<Pedido[]>(this.url); }
+  listarRecebidos(): Observable<Pedido[]> { return this.http.get<Pedido[]>(this.url + '/recebidos'); }
   buscarEmAberto(mentorId: string, materiaId: string): Observable<Pedido | undefined> {
-    return this.listar().pipe(
-      map((lista) =>
-        lista.find((p) => p.status === 'aguardando' && p.mentorId === mentorId && p.materiaId === materiaId),
-      ),
-    );
+    return this.listar().pipe(map(lista => lista.find(p => p.status === 'aguardando' && p.mentorId === mentorId && p.materiaId === materiaId)));
   }
-
-  /**
-   * Cria o pedido. Recusa duplicado em aberto lançando `PedidoDuplicadoError`.
-   * Um `throw` dentro de `map` vira o `error` do Observable: é o mesmo caminho pelo qual
-   * um 409 do servidor chegaria, então a tela não muda na fase 2.
-   * Aqui isso é interface: quem pode editar o JS consegue pular a checagem. A regra de verdade é do servidor.
-   */
   criar(novo: NovoPedido): Observable<Pedido> {
-    return this.buscarEmAberto(novo.mentorId, novo.materiaId).pipe(
-      map((existente) => {
-        if (existente) {
-          throw new PedidoDuplicadoError(existente);
-        }
-        const agora = new Date();
-        const pedido: Pedido = {
-          id: `p-${agora.getTime()}`,
-          alunoId: ALUNO_LOGADO,
-          ...novo,
-          status: 'aguardando',
-          criadoEm: agora.toISOString(),
-          expiraEm: somarHoras(agora, PRAZO_RESPOSTA_HORAS).toISOString(),
-        };
-        this.lista!.push(pedido);
-        return pedido;
-      }),
-    );
+    const { mentorId, materiaId, horarioId, data, hora, modalidade, necessidade } = novo;
+    return this.http.post<Pedido>(this.url, { mentorId, materiaId, horarioId, data, hora, modalidade, necessidade }).pipe(catchError(erro => {
+      if (erro instanceof HttpErrorResponse && erro.status === 409 && erro.error?.codigo === 'PEDIDO_DUPLICADO' && erro.error.pedido) return throwError(() => new PedidoDuplicadoError(erro.error.pedido));
+      return throwError(() => erro);
+    }));
   }
-
-  /** Tela 5. Quando a API existir, vira GET /api/pedidos/:id. Emite `undefined` quando não encontra. */
   buscarPorId(id: string): Observable<Pedido | undefined> {
-    return this.listar().pipe(map((lista) => lista.find((p) => p.id === id)));
+    return this.http.get<Pedido>(this.url + '/' + encodeURIComponent(id)).pipe(catchError(erro => erro.status === 404 ? of(undefined) : throwError(() => erro)));
   }
-
-  /**
-   * Cancela um pedido aguardando resposta ou aceito. Pedido já encerrado (recusado, expirado,
-   * cancelado) lança `PedidoEncerradoError`. Na fase 2 vira PATCH /api/pedidos/:id/cancelar,
-   * e é o servidor quem confere o status: aqui a checagem é só interface.
-   */
+  aceitar(id: string): Observable<Pedido> { return this.acao(id, 'aceitar'); }
+  recusar(id: string): Observable<Pedido> { return this.acao(id, 'recusar'); }
   cancelar(id: string): Observable<Pedido> {
-    return this.buscarPorId(id).pipe(
-      map((pedido) => {
-        if (!pedido) {
-          throw new Error('Pedido não encontrado.');
-        }
-        if (!podeSerCancelado(pedido.status)) {
-          throw new PedidoEncerradoError(pedido);
-        }
-        // Objeto novo em vez de `pedido.status = 'cancelado'`: um signal só avisa a tela quando a
-        // referência muda (compara com Object.is). Mutar o objeto que a tela já tem não redesenha nada.
-        const cancelado: Pedido = { ...pedido, status: 'cancelado' };
-        this.lista = this.lista!.map((p) => (p.id === id ? cancelado : p));
-        return cancelado;
-      }),
-    );
+    return this.acao(id, 'cancelar').pipe(catchError(erro => {
+      if (erro.status === 409 && erro.error?.codigo === 'PEDIDO_ENCERRADO' && erro.error.pedido) return throwError(() => new PedidoEncerradoError(erro.error.pedido));
+      return throwError(() => erro);
+    }));
   }
-
-  private ordenar(lista: Pedido[]): Pedido[] {
-    return [...lista].sort((a, b) => b.criadoEm.localeCompare(a.criadoEm));
-  }
-
-  /** Transforma o tempo relativo do mock em datas absolutas. Some junto com o mock. */
-  private converterMock(mock: PedidoMock, agora: Date): Pedido {
-    const { dia, criadoHaHoras, ...campos } = mock;
-    const criadoEm = somarHoras(agora, -criadoHaHoras);
-    return {
-      ...campos,
-      data: proximaData(dia, campos.hora, agora),
-      criadoEm: criadoEm.toISOString(),
-      expiraEm: somarHoras(criadoEm, PRAZO_RESPOSTA_HORAS).toISOString(),
-    };
-  }
+  private acao(id: string, acao: string): Observable<Pedido> { return this.http.patch<Pedido>(this.url + '/' + encodeURIComponent(id) + '/' + acao, {}); }
 }

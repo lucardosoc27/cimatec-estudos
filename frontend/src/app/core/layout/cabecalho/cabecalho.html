@@ -1,4 +1,28 @@
-<header class="cabecalho">
-  <a routerLink="/" class="cabecalho__marca">Cimatec Estudos</a>
-  <a routerLink="/pedir-ajuda" class="botao">Pedir ajuda</a>
+<header class="cabecalho flex items-center justify-between gap-4">
+  <a [routerLink]="auth.usuario() ? '/inicio' : '/'" class="marca" aria-label="Cimatec Estudos — página inicial">
+    <span class="marca__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Zm0 0v14M6 9c1.3-.3 2.3-.2 3.5.4M6 12c1.3-.3 2.3-.2 3.5.4M14.5 9.4c1.2-.6 2.2-.7 3.5-.4M14.5 12.4c1.2-.6 2.2-.7 3.5-.4"/></svg></span>
+    <span><span class="marca__nome">Cimatec Estudos<span class="marca__ponto">.</span></span><span class="marca__legenda">MENTORIA ENTRE ALUNOS</span></span>
+  </a>
+  @if (auth.usuario(); as usuario) {
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a routerLink="/inicio" routerLinkActive="ativo" ariaCurrentWhenActive="page">Início</a>
+      <a routerLink="/pedir-ajuda" [class.ativo]="pedindoAjuda()" [attr.aria-current]="pedindoAjuda() ? 'page' : null">Pedir ajuda</a>
+    </nav>
+    <div class="usuario">
+      <button #gatilho type="button" class="usuario__gatilho" aria-controls="menu-usuario" [attr.aria-expanded]="aberto()" (click)="alternar()">
+        <app-avatar [nome]="usuario.nome" [foto]="usuario.foto" [tamanho]="36" />
+        <span class="usuario__nome">{{ primeiroNome() }}</span><span class="usuario__menu">☰ Menu</span><span class="usuario__seta" aria-hidden="true">⌄</span>
+      </button>
+      @if (aberto()) {
+        <nav id="menu-usuario" class="menu" aria-label="Menu da conta">
+          <a class="menu__mobile" routerLink="/inicio">Início</a><a class="menu__mobile" routerLink="/pedir-ajuda">Pedir ajuda</a>
+          <a routerLink="/conta">Minha conta</a>
+          <button type="button" [disabled]="saindo()" (click)="sair()">{{ saindo() ? 'Saindo…' : 'Sair' }}</button>
+          @if (erro()) { <p role="alert">{{ erro() }}</p> }
+        </nav>
+      }
+    </div>
+  } @else {
+    <nav class="visitante flex items-center gap-3" aria-label="Acesso"><a class="link-acao" routerLink="/entrar">Entrar</a><a class="botao botao--secundario" routerLink="/cadastro">Criar conta</a></nav>
+  }
 </header>

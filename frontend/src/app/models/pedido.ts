@@ -26,9 +26,17 @@ export const PRAZO_RESPOSTA_HORAS = 48;
 export interface Pedido {
   id: string;
   alunoId: string;
+  alunoNome?: string;
+  alunoCurso?: string;
+  alunoFoto?: string | null;
   mentorId: string;
   /** Desnormalizado para a tela 1 mostrar o pedido sem uma segunda chamada. */
   mentorNome: string;
+  mentorCurso?: string;
+  mentorFoto?: string | null;
+  necessidade?: string;
+  horarioId?: string;
+  local?: string;
   materiaId: string;
   /** Idem `mentorNome`. */
   materiaNome: string;

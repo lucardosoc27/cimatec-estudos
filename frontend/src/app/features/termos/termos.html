@@ -1,0 +1,49 @@
+<div class="termos">
+  <h1 class="titulo">Termos de Uso e Política de Privacidade</h1>
+  <p class="versao">Versão 1.0 · atualizada em 24/09/2026</p>
+
+  <section class="resumo" aria-labelledby="titulo-resumo">
+    <h2 id="titulo-resumo" class="subtitulo">Resumo em linguagem simples</h2>
+    <ul class="flex flex-col gap-4">
+      <li><span aria-hidden="true">✓</span> O projeto é voltado aos estudantes dos cursos técnicos do SENAI CIMATEC, com e-mail institucional.</li>
+      <li><span aria-hidden="true">✓</span> O cadastro pede nome, e-mail institucional, curso e senha.</li>
+      <li><span aria-hidden="true">✓</span> Sua foto e a vitrine pública são opcionais. Você pode mudar os consentimentos em Minha conta.</li>
+      <li><span aria-hidden="true">✓</span> O contato institucional do mentor aparece depois que ele aceita o pedido.</li>
+      <li><span aria-hidden="true">✓</span> O Cimatec Estudos é gratuito e é um projeto acadêmico.</li>
+    </ul>
+  </section>
+
+  <p class="em-elaboracao"><strong>Texto em elaboração.</strong> A equipe ainda está preparando a versão final dos Termos de Uso e da Política de Privacidade.</p>
+
+  <div class="documento grid gap-6">
+    <aside class="indice" aria-label="Índice dos termos e da política">
+      <h2 class="indice__titulo subtitulo">Nesta página</h2>
+      <button class="indice__abrir" type="button" (click)="indiceAberto.set(!indiceAberto())" [attr.aria-expanded]="indiceAberto()" aria-controls="indice-secoes">Nesta página <span aria-hidden="true">{{ indiceAberto() ? '−' : '+' }}</span></button>
+      <nav id="indice-secoes" class="indice__conteudo" [class.indice__conteudo--aberto]="indiceAberto()" aria-label="Seções desta página">
+        @for (parte of partes; track parte.id) {
+          <p class="indice__parte">{{ parte.titulo }}</p>
+          <ul>
+            @for (secao of parte.secoes; track secao.id) {
+              <li><a class="link-acao" [routerLink]="[]" [fragment]="secao.id">{{ secao.titulo }}</a></li>
+            }
+          </ul>
+        }
+      </nav>
+    </aside>
+
+    <div class="flex min-w-0 flex-col gap-6">
+      @for (parte of partes; track parte.id) {
+        <section class="parte" [attr.aria-labelledby]="parte.id">
+          <h2 [id]="parte.id" tabindex="-1">{{ parte.titulo }}</h2>
+          @for (secao of parte.secoes; track secao.id) {
+            <section class="secao" [attr.aria-labelledby]="secao.id">
+              <h3 [id]="secao.id" tabindex="-1">{{ secao.titulo }}</h3>
+              <p>Texto em elaboração pela equipe, com base no Guia de Elaboração de Termo de Uso e Política de Privacidade do gov.br.</p>
+            </section>
+          }
+        </section>
+      }
+    </div>
+  </div>
+  <div class="voltar"><a class="link-acao" routerLink="/">← Voltar ao início</a></div>
+</div>

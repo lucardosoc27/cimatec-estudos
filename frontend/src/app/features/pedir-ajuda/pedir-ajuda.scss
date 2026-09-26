@@ -1,6 +1,12 @@
-/* form, .grupo*, .opcao* agora são globais (src/styles.scss); mesmo desenho da tela 4 */
-
-.faltando {
-  padding-left: var(--espaco-4);
-  list-style: disc;
-}
+:host { display: block; }
+.formulario-cartao { border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); background: var(--cor-superficie); box-shadow: var(--sombra-cartao); }
+.cabecalho-formulario { border-bottom: 1px solid var(--cor-borda-suave); }
+.texto-suave { color: var(--cor-texto-suave); }
+.campo-titulo { display: block; margin-bottom: 10px; font-weight: 700; }
+.campo-select { min-height: 48px; padding: 10px 12px; border: 1px solid var(--cor-borda); border-radius: 10px; background: white; font: inherit; }
+fieldset { border: 0; padding: 0; min-width: 0; }
+.escolha { min-height: 46px; padding: 10px 14px; border: 1px solid var(--cor-borda); border-radius: 12px; background: white; color: var(--cor-texto-suave); cursor: pointer; }
+.escolha--chip { border-radius: var(--raio-pilula); }
+.escolha:hover { background: var(--cor-primaria-suave); }
+.escolha[aria-pressed='true'] { border: 2px solid var(--cor-primaria); padding: 9px 13px; background: var(--cor-primaria-suave); color: var(--cor-primaria); font-weight: 600; }
+.erro-campo { color: var(--cor-erro); }

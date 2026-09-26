@@ -1,0 +1,61 @@
+<section class="verificacao mx-auto" [attr.aria-busy]="ocupado()" aria-labelledby="titulo-verificacao">
+  <div class="simbolo mx-auto" [class.simbolo--sucesso]="estado() === 'ativada'" [class.simbolo--alerta]="estado() === 'expirado'" aria-hidden="true">
+    @if (estado() === 'ativada' || estado() === 'ja-usado') {
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m7 16 6 6L25 10"/></svg>
+    } @else if (estado() === 'expirado') {
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><circle cx="16" cy="16" r="11"/><path d="M16 9v7l5 3"/></svg>
+    } @else {
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="24" height="20" rx="3"/><path d="m5 9 11 8L27 9"/></svg>
+    }
+  </div>
+
+  @switch (estado()) {
+    @case ('enviamos') {
+      <h1 id="titulo-verificacao" tabindex="-1">Confira seu e-mail institucional</h1>
+      @if (email()) { <p>Enviamos um link de confirmação para <strong>{{ email() }}</strong>. Clique nele para ativar sua conta. O link vale por 24 horas.</p> }
+      @else { <p>O link de confirmação enviado no cadastro vale por 24 horas. Abra seu e-mail institucional para ativar a conta.</p> }
+      <div class="separador"><p>Não chegou? Confira a caixa de spam.</p></div>
+    }
+    @case ('confirmar') {
+      <h1 id="titulo-verificacao" tabindex="-1">Confirme seu e-mail institucional</h1>
+      <p>Falta só este passo para ativar sua conta no Cimatec Estudos.</p>
+      <button type="button" class="botao w-full" (click)="verificar()" [disabled]="ocupado()">{{ ocupado() ? 'Confirmando…' : 'Confirmar e-mail →' }}</button>
+    }
+    @case ('ativada') {
+      <h1 id="titulo-verificacao" tabindex="-1">Conta ativada!</h1>
+      <p>Seu e-mail institucional foi confirmado. Agora é só entrar.</p>
+      <a routerLink="/entrar" class="botao w-full">Entrar →</a>
+    }
+    @case ('expirado') {
+      <h1 id="titulo-verificacao" tabindex="-1">Esse link expirou</h1>
+      <p>Por segurança, o link de confirmação vale por 24 horas. Peça um novo e confira seu e-mail.</p>
+    }
+    @case ('ja-usado') {
+      <h1 id="titulo-verificacao" tabindex="-1">Esse link já foi usado</h1>
+      <p>Sua conta já está ativada. Se foi você, é só entrar.</p>
+      <a routerLink="/entrar" class="botao w-full">Entrar →</a>
+    }
+    @case ('invalido') {
+      <h1 id="titulo-verificacao" tabindex="-1">Não reconhecemos esse link</h1>
+      <p>Confira se o endereço foi copiado por inteiro ou solicite um novo link de confirmação.</p>
+    }
+  }
+
+  @if (estado() === 'enviamos' || estado() === 'expirado' || estado() === 'invalido') {
+    @if (informarEmail() || estado() !== 'enviamos') {
+      <form #form="ngForm" (ngSubmit)="reenviar(form)" novalidate class="w-full">
+        <div class="campo w-full">
+          <label for="email-verificacao">E-mail institucional</label>
+          <input id="email-verificacao" name="email" type="email" [ngModel]="email()" (ngModelChange)="email.set($event)" required email autocomplete="email" #emailCampo="ngModel" [attr.aria-invalid]="tentou() && emailCampo.invalid" aria-describedby="email-verificacao-erro">
+          <span id="email-verificacao-erro" class="erro-campo">@if (tentou() && emailCampo.invalid) { Informe um e-mail válido. }</span>
+        </div>
+        <button type="submit" class="botao w-full" [disabled]="ocupado()">{{ ocupado() ? 'Enviando…' : 'Enviar novo link →' }}</button>
+      </form>
+    } @else {
+      <button type="button" class="link-acao reenviar" (click)="reenviar()" [disabled]="ocupado()">{{ ocupado() ? 'Enviando…' : 'Reenviar link' }}</button>
+    }
+    <a routerLink="/entrar" class="link-acao voltar">← Voltar para o login</a>
+  }
+  @if (erro()) { <p class="mensagem mensagem--erro" role="alert">{{ erro() }}</p> }
+  @if (mensagem()) { <p class="mensagem" role="status">{{ mensagem() }}</p> }
+</section>

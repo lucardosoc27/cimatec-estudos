@@ -1,84 +1,79 @@
-<a routerLink="/pedir-ajuda" [queryParams]="queryParams()" class="link-acao">Voltar</a>
-<h1 class="titulo">Mentores recomendados</h1>
-
-@if (resultado(); as r) {
-  <p class="criterios">{{ r.materia.nome }} · {{ resumoCriterios() }}</p>
-}
-
-@switch (estado()) {
-  @case ('carregando') {
-    <p class="aviso" role="status">Procurando mentores…</p>
-  }
-
-  @case ('erro') {
-    <div class="aviso aviso--erro" role="alert">
-      <p>Não foi possível buscar os mentores. Verifique sua conexão.</p>
-      <button type="button" class="botao botao--secundario" (click)="carregar()">Tentar de novo</button>
-    </div>
-  }
-
-  @case ('vazio') {
-    @if (resultado(); as r) {
-      <div class="aviso">
-        <p>Nenhum mentor de {{ r.materia.nome }} está livre com o que você marcou: {{ resumoCriterios() }}.</p>
-        <a routerLink="/pedir-ajuda" [queryParams]="queryParams()" class="botao botao--secundario">
-          Mudar o turno
-        </a>
+<div class="mx-auto max-w-5xl">
+  <a routerLink="/pedir-ajuda" class="link-acao mb-3">← Alterar pedido</a>
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+    <header class="max-w-2xl">
+      <h1 class="titulo mb-2!">Mentores para {{ resultado()?.materia?.nome ?? 'você' }}</h1>
+      <p class="texto-suave capitalize">{{ resumo() }}</p>
+    </header>
+    @if (estado() === 'sucesso') {
+      <div class="alternador flex shrink-0 self-start" role="group" aria-label="Forma de exibir os mentores">
+        <button type="button" [attr.aria-pressed]="exibicao() === 'pilha'" (click)="exibicao.set('pilha')">Pilha de cartões</button>
+        <button type="button" [attr.aria-pressed]="exibicao() === 'lista'" (click)="exibicao.set('lista')">Em lista</button>
       </div>
-
-      @if (r.outrosTurnos.length > 0) {
-        <h2 class="subtitulo">Disponíveis em outros turnos</h2>
-        <ul class="lista">
-          @for (item of r.outrosTurnos; track item.mentor.id) {
-            <li class="mentor">
-              <h3 class="mentor__nome">{{ item.mentor.nome }}</h3>
-              <p class="mentor__curso">{{ cursoSemestre(item.mentor) }}</p>
-              <ul class="motivos" aria-label="Por que este mentor apareceu">
-                @for (motivo of item.motivos; track motivo) {
-                  <li>{{ motivo }}</li>
-                }
-              </ul>
-              <a [routerLink]="['/mentores', item.mentor.id]" [queryParams]="queryParams()" class="link-acao">
-                Ver perfil e horários
-              </a>
-            </li>
-          }
-        </ul>
-      }
-
-      @if (r.alternativas.length > 0) {
-        <h2 class="subtitulo">Matérias do {{ r.materia.semestre }}º semestre com mentor livre nesses turnos</h2>
-        <ul class="lista">
-          @for (alt of r.alternativas; track alt.materia.id) {
-            <li>
-              <a routerLink="/mentores" [queryParams]="paramsPara(alt.materia.id)" class="link-acao">
-                {{ alt.materia.nome }} ({{ alt.quantidadeMentores }} {{ alt.quantidadeMentores === 1 ? 'mentor' : 'mentores' }})
-              </a>
-            </li>
-          }
-        </ul>
-      }
     }
-  }
-
-  @case ('sucesso') {
-    @if (resultado(); as r) {
-      <ul class="lista">
-        @for (item of r.recomendados; track item.mentor.id) {
-          <li class="mentor">
-            <h2 class="mentor__nome">{{ item.mentor.nome }}</h2>
-            <p class="mentor__curso">{{ cursoSemestre(item.mentor) }}</p>
-            <ul class="motivos" aria-label="Por que este mentor foi recomendado">
-              @for (motivo of item.motivos; track motivo) {
-                <li>{{ motivo }}</li>
-              }
-            </ul>
-            <a [routerLink]="['/mentores', item.mentor.id]" [queryParams]="queryParams()" class="link-acao">
-              Ver perfil e horários
-            </a>
-          </li>
+  </div>
+  @switch (estado()) {
+    @case ('carregando') { <p class="aviso" role="status">Buscando colegas que podem ajudar…</p> }
+    @case ('erro') {
+      <div class="aviso aviso--erro" role="alert"><p>Não foi possível carregar os mentores. Seu pedido foi mantido.</p><button class="botao botao--secundario" type="button" (click)="carregar()">Tentar de novo</button></div>
+    }
+    @case ('vazio') {
+      <section class="aviso py-12! items-center! text-center">
+        <h2 class="subtitulo">Nenhum mentor nesse turno.</h2>
+        <p class="texto-suave">Tente marcar mais turnos ou escolher Ambos na modalidade.</p>
+        <a routerLink="/pedir-ajuda" class="link-acao">← Alterar pedido</a>
+      </section>
+    }
+    @case ('sucesso') {
+      @if (resultado(); as resultado) {
+        @if (exibicao() === 'pilha') {
+          @if (atual(); as item) {
+            <div class="mx-auto max-w-lg px-2 sm:px-4">
+              <p class="text-center mb-5 texto-suave" aria-live="polite">{{ indice() + 1 }} de {{ resultado.recomendados.length }}</p>
+              <div class="pilha relative" (touchstart)="iniciarToque($event)" (touchend)="terminarToque($event)">
+                @if (resultado.recomendados.length > 1) { <div class="pilha__fundo pilha__fundo--um" inert aria-hidden="true"></div> }
+                @if (resultado.recomendados.length > 2) { <div class="pilha__fundo pilha__fundo--dois" inert aria-hidden="true"></div> }
+                <article class="cartao-mentor relative overflow-hidden">
+                  <div class="retrato flex items-center justify-center relative">
+                    @if (item.mentor.foto) { <img [src]="item.mentor.foto" [alt]="item.mentor.nome" class="absolute inset-0 w-full h-full object-cover" /> }
+                    @else { <app-avatar [nome]="item.mentor.nome" [foto]="null" [tamanho]="132" /> }
+                    @if (idComSelo() === item.mentor.id) { <span class="selo-combina absolute top-4 left-4"><span aria-hidden="true">✓</span> Combina bem com você</span> }
+                    <ul class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2" aria-label="Em comum">
+                      @for (etiqueta of etiquetas(item); track etiqueta) { <li class="etiqueta">{{ etiqueta }}</li> }
+                    </ul>
+                  </div>
+                  <div class="p-5 sm:p-6">
+                    <div class="flex flex-wrap justify-between gap-3 items-baseline"><h2 #nomeMentor tabindex="-1" class="text-2xl">{{ item.mentor.nome }}</h2><p class="texto-suave">{{ item.mentor.sessoesConcluidas }} sessões concluídas</p></div>
+                    <p class="curso mt-2">Técnico em {{ item.mentor.curso }}</p>
+                    <p class="texto-suave mt-4">{{ motivo(item) }}</p>
+                  </div>
+                </article>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-3 mt-7">
+                <button type="button" class="botao botao--secundario" [disabled]="indice() === resultado.recomendados.length - 1" (click)="mover(1)">Pular</button>
+                <button type="button" class="botao" (click)="verPerfil(item.mentor.id)">Ver perfil e horários →</button>
+              </div>
+              <div class="text-center mt-3"><button type="button" class="link-botao" [disabled]="indice() === 0" (click)="mover(-1)">↺ Voltar ao anterior</button></div>
+              <p class="text-center texto-suave mt-2">Pular não avisa ninguém e não fica registrado.</p>
+              <p class="text-center texto-suave md:hidden mt-2">ou arraste o cartão para o lado</p>
+            </div>
+          }
+        } @else {
+          <ul class="grid gap-5">
+            @for (item of resultado.recomendados; track item.mentor.id) {
+              <li><article class="cartao-mentor p-5 md:p-6 flex flex-col sm:flex-row gap-5 sm:items-center">
+                <app-avatar [nome]="item.mentor.nome" [foto]="item.mentor.foto" [tamanho]="80" />
+                <div class="flex-1 min-w-0">
+                  @if (idComSelo() === item.mentor.id) { <span class="selo-combina mb-3"><span aria-hidden="true">✓</span> Combina bem com você</span> }
+                  <h2 class="text-2xl">{{ item.mentor.nome }}</h2><p class="curso mt-1">Técnico em {{ item.mentor.curso }}</p>
+                  <p class="texto-suave mt-2">{{ item.mentor.sessoesConcluidas }} sessões concluídas</p><p class="texto-suave mt-2">{{ motivo(item) }}</p>
+                </div>
+                <button type="button" class="botao botao--secundario" (click)="verPerfil(item.mentor.id)">Ver perfil e horários →</button>
+              </article></li>
+            }
+          </ul>
         }
-      </ul>
+      }
     }
   }
-}
+</div>

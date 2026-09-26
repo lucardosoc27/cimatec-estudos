@@ -1,114 +1,65 @@
-<a routerLink="/mentores" [queryParams]="queryParams()" class="link-acao">Voltar</a>
-<h1 class="titulo">{{ mentor()?.nome ?? 'Perfil do mentor' }}</h1>
-
-@switch (estado()) {
-  @case ('carregando') {
-    <p class="aviso" role="status">Carregando o perfil…</p>
-  }
-
-  @case ('erro') {
-    <div class="aviso aviso--erro" role="alert">
-      <p>Não foi possível carregar o perfil do mentor. Verifique sua conexão.</p>
-      <button type="button" class="botao botao--secundario" (click)="carregar()">Tentar de novo</button>
-    </div>
-  }
-
-  @case ('vazio') {
-    <div class="aviso">
-      <p>Não encontramos este mentor para a matéria escolhida. O link pode estar desatualizado.</p>
-      <a routerLink="/mentores" [queryParams]="queryParams()" class="botao botao--secundario">
-        Ver mentores recomendados
-      </a>
-    </div>
-  }
-
-  @case ('sucesso') {
-    @if (mentor(); as m) {
-      <section class="perfil" aria-label="Sobre o mentor">
-        <p class="perfil__curso">{{ cursoSemestre(m) }}</p>
-        <p class="perfil__verificado">Mentor verificado <span class="perfil__detalhe">(e-mail institucional confirmado)</span></p>
-        <p class="perfil__descricao">{{ m.descricao }}</p>
-
-        <h2 class="subtitulo">Sessões concluídas</h2>
-        <p>{{ m.sessoesConcluidas }} no total.</p>
-        @if (selos().length > 0) {
-          <ul class="selos">
-            @for (selo of selos(); track selo.nome) {
-              <li>{{ selo.nome }}: {{ selo.sessoes }} {{ selo.sessoes === 1 ? 'sessão' : 'sessões' }}</li>
+<div class="mx-auto max-w-6xl">
+  <a routerLink="/mentores" class="link-acao">← Voltar aos mentores</a>
+  <nav aria-label="Caminho da página" class="texto-suave flex flex-wrap gap-2 mt-2 mb-6"><a routerLink="/pedir-ajuda">Pedir ajuda</a><span aria-hidden="true">›</span><a routerLink="/mentores">Mentores</a><span aria-hidden="true">›</span><span>{{ mentor()?.nome ?? 'Perfil' }}</span></nav>
+  @switch (estado()) {
+    @case ('carregando') { <p class="aviso" role="status">Carregando perfil e horários…</p> }
+    @case ('erro') { <div class="aviso aviso--erro" role="alert"><p>Não foi possível carregar o perfil. Seu pedido foi mantido.</p><button type="button" class="botao botao--secundario" (click)="carregar()">Tentar de novo</button></div> }
+    @case ('vazio') { <div class="aviso"><h1 class="subtitulo">Este mentor não está disponível para a matéria.</h1><a routerLink="/mentores" class="link-acao">Ver outros mentores →</a></div> }
+    @case ('sucesso') {
+      @if (mentor(); as m) {
+        <div class="grid lg:grid-cols-[0.95fr_1.05fr] gap-6 items-start">
+          <article class="perfil p-5! md:p-8!">
+            <div class="text-center flex flex-col items-center">
+              <div class="relative mb-4"><app-avatar [nome]="m.nome" [foto]="m.foto" [tamanho]="112" /><span class="chapeu" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m2 9 10-5 10 5-10 5L2 9Z"/><path d="M6 11v6c4 3 8 3 12 0v-6M22 9v7"/></svg></span></div>
+              <h1 class="titulo mb-2!">{{ m.nome }}</h1>
+              <p class="texto-suave">Técnico em {{ m.curso }}</p>
+              <p class="texto-suave mt-3">SENAI CIMATEC - Orlando Gomes</p>
+              <p class="sessoes mt-3">{{ m.sessoesConcluidas }} sessões concluídas</p>
+            </div>
+            @if (temSelo()) {
+              <section class="bloco-suave mt-6" aria-label="Afinidades com o seu pedido"><p class="combina"><span aria-hidden="true">✓</span> Combina bem com você</p><ul class="flex flex-wrap gap-2 mt-3">@for (etiqueta of etiquetas(); track etiqueta) { <li class="etiqueta">{{ etiqueta }}</li> }</ul></section>
             }
-          </ul>
-        }
-      </section>
-
-      @if (pedidoEmAberto(); as pedido) {
-        <div class="aviso" role="status">
-          <p>
-            Você já pediu ajuda a {{ m.nome }} em {{ pedido.materiaNome }}.
-            Status: <strong>{{ rotuloStatus[pedido.status] }}</strong>.
-          </p>
-          <p>Espere a resposta ou cancele aquele pedido antes de fazer outro.</p>
-          <a [routerLink]="['/pedidos', pedido.id]" class="botao">Ver pedido</a>
-          <a routerLink="/mentores" [queryParams]="queryParams()" class="link-acao">Ver outros mentores</a>
+            <section class="mt-6"><h2 class="subtitulo mb-3">Ensina</h2><ul class="flex flex-wrap gap-2">@for (materia of materiasEnsinadas(); track materia.id) { <li class="materia-chip">{{ materia.nome }}</li> }</ul></section>
+            <section class="bloco-suave mt-6"><h2 class="subtitulo mb-3">Um pouco sobre mim</h2><p class="texto-suave">{{ m.descricao || 'Este mentor ainda não adicionou uma apresentação.' }}</p></section>
+          </article>
+          <div class="grid gap-5">
+            <section class="perfil p-5! md:p-6!" aria-labelledby="resumo-pedido">
+              <div class="flex justify-between items-center gap-3"><h2 id="resumo-pedido" class="subtitulo">Resumo do seu pedido</h2><a routerLink="/pedir-ajuda" class="link-acao">Alterar</a></div>
+              <p class="font-bold mt-3">{{ materia()?.nome }}</p>
+              <div class="flex flex-wrap gap-2 mt-3">@if (formulario()?.necessidade) { <span class="materia-chip">{{ formulario()?.necessidade }}</span> }<span class="materia-chip capitalize">{{ formulario()?.modalidade === 'ambos' ? 'Ambos' : formulario()?.modalidade }}</span></div>
+            </section>
+            @if (pedidoEmAberto(); as existente) {
+              <div class="aviso" role="status"><h2 class="subtitulo">Você já pediu ajuda a {{ m.nome }} nesta matéria.</h2><p>O pedido ainda aguarda uma resposta.</p><a [routerLink]="['/pedidos', existente.id]" class="botao">Ver pedido →</a></div>
+            } @else {
+              <form (submit)="enviar($event)" class="w-full gap-5!">
+                <section class="perfil w-full p-5! md:p-6!" aria-labelledby="escolher-horario">
+                  <h2 id="escolher-horario" class="subtitulo mb-5">Escolha um horário</h2>
+                  @for (dia of dias(); track dia.data) {
+                    <fieldset class="mb-5 last:mb-0"><legend class="font-bold mb-3 capitalize">{{ dia.data | date: 'EEEE, dd/MM' }}</legend>
+                      <div class="grid gap-3">
+                        @for (opcao of dia.horarios; track opcao.horario.id) {
+                          <button type="button" class="horario flex items-center justify-between gap-3 text-left" [class.horario--ocupado]="ocupados().includes(opcao.horario.id)" [disabled]="ocupados().includes(opcao.horario.id) || enviando()" [attr.aria-pressed]="horarioId() === opcao.horario.id" (click)="escolherHorario(opcao.horario.id)">
+                            <span><strong class="block">{{ intervalo(opcao.horario.hora) }}</strong><span class="texto-suave">{{ opcao.horario.modalidade === 'online' ? 'Online' : 'CIMATEC - Orlando Gomes' }}</span></span>
+                            @if (ocupados().includes(opcao.horario.id)) { <span>Ocupado</span> } @else { <span class="marcador" aria-hidden="true">{{ horarioId() === opcao.horario.id ? '✓' : '' }}</span> }
+                          </button>
+                        }
+                      </div>
+                    </fieldset>
+                  } @empty {
+                    <p class="texto-suave">Nenhum horário livre nos turnos escolhidos.</p><a routerLink="/pedir-ajuda" class="link-acao mt-2">← Alterar pedido</a>
+                  }
+                  @if (tentouEnviar() && !horarioId()) { <p class="erro mt-4" role="alert">Escolha um horário para enviar o pedido.</p> }
+                </section>
+                @if (erroEnvio()) {
+                  <p class="aviso aviso--erro w-full" role="alert">{{ erroEnvio() === 'horario-indisponivel' ? 'Esse horário acabou de ser ocupado. Escolha outro, o resto do seu pedido foi mantido.' : 'Não foi possível enviar o pedido. Tente de novo: seu preenchimento foi mantido.' }}</p>
+                }
+                <p class="perfil w-full texto-suave">O contato de {{ m.nome }} aparece depois que o pedido for aceito. O prazo de resposta é de até 48h.</p>
+                @if (horarios().length) { <button type="submit" class="botao w-full" [disabled]="enviando()">{{ enviando() ? 'Enviando…' : 'Enviar pedido →' }}</button> }
+              </form>
+            }
+          </div>
         </div>
-      } @else if (m.horariosLivres.length === 0) {
-        <div class="aviso" role="status">
-          <p>{{ m.nome }} não tem nenhum horário livre no momento.</p>
-          <a routerLink="/mentores" [queryParams]="queryParams()" class="botao botao--secundario">Ver outros mentores</a>
-        </div>
-      } @else {
-        <form (submit)="enviar($event)" novalidate>
-          <fieldset class="grupo">
-            <legend class="grupo__titulo">Escolha um horário</legend>
-
-            <p class="grupo__secao">Nos turnos que você marcou</p>
-            @if (horarios().compativeis.length === 0) {
-              <p class="grupo__dica">Este mentor não tem horário livre nos turnos que você marcou. Veja os outros horários abaixo.</p>
-            }
-            @for (item of horarios().compativeis; track item.horario.id) {
-              <label class="opcao">
-                <input type="radio" name="horario" [value]="item.horario.id"
-                  [checked]="horarioId() === item.horario.id" (change)="escolherHorario(item.horario.id)" />
-                <span>
-                  {{ item.data | date: 'EEEE, dd/MM' }} às {{ item.horario.hora }}
-                  <span class="opcao__detalhe">· {{ rotuloModalidade[item.horario.modalidade] }}</span>
-                </span>
-              </label>
-            }
-
-            @if (horarios().outros.length > 0) {
-              <p class="grupo__secao">Outros horários deste mentor</p>
-              @for (item of horarios().outros; track item.horario.id) {
-                <label class="opcao">
-                  <input type="radio" name="horario" [value]="item.horario.id"
-                    [checked]="horarioId() === item.horario.id" (change)="escolherHorario(item.horario.id)" />
-                  <span>
-                    {{ item.data | date: 'EEEE, dd/MM' }} às {{ item.horario.hora }}
-                    <span class="opcao__detalhe">· {{ rotuloModalidade[item.horario.modalidade] }}</span>
-                  </span>
-                </label>
-              }
-            }
-          </fieldset>
-
-          @if (tentouEnviar() && horarioId() === null) {
-            <p class="aviso aviso--erro" role="alert">Para continuar, escolha um horário.</p>
-          }
-
-          @switch (erroEnvio()) {
-            @case ('horario-indisponivel') {
-              <p class="aviso aviso--erro" role="alert">Esse horário acabou de ficar indisponível. A lista foi atualizada; escolha outro.</p>
-            }
-            @case ('conexao') {
-              <p class="aviso aviso--erro" role="alert">Não foi possível enviar o pedido. Verifique sua conexão e tente de novo.</p>
-            }
-          }
-
-          <p class="grupo__dica">O mentor tem {{ prazoRespostaHoras }} horas para responder. O contato dele só aparece depois que ele aceitar.</p>
-          <button type="submit" class="botao" [disabled]="enviando()">
-            {{ enviando() ? 'Enviando…' : 'Pedir ajuda' }}
-          </button>
-        </form>
       }
     }
   }
-}
+</div>

@@ -1,55 +1,27 @@
-/* :host é o próprio elemento <app-cabecalho>, que ocupa a largura toda da página. A faixa azul
-   e o filete ciano ficam nele; o <header> de dentro continua limitado a 720px e centralizado.
-   Sem isso o azul pararia nos 720px e sobraria cinza nas laterais em tela grande. */
-:host {
-  display: block;
-  background: var(--cor-primaria-escura);
-  border-bottom: 3px solid var(--cor-marca-ciano);  /* 5,48:1 sobre o azul: o único fundo onde o ciano é legível */
-}
-
-.cabecalho {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--espaco-3);
-  max-width: var(--largura-conteudo);
-  margin: 0 auto;
-  padding: var(--espaco-2) var(--espaco-3);
-}
-
-.cabecalho__marca {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--alvo-toque);
-  font-weight: 700;
-  font-size: var(--texto-marca);
-  color: #fff;  /* 9,93:1 sobre o azul */
-  text-decoration: none;
-}
-
-/* Sem esta regra a marca sumiria: o hover global (a:not(.botao):hover, 0-2-1) pinta o link de
-   --cor-primaria-escura, que aqui é a cor da própria faixa — 1:1, invisível. O seletor é
-   descendente para vencer os 0-2-1 com folga; a afordância passa a ser o sublinhado, que não
-   depende de cor, e o branco fica. */
-.cabecalho .cabecalho__marca:hover {
-  color: #fff;
-  text-decoration: underline;
-}
-
-/* O laranja do botão contra o azul escuro dá 1,91:1, abaixo dos 3:1 que o contorno de um
-   controle precisa: é a borda branca (9,93:1) que torna o botão perceptível aqui.
-   O seletor é descendente de propósito. Escrito só como `.botao`, o Angular geraria
-   `.botao[_ngcontent-x]`, 0-2-0, empatado com o `.botao:hover` global — e empate quem decide é
-   a ordem de injeção dos estilos, que é detalhe de implementação, não garantia. Com
-   `.cabecalho .botao` a regra ganha por especificidade, e a borda segue branca também no hover. */
-.cabecalho .botao {
-  border-color: #fff;
-}
-
-/* Anel de foco branco dentro da faixa: o anel padrão é --cor-foco (azul), que daria 1,27:1
-   contra o azul escuro — foco praticamente invisível para quem navega por teclado. Branco dá
-   9,93:1. O outline-offset de 2px do anel global mantém um respiro azul entre ele e a borda
-   branca do botão, então os dois não se fundem. */
-.cabecalho :focus-visible {
-  outline-color: #fff;
+:host { display: block; background: var(--cor-cabecalho); border-bottom: 1px solid var(--cor-cabecalho-borda); }
+.cabecalho { max-width: 1280px; min-height: 88px; margin: auto; padding: 16px 24px; }
+.marca { display: flex; gap: 12px; align-items: center; text-decoration: none; color: var(--cor-primaria-escura); flex-shrink: 0; }
+.marca__icone { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 10px; background: var(--cor-primaria); color: var(--cor-superficie); }
+svg { width: 26px; height: 26px; }
+.marca__nome { font-size: 1.125rem; font-weight: 800; letter-spacing: -.05em; }
+.marca__ponto { color: var(--cor-marca-laranja); font-size: 1.8rem; line-height: .5; }
+.marca__legenda { display: block; font-size: .6rem; letter-spacing: .12em; font-weight: 700; margin-top: 3px; }
+.navegacao { display: flex; gap: 12px; }
+.navegacao a { padding: 12px 18px; border-radius: 8px; text-decoration: none; color: var(--cor-texto); font-weight: 600; }
+.navegacao a.ativo { color: var(--cor-primaria); background: var(--cor-primaria-suave); }
+.usuario { position: relative; }
+.usuario__gatilho { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; color: var(--cor-texto); border-radius: 8px; }
+.usuario__menu { display: none; }
+.menu { position: absolute; right: 0; top: calc(100% + 12px); width: 230px; padding: 8px; border: 1px solid var(--cor-borda-suave); border-radius: 12px; background: var(--cor-superficie); box-shadow: var(--sombra-flutuante); z-index: 20; }
+.menu a, .menu button { display: flex; width: 100%; align-items: center; min-height: 44px; padding: 8px 14px; color: var(--cor-primaria); text-align: left; cursor: pointer; }
+.menu button:hover, .menu a:hover { background: var(--cor-primaria-suave); }
+.menu .menu__mobile { display: none; }
+.menu p { color: var(--cor-erro); padding: 8px; }
+@media (max-width: 47.99rem) {
+  .cabecalho { padding: 12px 16px; min-height: 76px; flex-wrap: wrap; }
+  .marca { gap: 8px; }.marca__nome { font-size: 1rem; }.marca__icone { width: 36px; height: 36px; }
+  .marca__legenda { font-size: .5rem; }
+  .navegacao, .usuario__nome, .usuario__seta { display: none; }.usuario__menu { display: inline; }
+  .menu .menu__mobile { display: flex; }
+  .visitante { margin-left: auto; }.visitante .botao { padding-inline: 12px; }
 }

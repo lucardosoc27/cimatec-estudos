@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
-import { CriteriosBusca, MODALIDADES, TURNOS, deQueryParams, paraQueryParams } from '../../models/busca';
-import { Modalidade, ROTULO_MODALIDADE, ROTULO_TURNO, Turno } from '../../models/disponibilidade';
+import { TURNOS } from '../../models/busca';
+import { CURSOS } from '../../models/curso';
+import { ROTULO_TURNO, Turno } from '../../models/disponibilidade';
 import { Materia } from '../../models/materia';
+import { AuthService } from '../../services/auth.service';
 import { MateriasService } from '../../services/materias.service';
+import { PedidoRascunhoService, PedidoRascunho } from '../../services/pedido-rascunho.service';
 import { EstadoTela } from '../../shared/estado-tela';
-
-/** 'qualquer' é a opção "Tanto faz" da tela; na URL ela vira ausência de modalidade. */
-type EscolhaModalidade = Modalidade | 'qualquer';
 
 @Component({
   selector: 'app-pedir-ajuda',
@@ -19,89 +19,58 @@ type EscolhaModalidade = Modalidade | 'qualquer';
 })
 export class PedirAjuda {
   private readonly materiasService = inject(MateriasService);
-  private readonly rota = inject(ActivatedRoute);
+  private readonly auth = inject(AuthService);
+  private readonly rascunhos = inject(PedidoRascunhoService);
   private readonly router = inject(Router);
-
   protected readonly estado = signal<EstadoTela>('carregando');
   protected readonly materias = signal<Materia[]>([]);
-
-  // Estado do formulário. Cada campo é um signal; o DOM só reflete esse estado.
-  protected readonly materiaId = signal<string | null>(null);
-  protected readonly turnos = signal<Turno[]>([]);
-  protected readonly modalidade = signal<EscolhaModalidade>('qualquer');
-  /** Só mostramos "o que falta" depois da primeira tentativa, para não gritar com quem acabou de abrir a tela. */
-  protected readonly tentouEnviar = signal(false);
-
-  protected readonly faltaMateria = computed(() => this.materiaId() === null);
-  protected readonly faltaTurno = computed(() => this.turnos().length === 0);
-  protected readonly podeEnviar = computed(() => !this.faltaMateria() && !this.faltaTurno());
-
+  protected readonly formulario = this.rascunhos.rascunho;
+  protected readonly cursos = CURSOS;
   protected readonly opcoesTurno = TURNOS;
   protected readonly rotuloTurno = ROTULO_TURNO;
-  protected readonly opcoesModalidade: { valor: EscolhaModalidade; rotulo: string }[] = [
-    { valor: 'qualquer', rotulo: 'Tanto faz' },
-    ...MODALIDADES.map((m) => ({ valor: m, rotulo: ROTULO_MODALIDADE[m] })),
-  ];
+  protected readonly necessidades = ['Entender o conteúdo', 'Resolver exercícios', 'Revisar para a prova'];
+  protected readonly tentouEnviar = signal(false);
+  protected readonly semestres = computed(() => Array.from({ length: CURSOS.find(c => c.nome === this.formulario()?.curso)?.semestres ?? 4 }, (_, i) => i + 1));
+  protected readonly materiasFiltradas = computed(() => this.materias().filter(m => m.curso === this.formulario()?.curso && m.semestre === this.formulario()?.semestre));
+  protected readonly faltaMateria = computed(() => !this.formulario()?.materiaId);
+  protected readonly faltaTurno = computed(() => !this.formulario()?.turnos.length);
 
   constructor() {
-    // Pré-preenche com o que veio na URL: é o "voltar sem perder dados" da tela 3.
-    // Foto da URL (snapshot) basta aqui: esta tela só é aberta por navegação de fora,
-    // nunca reaberta com parâmetros diferentes enquanto está na tela. Compare com mentores.ts.
-    const iniciais = deQueryParams(this.rota.snapshot.queryParamMap);
-    this.materiaId.set(iniciais.materiaId ?? null);
-    this.turnos.set(iniciais.turnos ?? []);
-    this.modalidade.set(iniciais.modalidade ?? 'qualquer');
-
+    if (!this.formulario()) this.rascunhos.definir({
+      curso: this.auth.usuario()?.curso ?? CURSOS[0].nome,
+      semestre: 1, materiaId: null, necessidade: null, turnos: [], modalidade: 'ambos', mentorId: null, horarioId: null,
+    });
     this.carregar();
   }
 
   protected carregar(): void {
     this.estado.set('carregando');
     this.materiasService.listar().subscribe({
-      next: (lista) => {
+      next: lista => {
         this.materias.set(lista);
-        // Id de matéria que veio na URL mas não existe na lista é descartado.
-        if (!lista.some((m) => m.id === this.materiaId())) {
-          this.materiaId.set(null);
-        }
-        this.estado.set(lista.length === 0 ? 'vazio' : 'sucesso');
+        this.estado.set(lista.length ? 'sucesso' : 'vazio');
       },
       error: () => this.estado.set('erro'),
     });
   }
 
-  protected escolherMateria(id: string): void {
-    this.materiaId.set(id);
+  protected atualizar(campos: Partial<PedidoRascunho>): void {
+    this.rascunhos.atualizar({ ...campos, mentorId: null, horarioId: null });
   }
 
-  /** Sempre gera um array novo, na ordem canônica dos turnos: signal só reage a referência nova. */
+  protected trocarCurso(evento: Event): void {
+    this.atualizar({ curso: (evento.target as HTMLSelectElement).value, semestre: 1, materiaId: null });
+  }
+
   protected alternarTurno(turno: Turno): void {
-    this.turnos.update((atuais) =>
-      TURNOS.filter((t) => (t === turno ? !atuais.includes(t) : atuais.includes(t))),
-    );
+    const atuais = this.formulario()?.turnos ?? [];
+    this.atualizar({ turnos: TURNOS.filter(t => t === turno ? !atuais.includes(t) : atuais.includes(t)) });
   }
 
-  protected escolherModalidade(valor: EscolhaModalidade): void {
-    this.modalidade.set(valor);
-  }
-
-  protected async enviar(evento: Event): Promise<void> {
+  protected enviar(evento: Event): void {
     evento.preventDefault();
     this.tentouEnviar.set(true);
-    if (!this.podeEnviar()) {
-      return;
-    }
-
-    const criterios: CriteriosBusca = {
-      materiaId: this.materiaId()!,
-      turnos: this.turnos(),
-      modalidade: this.modalidade() === 'qualquer' ? undefined : (this.modalidade() as Modalidade),
-    };
-    const queryParams = paraQueryParams(criterios);
-
-    // Grava o preenchimento na URL desta tela, sem criar entrada nova no histórico,
-    // para o "voltar" do navegador reabrir a tela já preenchida.
-    await this.router.navigate([], { relativeTo: this.rota, queryParams, replaceUrl: true });
-    await this.router.navigate(['/mentores'], { queryParams });
+    if (this.faltaMateria() || this.faltaTurno()) return;
+    this.router.navigate(['/mentores']);
   }
 }

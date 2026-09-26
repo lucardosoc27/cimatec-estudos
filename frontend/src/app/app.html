@@ -1,4 +1,6 @@
-<app-cabecalho />
-<main class="conteudo">
+<a href="#conteudo" class="pular-conteudo">Pular para o conteúdo</a>
+@if (!autenticacao()) { <app-cabecalho /> }
+<main class="conteudo" [class.conteudo--autenticacao]="autenticacao()" id="conteudo" tabindex="-1">
   <router-outlet />
 </main>
+<app-rodape />

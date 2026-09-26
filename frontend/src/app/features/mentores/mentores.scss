@@ -1,30 +1,16 @@
-.criterios {
-  color: var(--cor-texto-suave);
-  margin-bottom: var(--espaco-3);
-}
-
-/* .subtitulo (tamanho) é global (src/styles.scss); aqui só a margem desta tela */
-.subtitulo {
-  margin: var(--espaco-4) 0 var(--espaco-2);
-}
-
-.lista {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-3);
-}
-
-/* .mentor é cartão: padding, borda, fundo e sombra vêm da regra global (src/styles.scss) */
-
-.mentor__nome { font-size: var(--texto-destaque); }
-.mentor__curso { color: var(--cor-texto-suave); }
-
-/* Lista vertical com marcador nativo: o marcador fica no padding e a segunda linha de um
-   motivo longo alinha com a primeira (recuo pendente), sem parecer item novo. Os motivos
-   ficam na mesma posição em todo cartão, o que facilita comparar mentores descendo a coluna.
-   Mesmo desenho de .selos na tela 4. */
-.motivos {
-  margin-top: var(--espaco-2);
-  padding-left: var(--espaco-4);
-  list-style: disc;
-}
+:host { display: block; }
+.texto-suave { color: var(--cor-texto-suave); }
+.curso { color: var(--cor-primaria); font-weight: 600; }
+.alternador { padding: 4px; border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-pilula); background: white; }
+.alternador button { min-height: 44px; padding: 8px 14px; border-radius: var(--raio-pilula); color: var(--cor-texto-suave); cursor: pointer; }
+.alternador button[aria-pressed='true'] { background: var(--cor-primaria); color: white; }
+.cartao-mentor,.pilha__fundo { background: white; border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); }
+.pilha__fundo { position: absolute; inset: 10px 1px -8px; transform: rotate(-3deg); }
+.pilha__fundo--dois { transform: rotate(3deg); }
+.retrato { min-height: 286px; background: linear-gradient(140deg,var(--cor-primaria-suave),var(--cor-superficie)); padding-bottom: 45px; }
+.selo-combina { display: inline-flex; gap: 8px; align-items: center; padding: 7px 12px; border-radius: var(--raio-pilula); background: var(--cor-primaria); color: white; font-weight: 600; }
+.etiqueta { border-radius: var(--raio-pilula); background: white; padding: 5px 10px; color: var(--cor-texto); box-shadow: var(--sombra-cartao); }
+.link-botao { min-height: 44px; color: var(--cor-primaria); text-decoration: underline; cursor: pointer; }
+.link-botao:disabled { color: var(--cor-texto-suave); cursor: default; text-decoration: none; }
+.botao:disabled { cursor: default; }
+@media (max-width: 380px) { .alternador button { padding-inline: 10px; } }

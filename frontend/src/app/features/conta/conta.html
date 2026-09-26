@@ -1,0 +1,93 @@
+<div class="conta">
+  <h1 class="titulo">Minha conta</h1>
+
+  @if (usuario(); as u) {
+    <section class="cartao" aria-labelledby="titulo-dados">
+      <h2 id="titulo-dados" class="subtitulo">Seus dados</h2>
+      <form (submit)="$event.preventDefault(); salvarDados()" novalidate [attr.aria-busy]="salvando()">
+        <div class="campo">
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" [value]="nome()" (input)="nome.set($any($event.target).value)" required maxlength="80" autocomplete="nickname" [attr.aria-invalid]="tentouSalvar() && !nome().trim()" aria-describedby="nome-erro">
+          <span id="nome-erro" class="erro-campo">@if (tentouSalvar() && !nome().trim()) { Conte como quer ser chamado(a). }</span>
+        </div>
+        <div class="campo">
+          <label for="email">E-mail institucional</label>
+          <input id="email" type="email" [value]="u.emailInstitucional" readonly aria-describedby="email-dica">
+          <small id="email-dica">O e-mail institucional não pode ser alterado</small>
+        </div>
+        <div class="campo">
+          <label for="curso">Curso</label>
+          <select id="curso" name="curso" (change)="curso.set($any($event.target).value)" required>
+            @for (opcao of cursos; track opcao.nome) {
+              <option [value]="opcao.nome" [selected]="opcao.nome === curso()">{{ opcao.nome }}</option>
+            }
+          </select>
+        </div>
+        @switch (resultadoDados()) {
+          @case ('salvo') { <p class="mensagem" role="status">Alterações salvas.</p> }
+          @case ('erro') { <p class="mensagem mensagem--erro" role="alert">Não foi possível salvar agora. O que você digitou foi mantido; tente de novo.</p> }
+        }
+        <button type="submit" class="botao" [disabled]="salvando()">{{ salvando() ? 'Salvando…' : 'Salvar alterações' }}</button>
+      </form>
+    </section>
+
+    <section class="cartao" aria-labelledby="titulo-privacidade">
+      <h2 id="titulo-privacidade" class="subtitulo">Sua privacidade</h2>
+      <ul class="escolhas">
+        <li class="escolha">
+          <div>
+            <strong>Termos de Uso e Política de Privacidade</strong>
+            <p class="suave">Aceito em {{ u.consentimentos.termosEPoliticaEm | date: 'dd/MM/yyyy' }} (versão {{ u.termosVersao }})</p>
+            <p class="suave pequeno">Obrigatório para usar o Cimatec Estudos</p>
+          </div>
+          <a routerLink="/termos" class="link-acao">Ler os termos</a>
+        </li>
+        <li class="escolha">
+          <label for="chave-foto">
+            <strong>Mostrar minha foto para quem está logado</strong>
+            @if (u.consentimentos.fotoParaLogadosEm; as em) { <span class="suave pequeno">Ligado em {{ em | date: 'dd/MM/yyyy' }}</span> }
+          </label>
+          <input id="chave-foto" type="checkbox" role="switch" class="chave" [checked]="!!u.consentimentos.fotoParaLogadosEm" [disabled]="gravando() === 'fotoParaLogados'" (change)="alternar('fotoParaLogados', $event)">
+        </li>
+        <li class="escolha">
+          <label for="chave-vitrine">
+            <strong>Aparecer na vitrine pública da página inicial</strong>
+            <span class="suave">Vale só para quem é mentor</span>
+            @if (u.consentimentos.vitrinePublicaEm; as em) { <span class="suave pequeno">Ligado em {{ em | date: 'dd/MM/yyyy' }}</span> }
+          </label>
+          <input id="chave-vitrine" type="checkbox" role="switch" class="chave" [checked]="!!u.consentimentos.vitrinePublicaEm" [disabled]="gravando() === 'vitrinePublica'" (change)="alternar('vitrinePublica', $event)">
+        </li>
+      </ul>
+      @if (erroConsentimento()) { <p class="mensagem mensagem--erro" role="alert">Não foi possível gravar sua escolha. A chave voltou ao valor anterior; tente de novo.</p> }
+      <p class="suave nota">Você pode mudar essas escolhas quando quiser. Desligar tem efeito imediato.</p>
+    </section>
+
+    <section class="cartao" aria-labelledby="titulo-excluir">
+      <h2 id="titulo-excluir" class="subtitulo">Excluir conta</h2>
+      <p class="suave">Seus dados e pedidos são apagados. Sessões já aceitas são canceladas e o mentor é avisado.</p>
+      <button #botaoExcluir type="button" class="botao botao--contorno-perigo" (click)="abrirExclusao()">Excluir minha conta</button>
+    </section>
+
+    <dialog #janelaExcluir class="janela" aria-labelledby="titulo-janela" (close)="aoFecharJanela()" (cancel)="excluindo() && $event.preventDefault()">
+      <form (submit)="$event.preventDefault(); excluir()" novalidate [attr.aria-busy]="excluindo()">
+        <h2 id="titulo-janela" class="subtitulo">Excluir sua conta?</h2>
+        <p>Essa ação não pode ser desfeita. Para confirmar, digite sua senha.</p>
+        <input type="text" name="username" autocomplete="username" [value]="u.emailInstitucional" hidden>
+        <div class="campo">
+          <label for="senha-excluir">Senha</label>
+          <input id="senha-excluir" type="password" name="senha" [value]="senha()" (input)="senha.set($any($event.target).value)" required autocomplete="current-password" [attr.aria-invalid]="erroExclusao()" aria-describedby="senha-excluir-erro">
+          <span id="senha-excluir-erro" class="erro-campo" role="alert">@if (erroExclusao()) { {{ senha() ? 'Não foi possível excluir a conta. Confira a senha e tente de novo.' : 'Digite sua senha para confirmar.' }} }</span>
+        </div>
+        <div class="janela__acoes">
+          <button type="submit" class="botao botao--perigo" [disabled]="excluindo()">{{ excluindo() ? 'Excluindo…' : 'Excluir definitivamente' }}</button>
+          <button type="button" class="botao botao--secundario" (click)="fecharExclusao()">Cancelar</button>
+        </div>
+      </form>
+    </dialog>
+  } @else {
+    <div class="aviso aviso--erro" role="alert">
+      <p>Não foi possível carregar seus dados. Entre de novo para continuar.</p>
+      <a routerLink="/entrar" class="botao botao--secundario">Entrar</a>
+    </div>
+  }
+</div>

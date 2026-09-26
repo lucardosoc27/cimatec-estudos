@@ -1,23 +1,17 @@
-/* .perfil é cartão: padding, borda, fundo e sombra vêm da regra global (src/styles.scss) */
-.perfil { margin-bottom: var(--espaco-4); }
-
-.perfil__curso,
-.perfil__detalhe { color: var(--cor-texto-suave); }
-/* Verde de --cor-sucesso (6,61:1 sobre o cartão): azul é cor de link, e isto não é clicável */
-.perfil__verificado { margin-top: var(--espaco-1); font-weight: 600; color: var(--cor-sucesso); }
-.perfil__descricao { margin-top: var(--espaco-2); }
-
-/* .subtitulo (tamanho) é global (src/styles.scss); aqui só a margem desta tela */
-.subtitulo {
-  margin: var(--espaco-3) 0 var(--espaco-1);
-}
-
-.selos {
-  margin-top: var(--espaco-1);
-  padding-left: var(--espaco-4);
-  list-style: disc;
-}
-
-/* form, .grupo*, .opcao* agora são globais (src/styles.scss); mesmo desenho da tela 2.
-   .grupo__secao é só desta tela, por isso continua aqui. */
-.grupo__secao { margin-top: var(--espaco-2); font-weight: 600; }
+:host { display: block; }
+.texto-suave { color: var(--cor-texto-suave); }
+.chapeu { display: grid; place-items: center; position: absolute; right: -3px; bottom: 0; width: 36px; height: 36px; border: 3px solid white; border-radius: 50%; color: white; background: var(--cor-primaria); }
+.chapeu svg { width: 24px; height: 24px; }
+.bloco-suave { background: var(--cor-primaria-suave); padding: 18px; border-radius: 14px; }
+.combina { color: var(--cor-primaria); font-weight: 700; }
+.etiqueta,.materia-chip,.sessoes { display: inline-block; padding: 5px 10px; border-radius: 9px; }
+.etiqueta { background: white; color: var(--cor-primaria); }
+.materia-chip,.sessoes { background: var(--cor-primaria-suave); }
+fieldset { min-width: 0; padding: 0; border: 0; }
+.horario { min-height: 78px; padding: 12px 16px; border: 1px solid var(--cor-borda); border-radius: 14px; background: white; cursor: pointer; }
+.horario[aria-pressed='true'] { background: var(--cor-primaria-suave); border: 2px solid var(--cor-primaria); padding: 11px 15px; color: var(--cor-primaria); }
+.marcador { display: grid; place-items: center; width: 27px; height: 27px; flex-shrink: 0; border: 1px solid var(--cor-borda); border-radius: 50%; }
+[aria-pressed='true'] .marcador { background: var(--cor-primaria); border-color: var(--cor-primaria); color: white; }
+.horario--ocupado { cursor: default; color: var(--cor-texto-suave); background: var(--cor-neutro-fundo); }
+.horario--ocupado strong { text-decoration: line-through; }
+.erro { color: var(--cor-erro); }

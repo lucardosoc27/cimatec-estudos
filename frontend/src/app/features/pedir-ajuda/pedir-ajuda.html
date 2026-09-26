@@ -1,88 +1,92 @@
-<a routerLink="/" class="link-acao">Voltar</a>
-<h1 class="titulo">Preciso de ajuda em…</h1>
-
-@switch (estado()) {
-  @case ('carregando') {
-    <p class="aviso" role="status">Carregando as matérias…</p>
-  }
-
-  @case ('erro') {
-    <div class="aviso aviso--erro" role="alert">
-      <p>Não foi possível carregar as matérias. Verifique sua conexão.</p>
-      <button type="button" class="botao botao--secundario" (click)="carregar()">
-        Tentar de novo
-      </button>
-    </div>
-  }
-
-  @case ('vazio') {
-    <div class="aviso">
-      <p>Nenhuma matéria cadastrada ainda. Fale com a coordenação do seu curso.</p>
-      <a routerLink="/" class="botao botao--secundario">Voltar ao início</a>
-    </div>
-  }
-
-  @case ('sucesso') {
-    <form (submit)="enviar($event)" novalidate>
-      <fieldset class="grupo">
-        <legend class="grupo__titulo">Matéria <span class="grupo__dica">(escolha uma)</span></legend>
-        @for (materia of materias(); track materia.id) {
-          <label class="opcao">
-            <input
-              type="radio"
-              name="materia"
-              [value]="materia.id"
-              [checked]="materiaId() === materia.id"
-              (change)="escolherMateria(materia.id)"
-            />
-            <span>{{ materia.nome }} <span class="opcao__detalhe">{{ materia.semestre }}º semestre</span></span>
-          </label>
-        }
-      </fieldset>
-
-      <fieldset class="grupo">
-        <legend class="grupo__titulo">Turnos em que você pode <span class="grupo__dica">(marque um ou mais)</span></legend>
-        @for (turno of opcoesTurno; track turno) {
-          <label class="opcao">
-            <input
-              type="checkbox"
-              name="turnos"
-              [value]="turno"
-              [checked]="turnos().includes(turno)"
-              (change)="alternarTurno(turno)"
-            />
-            <span>{{ rotuloTurno[turno] }}</span>
-          </label>
-        }
-      </fieldset>
-
-      <fieldset class="grupo">
-        <legend class="grupo__titulo">Modalidade <span class="grupo__dica">(opcional)</span></legend>
-        @for (opcao of opcoesModalidade; track opcao.valor) {
-          <label class="opcao">
-            <input
-              type="radio"
-              name="modalidade"
-              [value]="opcao.valor"
-              [checked]="modalidade() === opcao.valor"
-              (change)="escolherModalidade(opcao.valor)"
-            />
-            <span>{{ opcao.rotulo }}</span>
-          </label>
-        }
-      </fieldset>
-
-      @if (tentouEnviar() && !podeEnviar()) {
+<div class="mx-auto max-w-3xl">
+  <a routerLink="/inicio" class="link-acao mb-4">← Voltar ao início</a>
+  <section class="formulario-cartao p-5 md:p-10">
+    <header class="cabecalho-formulario pb-6 mb-7">
+      <h1 class="titulo mb-2!">Pedir ajuda</h1>
+      <p class="texto-suave">Conte o que você precisa e a gente mostra quem pode ajudar</p>
+    </header>
+    @switch (estado()) {
+      @case ('carregando') { <p role="status" class="aviso">Carregando as matérias…</p> }
+      @case ('erro') {
         <div class="aviso aviso--erro" role="alert">
-          <p>Para continuar, falta:</p>
-          <ul class="faltando">
-            @if (faltaMateria()) { <li>escolher uma matéria</li> }
-            @if (faltaTurno()) { <li>marcar pelo menos um turno</li> }
-          </ul>
+          <p>Não foi possível carregar as matérias. Seu preenchimento foi mantido.</p>
+          <button class="botao botao--secundario" type="button" (click)="carregar()">Tentar de novo</button>
         </div>
       }
-
-      <button type="submit" class="botao">Ver mentores</button>
-    </form>
-  }
-}
+      @case ('vazio') {
+        <div class="aviso"><p>As matérias ainda não estão disponíveis.</p><a routerLink="/inicio" class="link-acao">Voltar ao início →</a></div>
+      }
+      @case ('sucesso') {
+        @if (formulario(); as f) {
+          <form (submit)="enviar($event)" novalidate class="gap-7!">
+            <div class="w-full">
+              <label for="curso-ajuda" class="campo-titulo">Curso</label>
+              <select id="curso-ajuda" [value]="f.curso" (change)="trocarCurso($event)" class="campo-select w-full">
+                @for (curso of cursos; track curso.nome) { <option [value]="curso.nome">{{ curso.nome }}</option> }
+              </select>
+              <p class="texto-suave mt-2">Preenchido com o seu curso de cadastro. Você pode trocar para buscar outra matéria.</p>
+            </div>
+            <fieldset class="w-full">
+              <legend class="campo-titulo">Semestre</legend>
+              <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
+                @for (semestre of semestres(); track semestre) {
+                  <button type="button" class="escolha flex-1" [attr.aria-pressed]="f.semestre === semestre" (click)="atualizar({ semestre, materiaId: null })">
+                    @if (f.semestre === semestre) { <span aria-hidden="true">✓ </span> }{{ semestre }}º semestre
+                  </button>
+                }
+              </div>
+            </fieldset>
+            <fieldset class="w-full" [attr.aria-describedby]="tentouEnviar() && faltaMateria() ? 'erro-materia' : null">
+              <legend class="campo-titulo">Matéria</legend>
+              <p class="texto-suave mb-3">Selecione a matéria em que você precisa de apoio</p>
+              <div class="flex flex-wrap gap-2">
+                @for (materia of materiasFiltradas(); track materia.id) {
+                  <button class="escolha escolha--chip" type="button" [attr.aria-pressed]="f.materiaId === materia.id" (click)="atualizar({ materiaId: materia.id })">
+                    @if (f.materiaId === materia.id) { <span aria-hidden="true">✓ </span> }{{ materia.nome }}
+                  </button>
+                } @empty {
+                  <p class="texto-suave">Ainda não há matérias cadastradas neste semestre. Escolha outro semestre ou curso.</p>
+                }
+              </div>
+              @if (tentouEnviar() && faltaMateria()) { <p id="erro-materia" class="erro-campo mt-2" role="alert">Escolha uma matéria para continuar.</p> }
+            </fieldset>
+            <fieldset class="w-full">
+              <legend class="campo-titulo">O que você precisa <span class="texto-suave font-normal">(opcional)</span></legend>
+              <div class="flex flex-wrap gap-2">
+                @for (necessidade of necessidades; track necessidade) {
+                  <button type="button" class="escolha escolha--chip" [attr.aria-pressed]="f.necessidade === necessidade" (click)="atualizar({ necessidade: f.necessidade === necessidade ? null : necessidade })">
+                    @if (f.necessidade === necessidade) { <span aria-hidden="true">✓ </span> }{{ necessidade }}
+                  </button>
+                }
+              </div>
+            </fieldset>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-7 w-full">
+              <fieldset [attr.aria-describedby]="tentouEnviar() && faltaTurno() ? 'erro-turno' : null">
+                <legend class="campo-titulo">Turnos disponíveis <span class="texto-suave font-normal">(marque um ou mais)</span></legend>
+                <div class="flex flex-wrap gap-2">
+                  @for (turno of opcoesTurno; track turno) {
+                    <button type="button" class="escolha capitalize" [attr.aria-pressed]="f.turnos.includes(turno)" (click)="alternarTurno(turno)">
+                      @if (f.turnos.includes(turno)) { <span aria-hidden="true">✓ </span> }{{ rotuloTurno[turno] }}
+                    </button>
+                  }
+                </div>
+                @if (tentouEnviar() && faltaTurno()) { <p id="erro-turno" class="erro-campo mt-2" role="alert">Marque pelo menos um turno.</p> }
+              </fieldset>
+              <fieldset>
+                <legend class="campo-titulo">Modalidade de encontro</legend>
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" class="escolha text-left" [attr.aria-pressed]="f.modalidade === 'presencial'" (click)="atualizar({ modalidade: 'presencial' })">
+                    @if (f.modalidade === 'presencial') { <span aria-hidden="true">✓ </span> }Presencial <span class="block texto-suave">CIMATEC - Orlando Gomes</span>
+                  </button>
+                  <button type="button" class="escolha" [attr.aria-pressed]="f.modalidade === 'online'" (click)="atualizar({ modalidade: 'online' })">@if (f.modalidade === 'online') { <span aria-hidden="true">✓ </span> }Online</button>
+                  <button type="button" class="escolha col-span-2" [attr.aria-pressed]="f.modalidade === 'ambos'" (click)="atualizar({ modalidade: 'ambos' })">@if (f.modalidade === 'ambos') { <span aria-hidden="true">✓ </span> }Ambos</button>
+                </div>
+              </fieldset>
+            </div>
+            <div class="w-full flex justify-end pt-2"><button type="submit" class="botao w-full sm:w-auto">Ver mentores →</button></div>
+          </form>
+        }
+      }
+    }
+  </section>
+</div>

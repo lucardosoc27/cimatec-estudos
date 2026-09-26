@@ -11,8 +11,9 @@ export interface Usuario {
   nome: string;
   emailInstitucional: string;
   curso: string;
-  /** null = egresso (já concluiu o curso). */
-  semestre: number | null;
+  /** O semestre pertence ao filtro de matérias, não ao cadastro. */
+  foto: string | null;
+  termosVersao: string;
   /** Lista, não valor único: um veterano pode pedir ajuda em uma matéria e ensinar outra. */
   papeis: Papel[];
   verificacao: SituacaoVerificacao;
@@ -21,16 +22,15 @@ export interface Usuario {
 
 /**
  * Cada consentimento guarda a data e hora (ISO) em que foi dado; null = não deu.
- * Guardar a data em vez de um booleano é o que a LGPD pede: provar QUANDO o titular consentiu.
+ * A data registra quando a escolha foi feita. Não substitui um histórico de consentimentos.
  */
 export interface Consentimentos {
   /** Obrigatório no cadastro: sem ele a conta não existe. */
   termosEPoliticaEm: string;
   /**
-   * Foto visível só para quem está logado. Não vale para a vitrine pública, que usa sempre
-   * iniciais (DECISOES.md, 2026-09-22); o nome existe para impedir essa confusão.
+   * Foto visível para quem está logado. A vitrine depende de consentimento separado.
    */
   fotoParaLogadosEm: string | null;
-  /** Aparecer na vitrine pública da landing, só com iniciais. */
+  /** Aparecer na vitrine pública da landing, com primeiro nome e retrato ilustrado. */
   vitrinePublicaEm: string | null;
 }

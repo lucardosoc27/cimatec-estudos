@@ -1,0 +1,52 @@
+:host { display: block; }
+.conta { max-width: 736px; margin-inline: auto; padding: var(--espaco-5) var(--espaco-3) var(--espaco-6); display: flex; flex-direction: column; gap: var(--espaco-4); }
+.titulo { margin-bottom: 0; }
+
+/* Mesmo acabamento do cartão global (styles.scss); aqui só o espaçamento interno das seções */
+.cartao { display: flex; flex-direction: column; gap: var(--espaco-3); align-items: flex-start; padding: var(--espaco-3); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); background: var(--cor-superficie); box-shadow: var(--sombra-cartao); }
+.cartao form { width: 100%; gap: var(--espaco-3); }
+
+.campo { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+.campo label { font-weight: 700; }
+.campo input, .campo select { width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid var(--cor-borda); border-radius: var(--raio-pequeno); background: var(--cor-superficie); color: var(--cor-texto); }
+.campo input[readonly] { background: var(--cor-primaria-suave); color: var(--cor-texto-suave); }
+.campo small { color: var(--cor-texto-suave); font-size: .875rem; }
+.campo [aria-invalid='true'] { border-color: var(--cor-erro); }
+.erro-campo { color: var(--cor-erro); font-size: .875rem; }
+.erro-campo:empty { display: none; }
+
+.mensagem { width: 100%; border-radius: var(--raio-pequeno); padding: 12px; background: var(--cor-sucesso-fundo); color: var(--cor-sucesso); }
+.mensagem--erro { background: var(--cor-erro-fundo); color: var(--cor-erro); border: 1px solid var(--cor-erro); }
+
+.suave { color: var(--cor-texto-suave); }
+.pequeno { font-size: .875rem; }
+.nota { padding-top: var(--espaco-3); border-top: 1px solid var(--cor-borda-suave); width: 100%; font-size: .875rem; }
+
+.escolhas { width: 100%; }
+.escolha { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--espaco-2) var(--espaco-3); padding-block: var(--espaco-3); border-top: 1px solid var(--cor-borda-suave); }
+.escolha:first-child { border-top: 0; padding-top: 0; }
+.escolha > :first-child { flex: 1 1 14rem; }
+.escolha label { display: flex; flex-direction: column; gap: 2px; cursor: pointer; }
+
+/* Chave liga/desliga: é um checkbox de verdade (role="switch"), só com outra aparência.
+   Ligada = azul com a bolinha à direita; o estado também é lido pelo leitor de tela. */
+.chave { appearance: none; flex-shrink: 0; position: relative; width: 52px; height: 32px; margin: 6px 0; border: 1px solid var(--cor-borda); border-radius: var(--raio-pilula); background: var(--cor-neutro-fundo); cursor: pointer; transition: background-color 120ms; }
+.chave::after { content: ''; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--cor-superficie); box-shadow: 0 1px 3px rgb(23 32 51 / .3); transition: transform 120ms; }
+.chave:checked { background: var(--cor-primaria); border-color: var(--cor-primaria); }
+.chave:checked::after { transform: translateX(20px); }
+.chave:disabled { cursor: wait; opacity: .7; }
+
+/* Contorno vermelho: o vermelho cheio fica para a confirmação dentro da janela */
+.botao--contorno-perigo { border-color: var(--cor-erro); background: var(--cor-superficie); color: var(--cor-erro); }
+.botao--contorno-perigo:hover { background: var(--cor-erro-fundo); border-color: var(--cor-erro-escura); color: var(--cor-erro-escura); box-shadow: none; }
+
+.janela { width: min(100% - 2 * var(--espaco-3), 480px); padding: var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); color: var(--cor-texto); }
+.janela::backdrop { background: rgb(23 32 51 / .55); }
+.janela form { gap: var(--espaco-3); }
+.janela__acoes { display: flex; flex-wrap: wrap; gap: var(--espaco-2); }
+
+@media (min-width: 48rem) {
+  .conta { padding: var(--espaco-6) var(--espaco-4); }
+  .cartao { padding: var(--espaco-4); }
+}
+@media (prefers-reduced-motion: reduce) { .chave, .chave::after { transition: none; } }

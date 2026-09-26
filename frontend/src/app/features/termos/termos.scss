@@ -1,0 +1,32 @@
+:host { display: block; }
+.termos { max-width: 1080px; margin-inline: auto; padding: var(--espaco-5) var(--espaco-3) var(--espaco-6); }
+.titulo { margin-bottom: var(--espaco-2); }
+.versao { color: var(--cor-texto-suave); }
+.resumo, .indice, .parte { border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); }
+.resumo { background: var(--cor-primaria-suave); padding: var(--espaco-4); margin-top: var(--espaco-5); }
+.resumo ul { margin-top: var(--espaco-4); }
+.resumo li { display: flex; align-items: baseline; gap: var(--espaco-3); }
+.resumo li span { color: var(--cor-primaria); font-weight: 800; }
+.em-elaboracao { margin-block: var(--espaco-4); color: var(--cor-texto-suave); }
+.indice { background: var(--cor-superficie); padding: var(--espaco-3); align-self: start; }
+.indice__titulo { display: none; }
+.indice__abrir { display: flex; width: 100%; min-height: var(--alvo-toque); align-items: center; justify-content: space-between; gap: var(--espaco-3); background: transparent; border: 0; color: var(--cor-texto); font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
+.indice__conteudo { display: none; }
+.indice__conteudo--aberto { display: block; }
+.indice__parte { padding-top: var(--espaco-3); margin-top: var(--espaco-3); border-top: 1px solid var(--cor-borda-suave); font-weight: 700; }
+.indice .link-acao { font-weight: 400; padding-block: var(--espaco-2); line-height: 1.4; }
+.parte { padding: var(--espaco-4); background: var(--cor-superficie); }
+.parte h2 { padding-bottom: var(--espaco-3); border-bottom: 1px solid var(--cor-borda-suave); font-size: clamp(1.25rem, 3vw, 1.75rem); }
+.secao { margin-top: var(--espaco-4); }
+.secao h3 { font-size: var(--texto-destaque); }
+.secao p { margin-top: var(--espaco-2); color: var(--cor-texto-suave); font-style: italic; }
+.parte h2, .secao h3 { scroll-margin-top: var(--espaco-4); }
+.voltar { text-align: center; margin-top: var(--espaco-6); }
+@media (min-width: 48rem) {
+  .termos { padding: var(--espaco-6) var(--espaco-4); }
+  .documento { grid-template-columns: minmax(220px, 1fr) minmax(0, 3fr); }
+  .indice { position: sticky; top: var(--espaco-4); max-height: calc(100dvh - var(--espaco-5)); overflow-y: auto; }
+  .indice__titulo, .indice__conteudo { display: block; }
+  .indice__abrir { display: none; }
+  .parte, .resumo { padding: var(--espaco-5); }
+}

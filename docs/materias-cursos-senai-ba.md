@@ -77,3 +77,28 @@ Fonte: https://static.portaldaindustria.com.br/media/filer_public/78/5d/785d2152
 - **Profissional 1:** Tipografia; Imagem Digital; Marketing Digital
 - **Profissional 2:** Projeto de Identidade Visual; Design de Interfaces; Design Web; Produção Audiovisual; Motion Design
 - **Profissional 3:** Design de Animação 3D; Desenvolvimento de Projetos
+
+---
+
+## Uso no catálogo da interface (24/09/2026)
+
+`frontend/public/assets/materias.json` transcreve as matérias deste levantamento, sem
+as unidades marcadas com `*`. Não há inclusão de matérias deduzidas pelo nome do curso.
+O modelo de navegação usa os semestres explicitados em Redes e Química. Nos demais
+cursos de quatro semestres, os quatro módulos do levantamento são mantidos em sua
+ordem como quatro grupos do filtro. A equivalência entre módulo e semestre precisa
+ser conferida com a coordenação; essa organização da interface não confirma uma
+matriz curricular atual do CIMATEC. Os graus de confiança acima continuam válidos.
+
+- **Química:** estão cadastrados somente os três semestres da fonte de Alagoas.
+  O quarto semestre fica vazio até confirmação da grade da Bahia.
+- **Multimídia:** o curso tem três semestres, mas a fonte do Rio de Janeiro organiza
+  as matérias em quatro módulos, sem indicar como distribuí-los nesses semestres.
+  O curso aparece nos formulários; as matérias ainda não aparecem no filtro para
+  evitar inventar essa distribuição. Os nomes estão preservados no levantamento acima.
+- **Biotecnologia, Eletromecânica e Mecânica:** as matérias são do documento citado,
+  com a ressalva de vigência/unidade que já consta neste arquivo.
+- Os identificadores de matéria são únicos no catálogo. Em Redes, usados também
+  nos dados de demonstração: `redes-soho`, `redes-estruturas`, `redes-infraestrutura`,
+  `redes-logica`, `redes-corporativas`, `redes-servidores`, `redes-projeto`,
+  `redes-gestao-ti` e `redes-integracao`.

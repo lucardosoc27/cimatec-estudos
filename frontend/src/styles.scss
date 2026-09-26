@@ -31,7 +31,11 @@
      direto sobre a página exige trocar este token por #6B7684 (3,56:1). Ver DECISOES.md. */
   --cor-borda: #7B8794;
   --cor-borda-suave: #CBD1DE;       /* fio de cartão: 1,53:1 contra o branco, 1,18:1 contra o fundo — nitidez de borda, não separação */
-  --cor-fundo: #DEE2EB;              /* página: escurecido em 2026-09-22 para o cartão branco separar sozinho (1,30:1) */
+  --cor-fundo: #E8EFFB;
+  --cor-cabecalho: #E8F0FB;
+  --cor-cabecalho-borda: #DFEBFC;
+  --cor-luz-azul: #D5E6FC;
+  --cor-luz-ciano: #DCF3FB;
   --cor-superficie: #FFFFFF;
 
   /* Semânticas: cada status do pedido usa um par texto/fundo daqui, sempre com o rótulo escrito */
@@ -72,7 +76,7 @@
   --sombra-flutuante: 0 8px 24px rgb(23 32 51 / 0.12);  /* hover de botão */
 
   --alvo-toque: 44px;
-  --largura-conteudo: 720px;  /* largura de leitura confortável, centralizada */
+  --largura-conteudo: 1200px;  /* largura de leitura confortável, centralizada */
 }
 
 /* Tela grande (a partir de 768px): só o título cresce aqui; o resto do respiro entra tela por tela.
@@ -89,7 +93,10 @@ body {
   font-size: var(--texto-corpo);
   line-height: var(--altura-linha);
   color: var(--cor-texto);
-  background: var(--cor-fundo);
+  background: radial-gradient(ellipse at 5% 0%, var(--cor-luz-azul), transparent 55%), radial-gradient(ellipse at 100% 95%, var(--cor-luz-ciano), transparent 45%), var(--cor-fundo);
+  min-width: 320px;
+  min-height: 100vh;
+  background-attachment: fixed;
 }
 
 h1, h2, h3, p, ul { margin: 0; }
@@ -164,7 +171,7 @@ a:not(.botao):hover { color: var(--cor-primaria-escura); }
    mudança invisível. Texto escuro sobre o preenchimento novo: 5,94:1. */
 .botao--secundario {
   border-color: var(--cor-primaria);
-  background: transparent;
+  background: var(--cor-superficie);
   color: var(--cor-primaria);
 
   &:hover {
@@ -334,4 +341,25 @@ form {
   &[data-status='recusado']   strong { color: var(--cor-erro);     background: var(--cor-erro-fundo); }     /* 5,75:1 */
   &[data-status='expirado']   strong { color: var(--cor-alerta);   background: var(--cor-alerta-fundo); }   /* 5,95:1 */
   &[data-status='cancelado']  strong { color: var(--cor-neutro);   background: var(--cor-neutro-fundo); }   /* 6,58:1 */
+}
+
+/* Tailwind organiza o layout; os tokens e componentes definem a identidade visual. */
+input, select, textarea, button { font: inherit; }
+input:not([type=checkbox]):not([type=radio]), select, textarea {
+  max-width: 100%; min-width: 0; min-height: 48px; padding: 10px 14px;
+  border: 1px solid var(--cor-borda); border-radius: var(--raio-pequeno);
+  background: var(--cor-superficie); color: var(--cor-texto);
+}
+input[type=checkbox], input[type=radio] { accent-color: var(--cor-primaria); }
+button { touch-action: manipulation; }
+button:disabled { cursor: wait; }
+img { max-width: 100%; }
+.status { display: inline-flex; gap: 6px; align-items: center; padding: 5px 12px; border-radius: var(--raio-pilula); font-size: .875rem; font-weight: 600; }
+.status[data-status=aguardando] { color: var(--cor-primaria); background: var(--cor-primaria-suave); }
+.status[data-status=aceito] { color: var(--cor-sucesso); background: var(--cor-sucesso-fundo); }
+.status[data-status=recusado] { color: var(--cor-erro); background: var(--cor-erro-fundo); }
+.status[data-status=expirado] { color: var(--cor-alerta); background: var(--cor-alerta-fundo); }
+.status[data-status=cancelado], .status[data-status=enviado] { color: var(--cor-neutro); background: var(--cor-neutro-fundo); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }

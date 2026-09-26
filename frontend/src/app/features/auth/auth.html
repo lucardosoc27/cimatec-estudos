@@ -1,0 +1,93 @@
+<div class="acesso grid lg:grid-cols-2">
+  <aside class="apresentacao flex flex-col">
+    <a routerLink="/" class="marca flex items-center gap-3" aria-label="Cimatec Estudos — página inicial">
+      <span class="marca__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5C9 3 5 3 2 4v15c3-1 7-1 10 1m0-15c3-2 7-2 10-1v15c-3-1-7-1-10 1V5Z"/></svg></span>
+      <span><strong>Cimatec Estudos<span class="ponto">.</span></strong><small>MENTORIA ENTRE ALUNOS</small></span>
+    </a>
+    <div class="apresentacao__conteudo flex flex-col justify-center">
+      <button type="button" class="encontro" [class.encontro--animar]="animar()" (click)="repetirAnimacao()" (mouseenter)="repetirAnimacao()" aria-label="Você com dúvidas encontra um mentor que quer ensinar. Repetir animação.">
+        <span class="pessoa pessoa--aluno"><small>ESTUDANTE</small><strong>você</strong><span>com dúvidas</span></span>
+        <span class="pessoa pessoa--mentor"><small>COLEGA</small><strong>mentor</strong><span>quer ensinar</span></span>
+        <span class="encontro__selo">em comum</span>
+      </button>
+      <h2>Alguém do seu curso já passou por <span>isso.</span></h2>
+      <p>Encontre um colega do SENAI CIMATEC que já aprendeu o caminho.</p>
+      <div class="beneficios grid sm:grid-cols-2 gap-6">
+        <div><strong>Exclusivo CIMATEC</strong><p>Acesso com seu e-mail institucional</p></div>
+        <div><strong>No seu ritmo</strong><p>Você escolhe: no campus ou online</p></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="formulario-area flex items-center justify-center">
+    <section class="cartao-acesso w-full" aria-labelledby="titulo-acesso">
+      <nav class="abas grid grid-cols-2" aria-label="Acesso à conta">
+        <a routerLink="/entrar" [queryParams]="voltar ? {voltar: voltar} : null" [class.aba--ativa]="!cadastro()" [attr.aria-current]="!cadastro() ? 'page' : null">Entrar</a>
+        <a routerLink="/cadastro" [class.aba--ativa]="cadastro()" [attr.aria-current]="cadastro() ? 'page' : null">Criar conta</a>
+      </nav>
+      <h1 id="titulo-acesso">{{ cadastro() ? 'Criar sua conta de estudante' : 'Bem-vindo(a) de volta!' }}</h1>
+      <p class="descricao">{{ cadastro() ? 'Junte-se à comunidade de mentoria entre alunos do SENAI CIMATEC.' : 'Acesse sua conta para continuar seus estudos ou mentorias.' }}</p>
+
+      <form #form="ngForm" (ngSubmit)="enviar(form)" novalidate class="w-full" [attr.aria-busy]="enviando()">
+        @if (erro()) { <p id="auth-erro" tabindex="-1" class="mensagem mensagem--erro w-full" role="alert">{{ erro() }}</p> }
+        @if (cadastro()) {
+          <div class="campo w-full">
+            <label for="nome">Nome <span aria-hidden="true">*</span></label>
+            <input id="nome" name="nome" [ngModel]="nome()" (ngModelChange)="nome.set($event)" required maxlength="80" pattern=".*\S.*" autocomplete="nickname" placeholder="Como quer ser chamado(a)" [attr.aria-invalid]="tentou() && !nome().trim()" aria-describedby="nome-erro">
+            <span id="nome-erro" class="erro-campo">@if (tentou() && !nome().trim()) { Conte como quer ser chamado(a). }</span>
+          </div>
+          <div class="campo w-full">
+            <label for="curso">Curso <span aria-hidden="true">*</span></label>
+            <select id="curso" name="curso" [ngModel]="curso()" (ngModelChange)="curso.set($event)" required [attr.aria-invalid]="tentou() && !curso()" aria-describedby="curso-erro">
+              <option value="" disabled>Selecione seu curso</option>
+              @for (opcao of cursos; track opcao.nome) { <option [value]="opcao.nome">{{ opcao.nome }}</option> }
+            </select>
+            <span id="curso-erro" class="erro-campo">@if (tentou() && !curso()) { Selecione seu curso. }</span>
+          </div>
+        }
+        <div class="campo w-full">
+          <label for="email">E-mail institucional <span aria-hidden="true">*</span></label>
+          <input id="email" type="email" name="email" #emailCampo="ngModel" [ngModel]="email()" (ngModelChange)="email.set($event)" required email maxlength="254" autocomplete="username" placeholder="Seu e-mail institucional" [attr.aria-invalid]="tentou() && emailCampo.invalid" aria-describedby="email-dica email-erro">
+          <small id="email-dica">Use o endereço fornecido pelo SENAI CIMATEC.</small>
+          <span id="email-erro" class="erro-campo">@if (tentou() && emailCampo.invalid) { Informe um e-mail válido. }</span>
+        </div>
+        <div class="campo w-full">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <label for="senha">{{ cadastro() ? 'Criar senha' : 'Senha' }} <span aria-hidden="true">*</span></label>
+            @if (!cadastro()) { <button type="button" class="link-texto" (click)="recuperacao.set(!recuperacao())" [attr.aria-expanded]="recuperacao()" aria-controls="recuperar-info">Esqueci minha senha</button> }
+          </div>
+          @if (recuperacao() && !cadastro()) { <p id="recuperar-info" class="mensagem" role="status">A recuperação de senha ainda não está disponível nesta versão.</p> }
+          <div class="senha flex items-stretch">
+            <input id="senha" [type]="mostrarSenha() ? 'text' : 'password'" name="senha" [ngModel]="senha()" (ngModelChange)="senha.set($event)" required [attr.autocomplete]="cadastro() ? 'new-password' : 'current-password'" [placeholder]="cadastro() ? 'Crie sua senha' : 'Sua senha de acesso'" [attr.aria-invalid]="tentou() && (!senha() || (cadastro() && !senhaValida()))" [attr.aria-describedby]="cadastro() ? 'senha-regras senha-erro' : 'senha-erro'">
+            <button type="button" class="mostrar-senha" (click)="mostrarSenha.set(!mostrarSenha())" [attr.aria-pressed]="mostrarSenha()">{{ mostrarSenha() ? 'Ocultar' : 'Mostrar' }}<span class="sr-only"> senha</span></button>
+          </div>
+          <span id="senha-erro" class="erro-campo">@if (tentou() && !senha()) { Informe sua senha. }</span>
+          @if (cadastro()) {
+            <div id="senha-regras" class="senha-regras">
+              <strong>Sua senha deve conter:</strong>
+              <ul>@for (regra of regras(); track regra.texto) { <li [class.atendida]="regra.atendida"><span aria-hidden="true">{{ regra.atendida ? '✓' : '○' }}</span> {{ regra.texto }} — {{ regra.atendida ? 'atendido' : 'pendente' }}</li> }</ul>
+            </div>
+          }
+        </div>
+        @if (cadastro()) {
+          <div class="campo w-full">
+            <label for="confirmar">Confirmar senha <span aria-hidden="true">*</span></label>
+            <input id="confirmar" [type]="mostrarSenha() ? 'text' : 'password'" name="confirmacao" [ngModel]="confirmacao()" (ngModelChange)="confirmacao.set($event)" required autocomplete="new-password" placeholder="Repita a senha criada" [attr.aria-invalid]="tentou() && senha() !== confirmacao()" aria-describedby="confirmacao-erro">
+            <span id="confirmacao-erro" class="erro-campo">@if (tentou() && senha() !== confirmacao()) { As senhas precisam ser iguais. }</span>
+          </div>
+          <fieldset class="consentimentos flex flex-col gap-4 w-full">
+            <legend>Seus dados e privacidade</legend>
+            <label class="consentimento flex gap-3 items-start"><input type="checkbox" name="termos" [ngModel]="termos()" (ngModelChange)="termos.set($event)" required [attr.aria-invalid]="tentou() && !termos()"><span><strong>Obrigatório:</strong> Li e aceito os <a routerLink="/termos" target="_blank" rel="noopener">Termos de Uso</a> e a <a routerLink="/termos" fragment="privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
+            @if (tentou() && !termos()) { <p class="erro-campo">É necessário aceitar os termos e a política para criar sua conta.</p> }
+            <label class="consentimento flex gap-3 items-start"><input type="checkbox" name="foto" [ngModel]="foto()" (ngModelChange)="foto.set($event)"><span><strong>Opcional:</strong> Quero mostrar minha foto para quem está logado.</span></label>
+            <label class="consentimento flex gap-3 items-start"><input type="checkbox" name="vitrine" [ngModel]="vitrine()" (ngModelChange)="vitrine.set($event)"><span><strong>Opcional:</strong> Quero aparecer na vitrine pública de mentores, só com meu primeiro nome e minhas matérias.</span></label>
+            <p>Você pode mudar isso quando quiser em <strong>Minha conta</strong>.</p>
+          </fieldset>
+        }
+        @if (segundos() > 0) { <p role="status">Tente novamente em {{ segundos() }} segundos.</p> }
+        @if (tentativas() > 0 && !cadastro()) { <p class="tentativas">Tentativas sem sucesso nesta página: {{ tentativas() }}.</p> }
+        <button type="submit" class="botao w-full" [disabled]="enviando() || segundos() > 0">{{ enviando() ? (cadastro() ? 'Criando conta…' : 'Entrando…') : (cadastro() ? 'Criar conta →' : 'Entrar →') }}</button>
+      </form>
+    </section>
+  </div>
+</div>

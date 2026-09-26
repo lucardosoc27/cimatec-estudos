@@ -6,35 +6,17 @@ import { CriteriosBusca } from '../models/busca';
 import { Mentor, Recomendacao } from '../models/mentor';
 import { materiasAlternativas, recomendarMentores } from '../shared/util/recomendacao';
 import { MateriasService } from './materias.service';
-import { MentorMock } from './mock/mentor-mock';
 
 @Injectable({ providedIn: 'root' })
 export class MentoresService {
   private readonly http = inject(HttpClient);
   private readonly materiasService = inject(MateriasService);
 
-  /** Quando a API existir, vira '/api/mentores'. */
-  private readonly url = 'assets/mentores.json';
+  /** Endpoint privado: a sessão é enviada pelo navegador na mesma origem. */
+  private readonly url = '/api/mentores';
 
-  /**
-   * Mentores verificados, sem os campos que só o mock tem (simulação e consentimentos).
-   * No MVP o filtro roda aqui; na fase 2 o servidor simplesmente não devolve
-   * mentor não verificado (ver DECISOES.md, 2026-09-07).
-   */
-  listarVerificados(): Observable<Mentor[]> {
-    return this.http.get<MentorMock[]>(this.url).pipe(
-      map((lista) =>
-        lista
-          .filter((m) => m.verificado)
-          .map(({ respostaSimulada, consentimentos, ...mentor }) => ({
-            ...mentor,
-            // Sem consentimento a foto nem sai daqui: esconder no template ainda deixaria a URL
-            // na aba Rede. No mock é simulado, porque o JSON bruto já chegou (DECISOES.md).
-            foto: consentimentos.fotoParaLogadosEm ? mentor.foto : null,
-          })),
-      ),
-    );
-  }
+  /** O servidor filtra verificação, consentimento e horários ocupados. */
+  listarVerificados(): Observable<Mentor[]> { return this.http.get<Mentor[]>(this.url); }
 
   /**
    * Tela 4. Quando a API existir, vira GET /api/mentores/:id, e o servidor responde 404

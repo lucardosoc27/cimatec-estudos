@@ -1,9 +1,698 @@
 [
-  { "id": "logica", "nome": "Lógica de Programação", "curso": "Desenvolvimento de Sistemas", "semestre": 1 },
-  { "id": "matematica", "nome": "Matemática Aplicada", "curso": "Desenvolvimento de Sistemas", "semestre": 1 },
-  { "id": "redes", "nome": "Redes de Computadores", "curso": "Desenvolvimento de Sistemas", "semestre": 1 },
-  { "id": "poo", "nome": "Programação Orientada a Objetos", "curso": "Desenvolvimento de Sistemas", "semestre": 2 },
-  { "id": "banco-dados", "nome": "Banco de Dados", "curso": "Desenvolvimento de Sistemas", "semestre": 2 },
-  { "id": "ingles-tecnico", "nome": "Inglês Técnico", "curso": "Desenvolvimento de Sistemas", "semestre": 2 },
-  { "id": "front-end", "nome": "Desenvolvimento Front-end", "curso": "Desenvolvimento de Sistemas", "semestre": 3 }
+  {
+    "id": "logica",
+    "nome": "Lógica de Programação",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 1
+  },
+  {
+    "id": "ds-fundamentos-de-eletroeletronica-aplicada",
+    "nome": "Fundamentos de Eletroeletrônica Aplicada",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 1
+  },
+  {
+    "id": "ds-modelagem-de-sistemas",
+    "nome": "Modelagem de Sistemas",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 2
+  },
+  {
+    "id": "banco-dados",
+    "nome": "Banco de Dados",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 2
+  },
+  {
+    "id": "ds-programacao-de-aplicativos",
+    "nome": "Programação de Aplicativos",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 2
+  },
+  {
+    "id": "ds-internet-das-coisas",
+    "nome": "Internet das Coisas",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 3
+  },
+  {
+    "id": "ds-desenvolvimento-de-sistemas",
+    "nome": "Desenvolvimento de Sistemas",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 3
+  },
+  {
+    "id": "ds-teste-de-sistemas",
+    "nome": "Teste de Sistemas",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 4
+  },
+  {
+    "id": "ds-implantacao-de-sistemas",
+    "nome": "Implantação de Sistemas",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 4
+  },
+  {
+    "id": "ds-manutencao-de-sistemas",
+    "nome": "Manutenção de Sistemas",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 4
+  },
+  {
+    "id": "ds-interface-homem-computador",
+    "nome": "Interface Homem-Computador",
+    "curso": "Desenvolvimento de Sistemas",
+    "semestre": 4
+  },
+  {
+    "id": "redes-soho",
+    "nome": "Instalação e Manutenção de Redes SOHO I",
+    "curso": "Redes de Computadores",
+    "semestre": 1
+  },
+  {
+    "id": "redes-estruturas",
+    "nome": "Estruturas de Computadores",
+    "curso": "Redes de Computadores",
+    "semestre": 1
+  },
+  {
+    "id": "redes-infraestrutura",
+    "nome": "Infraestrutura de Redes de Computadores",
+    "curso": "Redes de Computadores",
+    "semestre": 1
+  },
+  {
+    "id": "redes-logica",
+    "nome": "Lógica de Programação",
+    "curso": "Redes de Computadores",
+    "semestre": 1
+  },
+  {
+    "id": "redes-corporativas",
+    "nome": "Instalação e Manutenção de Redes Corporativas",
+    "curso": "Redes de Computadores",
+    "semestre": 2
+  },
+  {
+    "id": "redes-servidores",
+    "nome": "Configuração de Servidores de Rede",
+    "curso": "Redes de Computadores",
+    "semestre": 2
+  },
+  {
+    "id": "redes-projeto",
+    "nome": "Projeto de Redes de Computadores",
+    "curso": "Redes de Computadores",
+    "semestre": 3
+  },
+  {
+    "id": "redes-gestao-ti",
+    "nome": "Boas Práticas de Gestão em TI",
+    "curso": "Redes de Computadores",
+    "semestre": 3
+  },
+  {
+    "id": "redes-integracao",
+    "nome": "Implementação e Integração de Redes de Computadores",
+    "curso": "Redes de Computadores",
+    "semestre": 3
+  },
+  {
+    "id": "bio-fundamentos-de-quimica",
+    "nome": "Fundamentos de Química",
+    "curso": "Biotecnologia",
+    "semestre": 1
+  },
+  {
+    "id": "bio-fundamentos-da-bioquimica",
+    "nome": "Fundamentos da Bioquímica",
+    "curso": "Biotecnologia",
+    "semestre": 1
+  },
+  {
+    "id": "bio-boas-praticas-laboratoriais",
+    "nome": "Boas Práticas Laboratoriais",
+    "curso": "Biotecnologia",
+    "semestre": 1
+  },
+  {
+    "id": "bio-fundamentos-de-estatistica",
+    "nome": "Fundamentos de Estatística",
+    "curso": "Biotecnologia",
+    "semestre": 1
+  },
+  {
+    "id": "bio-inovacao-e-empreendedorismo-i",
+    "nome": "Inovação e Empreendedorismo I",
+    "curso": "Biotecnologia",
+    "semestre": 1
+  },
+  {
+    "id": "bio-tecnicas-de-comunicacao-e-informacao",
+    "nome": "Técnicas de Comunicação e Informação",
+    "curso": "Biotecnologia",
+    "semestre": 1
+  },
+  {
+    "id": "bio-bioquimica-aplicada-a-biotecnologia",
+    "nome": "Bioquímica aplicada à Biotecnologia",
+    "curso": "Biotecnologia",
+    "semestre": 2
+  },
+  {
+    "id": "bio-microbiologia-aplicada-a-biotecnologia",
+    "nome": "Microbiologia aplicada à Biotecnologia",
+    "curso": "Biotecnologia",
+    "semestre": 2
+  },
+  {
+    "id": "bio-quimica-aplicada-a-biotecnologia",
+    "nome": "Química aplicada à Biotecnologia",
+    "curso": "Biotecnologia",
+    "semestre": 2
+  },
+  {
+    "id": "bio-gestao-da-qualidade",
+    "nome": "Gestão da Qualidade",
+    "curso": "Biotecnologia",
+    "semestre": 2
+  },
+  {
+    "id": "bio-inovacao-e-empreendedorismo-ii",
+    "nome": "Inovação e Empreendedorismo II",
+    "curso": "Biotecnologia",
+    "semestre": 2
+  },
+  {
+    "id": "bio-biologia-molecular-e-bioinformatica",
+    "nome": "Biologia Molecular e Bioinformática",
+    "curso": "Biotecnologia",
+    "semestre": 3
+  },
+  {
+    "id": "bio-processos-e-produtos-biotecnologicos",
+    "nome": "Processos e Produtos Biotecnológicos",
+    "curso": "Biotecnologia",
+    "semestre": 3
+  },
+  {
+    "id": "bio-fundamentos-da-metodologia-cientifica",
+    "nome": "Fundamentos da Metodologia Científica",
+    "curso": "Biotecnologia",
+    "semestre": 3
+  },
+  {
+    "id": "bio-projeto-final-de-curso-i",
+    "nome": "Projeto Final de Curso I",
+    "curso": "Biotecnologia",
+    "semestre": 3
+  },
+  {
+    "id": "bio-biotecnologia-aplicada-a-alimentos-e-bebidas",
+    "nome": "Biotecnologia aplicada à Alimentos e Bebidas",
+    "curso": "Biotecnologia",
+    "semestre": 4
+  },
+  {
+    "id": "bio-biotecnologia-aplicada-a-saude",
+    "nome": "Biotecnologia aplicada à Saúde",
+    "curso": "Biotecnologia",
+    "semestre": 4
+  },
+  {
+    "id": "bio-biotecnologia-aplicada-ao-meio-ambiente",
+    "nome": "Biotecnologia aplicada ao Meio Ambiente",
+    "curso": "Biotecnologia",
+    "semestre": 4
+  },
+  {
+    "id": "bio-operacoes-unitarias-e-controle-de-bioprocessos",
+    "nome": "Operações Unitárias e Controle de Bioprocessos",
+    "curso": "Biotecnologia",
+    "semestre": 4
+  },
+  {
+    "id": "bio-projeto-final-de-curso-ii",
+    "nome": "Projeto Final de Curso II",
+    "curso": "Biotecnologia",
+    "semestre": 4
+  },
+  {
+    "id": "qui-fundamentos-da-quimica",
+    "nome": "Fundamentos da Química",
+    "curso": "Química",
+    "semestre": 1
+  },
+  {
+    "id": "qui-fundamentos-das-tecnicas-laboratoriais",
+    "nome": "Fundamentos das técnicas laboratoriais",
+    "curso": "Química",
+    "semestre": 1
+  },
+  {
+    "id": "qui-fundamentos-de-matematica-e-fisica",
+    "nome": "Fundamentos de Matemática e Física",
+    "curso": "Química",
+    "semestre": 1
+  },
+  {
+    "id": "qui-fundamentos-da-microbiologia",
+    "nome": "Fundamentos da Microbiologia",
+    "curso": "Química",
+    "semestre": 1
+  },
+  {
+    "id": "qui-fundamentos-de-processos-quimicos-industriais",
+    "nome": "Fundamentos de Processos Químicos Industriais",
+    "curso": "Química",
+    "semestre": 1
+  },
+  {
+    "id": "qui-analises-instrumentais",
+    "nome": "Análises Instrumentais",
+    "curso": "Química",
+    "semestre": 1
+  },
+  {
+    "id": "qui-linguagem-e-comunicacao",
+    "nome": "Linguagem e Comunicação",
+    "curso": "Química",
+    "semestre": 1
+  },
+  {
+    "id": "qui-quimica-analitica-i",
+    "nome": "Química Analítica I",
+    "curso": "Química",
+    "semestre": 2
+  },
+  {
+    "id": "qui-quimica-analitica-ii",
+    "nome": "Química Analítica II",
+    "curso": "Química",
+    "semestre": 2
+  },
+  {
+    "id": "qui-analises-microbiologicas",
+    "nome": "Análises Microbiológicas",
+    "curso": "Química",
+    "semestre": 2
+  },
+  {
+    "id": "qui-operacao-de-processos-quimicos-industriais-i",
+    "nome": "Operação de Processos Químicos Industriais I",
+    "curso": "Química",
+    "semestre": 2
+  },
+  {
+    "id": "qui-operacao-de-processos-quimicos-industriais-ii",
+    "nome": "Operação de Processos Químicos Industriais II",
+    "curso": "Química",
+    "semestre": 3
+  },
+  {
+    "id": "qui-controle-dos-processos-industriais-e-laboratoriais",
+    "nome": "Controle dos Processos Industriais e Laboratoriais",
+    "curso": "Química",
+    "semestre": 3
+  },
+  {
+    "id": "qui-desenvolvimento-de-metodos-analiticos-produtos-e-processos",
+    "nome": "Desenvolvimento de Métodos Analíticos, Produtos e Processos",
+    "curso": "Química",
+    "semestre": 3
+  },
+  {
+    "id": "qui-gestao-pessoas",
+    "nome": "Gestão Pessoas",
+    "curso": "Química",
+    "semestre": 3
+  },
+  {
+    "id": "petro-introducao-a-industria-petroquimica",
+    "nome": "Introdução à Indústria Petroquímica",
+    "curso": "Petroquímica",
+    "semestre": 1
+  },
+  {
+    "id": "petro-fundamentos-de-mecanica",
+    "nome": "Fundamentos de Mecânica",
+    "curso": "Petroquímica",
+    "semestre": 1
+  },
+  {
+    "id": "petro-fundamentos-de-quimica-aplicada",
+    "nome": "Fundamentos de Química Aplicada",
+    "curso": "Petroquímica",
+    "semestre": 1
+  },
+  {
+    "id": "petro-fundamentos-da-fisica-aplicada",
+    "nome": "Fundamentos da Física Aplicada",
+    "curso": "Petroquímica",
+    "semestre": 1
+  },
+  {
+    "id": "petro-operacao-de-sistemas-petroquimicos",
+    "nome": "Operação de Sistemas Petroquímicos",
+    "curso": "Petroquímica",
+    "semestre": 2
+  },
+  {
+    "id": "petro-instrumentacao-aplicada-a-processos-petroquimicos",
+    "nome": "Instrumentação Aplicada a processos petroquímicos",
+    "curso": "Petroquímica",
+    "semestre": 2
+  },
+  {
+    "id": "petro-hidraulica-e-pneumatica-aplicadas-aos-processos-petroquimicos",
+    "nome": "Hidráulica e Pneumática Aplicadas aos processos petroquímicos",
+    "curso": "Petroquímica",
+    "semestre": 2
+  },
+  {
+    "id": "petro-tubulacoes-valvulas-e-acessorios",
+    "nome": "Tubulações, Válvulas e Acessórios",
+    "curso": "Petroquímica",
+    "semestre": 2
+  },
+  {
+    "id": "petro-equipamentos-industriais",
+    "nome": "Equipamentos Industriais",
+    "curso": "Petroquímica",
+    "semestre": 2
+  },
+  {
+    "id": "petro-operacao-de-sistemas-de-utilidades",
+    "nome": "Operação de Sistemas de Utilidades",
+    "curso": "Petroquímica",
+    "semestre": 3
+  },
+  {
+    "id": "petro-processos-da-industria-petroquimica",
+    "nome": "Processos da Indústria Petroquímica",
+    "curso": "Petroquímica",
+    "semestre": 3
+  },
+  {
+    "id": "petro-fisico-quimica-aplicada",
+    "nome": "Físico Química Aplicada",
+    "curso": "Petroquímica",
+    "semestre": 3
+  },
+  {
+    "id": "petro-gestao-de-pessoas",
+    "nome": "Gestão de Pessoas",
+    "curso": "Petroquímica",
+    "semestre": 3
+  },
+  {
+    "id": "petro-gerenciamento-e-tratamento-de-residuos-de-processos",
+    "nome": "Gerenciamento e Tratamento de Resíduos de Processos",
+    "curso": "Petroquímica",
+    "semestre": 4
+  },
+  {
+    "id": "petro-tecnicas-de-analises-para-processos-petroquimicos",
+    "nome": "Técnicas de Análises para Processos Petroquímicos",
+    "curso": "Petroquímica",
+    "semestre": 4
+  },
+  {
+    "id": "petro-gestao-da-producao",
+    "nome": "Gestão da Produção",
+    "curso": "Petroquímica",
+    "semestre": 4
+  },
+  {
+    "id": "petro-analise-de-processos",
+    "nome": "Analise de Processos",
+    "curso": "Petroquímica",
+    "semestre": 4
+  },
+  {
+    "id": "eletro-fundamentos-eletricos",
+    "nome": "Fundamentos Elétricos",
+    "curso": "Eletromecânica",
+    "semestre": 1
+  },
+  {
+    "id": "eletro-fundamentos-mecanicos",
+    "nome": "Fundamentos Mecânicos",
+    "curso": "Eletromecânica",
+    "semestre": 1
+  },
+  {
+    "id": "eletro-montagem-de-sistemas-eletricos",
+    "nome": "Montagem de Sistemas Elétricos",
+    "curso": "Eletromecânica",
+    "semestre": 2
+  },
+  {
+    "id": "eletro-montagem-de-sistemas-mecanicos",
+    "nome": "Montagem de Sistemas Mecânicos",
+    "curso": "Eletromecânica",
+    "semestre": 2
+  },
+  {
+    "id": "eletro-montagem-de-sistemas-de-controle-e-acionamentos-eletromecanicos",
+    "nome": "Montagem de Sistemas de Controle e Acionamentos Eletromecânicos",
+    "curso": "Eletromecânica",
+    "semestre": 2
+  },
+  {
+    "id": "eletro-manutencao-de-sistemas-mecanicos",
+    "nome": "Manutenção de Sistemas Mecânicos",
+    "curso": "Eletromecânica",
+    "semestre": 3
+  },
+  {
+    "id": "eletro-manutencao-de-sistemas-eletricos",
+    "nome": "Manutenção de Sistemas Elétricos",
+    "curso": "Eletromecânica",
+    "semestre": 3
+  },
+  {
+    "id": "eletro-manutencao-de-sistemas-de-controle-e-acionamentos-eletromecanicos",
+    "nome": "Manutenção de Sistemas de Controle e Acionamentos Eletromecânicos",
+    "curso": "Eletromecânica",
+    "semestre": 3
+  },
+  {
+    "id": "eletro-desenvolvimento-de-projetos-de-sistemas-eletromecanicos",
+    "nome": "Desenvolvimento de Projetos de Sistemas Eletromecânicos",
+    "curso": "Eletromecânica",
+    "semestre": 4
+  },
+  {
+    "id": "edif-introducao-a-projeto-de-edificacoes",
+    "nome": "Introdução a Projeto de Edificações",
+    "curso": "Edificações",
+    "semestre": 1
+  },
+  {
+    "id": "edif-desenho-tecnico-para-projetos-de-construcao-civil",
+    "nome": "Desenho Técnico para projetos de Construção Civil",
+    "curso": "Edificações",
+    "semestre": 1
+  },
+  {
+    "id": "edif-introducao-a-mecanica-dos-solos",
+    "nome": "Introdução a Mecânica dos Solos",
+    "curso": "Edificações",
+    "semestre": 1
+  },
+  {
+    "id": "edif-fundamentos-de-construcao-de-edificacoes",
+    "nome": "Fundamentos de Construção de Edificações",
+    "curso": "Edificações",
+    "semestre": 1
+  },
+  {
+    "id": "edif-fundamentos-de-topografia",
+    "nome": "Fundamentos de Topografia",
+    "curso": "Edificações",
+    "semestre": 1
+  },
+  {
+    "id": "edif-projetos-arquitetonicos",
+    "nome": "Projetos Arquitetônicos",
+    "curso": "Edificações",
+    "semestre": 2
+  },
+  {
+    "id": "edif-projetos-estruturais",
+    "nome": "Projetos Estruturais",
+    "curso": "Edificações",
+    "semestre": 2
+  },
+  {
+    "id": "edif-projetos-de-instalacoes-hidrossanitarias",
+    "nome": "Projetos de Instalações Hidrossanitárias",
+    "curso": "Edificações",
+    "semestre": 2
+  },
+  {
+    "id": "edif-projetos-de-instalacoes-eletricas",
+    "nome": "Projetos de Instalações Elétricas",
+    "curso": "Edificações",
+    "semestre": 2
+  },
+  {
+    "id": "edif-projetos-executivos",
+    "nome": "Projetos Executivos",
+    "curso": "Edificações",
+    "semestre": 2
+  },
+  {
+    "id": "edif-viabilidade-tecnica-e-legal-de-projetos-de-edificacoes",
+    "nome": "Viabilidade técnica e Legal de Projetos de Edificações",
+    "curso": "Edificações",
+    "semestre": 2
+  },
+  {
+    "id": "edif-planejamento-da-construcao-de-edificacoes",
+    "nome": "Planejamento da Construção de Edificações",
+    "curso": "Edificações",
+    "semestre": 3
+  },
+  {
+    "id": "edif-gestao-da-construcao-de-estruturas-em-edificacoes",
+    "nome": "Gestão da Construção de Estruturas em Edificações",
+    "curso": "Edificações",
+    "semestre": 3
+  },
+  {
+    "id": "edif-gestao-de-execucao-de-acabamentos-em-obras-de-edificacoes",
+    "nome": "Gestão de Execução de Acabamentos em Obras de Edificações",
+    "curso": "Edificações",
+    "semestre": 3
+  },
+  {
+    "id": "edif-gestao-da-execucao-de-instalacao-em-edificacoes",
+    "nome": "Gestão da Execução de Instalação em Edificações",
+    "curso": "Edificações",
+    "semestre": 3
+  },
+  {
+    "id": "edif-gestao-de-maquinas-equipamentos-e-instalacoes-em-obras-de-edificacoes",
+    "nome": "Gestão de Máquinas, Equipamentos e Instalações em Obras de Edificações",
+    "curso": "Edificações",
+    "semestre": 3
+  },
+  {
+    "id": "edif-gestao-da-manutencao-de-edificacoes",
+    "nome": "Gestão da Manutenção de Edificações",
+    "curso": "Edificações",
+    "semestre": 3
+  },
+  {
+    "id": "edif-gestao-de-equipes-em-canteiro-de-obras",
+    "nome": "Gestão de Equipes em Canteiro de Obras",
+    "curso": "Edificações",
+    "semestre": 3
+  },
+  {
+    "id": "edif-processos-de-construcao-de-edificacoes",
+    "nome": "Processos de Construção de Edificações",
+    "curso": "Edificações",
+    "semestre": 4
+  },
+  {
+    "id": "edif-metodos-modernos-de-construcao",
+    "nome": "Métodos Modernos de Construção",
+    "curso": "Edificações",
+    "semestre": 4
+  },
+  {
+    "id": "edif-desempenho-de-edificacoes",
+    "nome": "Desempenho de Edificações",
+    "curso": "Edificações",
+    "semestre": 4
+  },
+  {
+    "id": "edif-inovacoes-tecnologicas-em-projetos-de-edificacoes",
+    "nome": "Inovações Tecnológicas em Projetos de Edificações",
+    "curso": "Edificações",
+    "semestre": 4
+  },
+  {
+    "id": "mec-fundamentos-da-tecnologia-mecanica-i",
+    "nome": "Fundamentos da Tecnologia Mecânica I",
+    "curso": "Mecânica",
+    "semestre": 1
+  },
+  {
+    "id": "mec-fundamentos-da-tecnologia-mecanica-ii",
+    "nome": "Fundamentos da Tecnologia Mecânica II",
+    "curso": "Mecânica",
+    "semestre": 1
+  },
+  {
+    "id": "mec-processos-basicos-da-fabricacao-mecanica",
+    "nome": "Processos Básicos da Fabricação Mecânica",
+    "curso": "Mecânica",
+    "semestre": 1
+  },
+  {
+    "id": "mec-fundamentos-da-comunicacao-e-informatica",
+    "nome": "Fundamentos da Comunicação e Informática",
+    "curso": "Mecânica",
+    "semestre": 1
+  },
+  {
+    "id": "mec-planejamento-e-controle-da-producao",
+    "nome": "Planejamento e Controle da Produção",
+    "curso": "Mecânica",
+    "semestre": 2
+  },
+  {
+    "id": "mec-processos-de-producao-mecanica",
+    "nome": "Processos de Produção Mecânica",
+    "curso": "Mecânica",
+    "semestre": 2
+  },
+  {
+    "id": "mec-processos-de-fabricacao-mecanica",
+    "nome": "Processos de Fabricação Mecânica",
+    "curso": "Mecânica",
+    "semestre": 2
+  },
+  {
+    "id": "mec-manutencao-mecanica-aplicada",
+    "nome": "Manutenção Mecânica Aplicada",
+    "curso": "Mecânica",
+    "semestre": 3
+  },
+  {
+    "id": "mec-planejamento-e-controle-da-manutencao",
+    "nome": "Planejamento e Controle da Manutenção",
+    "curso": "Mecânica",
+    "semestre": 3
+  },
+  {
+    "id": "mec-producao-enxuta",
+    "nome": "Produção Enxuta",
+    "curso": "Mecânica",
+    "semestre": 3
+  },
+  {
+    "id": "mec-desenvolvimento-de-sistemas-de-automacao-mecanica",
+    "nome": "Desenvolvimento de Sistemas de Automação Mecânica",
+    "curso": "Mecânica",
+    "semestre": 4
+  },
+  {
+    "id": "mec-desenvolvimento-de-projetos-em-mecanica",
+    "nome": "Desenvolvimento de Projetos em Mecânica",
+    "curso": "Mecânica",
+    "semestre": 4
+  },
+  {
+    "id": "mec-metodologia-de-projetos",
+    "nome": "Metodologia de Projetos",
+    "curso": "Mecânica",
+    "semestre": 4
+  }
 ]
