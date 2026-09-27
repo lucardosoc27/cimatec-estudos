@@ -7,9 +7,10 @@ import {
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { TitleStrategy, provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
+import { TituloComAnuncio } from './core/titulo-com-anuncio';
 import { USAR_MOCK, dadosMockInterceptor } from './services/mock/dados-mock';
 
 // Necessário para o DatePipe escrever "quarta-feira, 16/09" em vez do formato inglês.
@@ -25,5 +26,7 @@ export const appConfig: ApplicationConfig = {
     // pelo mock de dados; com USAR_MOCK = false, tudo vai para o Spring.
     provideHttpClient(withInterceptors(USAR_MOCK ? [dadosMockInterceptor] : [])),
     { provide: LOCALE_ID, useValue: 'pt-BR' },
+    // Título da aba e anúncio da troca de tela para leitor de tela (core/titulo-com-anuncio.ts).
+    { provide: TitleStrategy, useExisting: TituloComAnuncio },
   ],
 };

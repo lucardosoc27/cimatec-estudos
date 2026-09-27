@@ -1,14 +1,20 @@
 import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 
+/**
+ * Foto ou inicial de uma pessoa. É decoração para o leitor de tela (aria-hidden e alt vazio):
+ * em todos os usos o nome já está escrito ao lado, e ler "B, Bernardo" ou "Bernardo, Bernardo"
+ * só atrapalha. Se um dia o avatar aparecer SEM o nome ao lado, ele precisa voltar a ter texto.
+ */
 @Component({
   selector: 'app-avatar',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { 'aria-hidden': 'true' },
   template: `
     <span class="avatar" [class.avatar--neutro]="tom() === 'neutro'" [style.width.px]="tamanho()" [style.height.px]="tamanho()" [style.font-size.px]="tamanho() * .38">
       @if (foto() && falhou() !== foto()) {
-        <img [src]="foto()" [alt]="nome()" (error)="falhou.set(foto())" />
+        <img [src]="foto()" alt="" (error)="falhou.set(foto())" />
       } @else {
-        <span [attr.aria-label]="nome()">{{ inicial() }}</span>
+        <span>{{ inicial() }}</span>
       }
     </span>
   `,

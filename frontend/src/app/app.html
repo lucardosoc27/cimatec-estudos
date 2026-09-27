@@ -4,3 +4,5 @@
   <router-outlet />
 </main>
 <app-rodape />
+<!-- Lida pelo leitor de tela a cada troca de tela; invisível na tela (core/titulo-com-anuncio.ts). -->
+<p class="sr-only" aria-live="polite" aria-atomic="true">{{ anuncio() }}</p>

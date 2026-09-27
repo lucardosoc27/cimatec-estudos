@@ -77,8 +77,8 @@
           </div>
           <fieldset class="consentimentos flex flex-col gap-4 w-full">
             <legend>Seus dados e privacidade</legend>
-            <label class="consentimento flex gap-3 items-start"><input type="checkbox" name="termos" [ngModel]="termos()" (ngModelChange)="termos.set($event)" required [attr.aria-invalid]="tentou() && !termos()"><span><strong>Obrigatório:</strong> Li e aceito os <a routerLink="/termos" target="_blank" rel="noopener">Termos de Uso</a> e a <a routerLink="/termos" fragment="privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
-            @if (tentou() && !termos()) { <p class="erro-campo">É necessário aceitar os termos e a política para criar sua conta.</p> }
+            <label class="consentimento flex gap-3 items-start"><input type="checkbox" name="termos" [ngModel]="termos()" (ngModelChange)="termos.set($event)" required [attr.aria-invalid]="tentou() && !termos()" [attr.aria-describedby]="tentou() && !termos() ? 'termos-erro' : null"><span><strong>Obrigatório:</strong> Li e aceito os <a routerLink="/termos" target="_blank" rel="noopener">Termos de Uso</a> e a <a routerLink="/termos" fragment="privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
+            @if (tentou() && !termos()) { <p id="termos-erro" class="erro-campo">É necessário aceitar os termos e a política para criar sua conta.</p> }
             <label class="consentimento flex gap-3 items-start"><input type="checkbox" name="foto" [ngModel]="foto()" (ngModelChange)="foto.set($event)"><span><strong>Opcional:</strong> Quero mostrar minha foto para quem está logado.</span></label>
             <label class="consentimento flex gap-3 items-start"><input type="checkbox" name="vitrine" [ngModel]="vitrine()" (ngModelChange)="vitrine.set($event)"><span><strong>Opcional:</strong> Quero aparecer na vitrine pública de mentores, com meu primeiro nome, curso, matérias e descrição. Sem foto.</span></label>
             <p>Você pode mudar isso quando quiser em <strong>Minha conta</strong>.</p>

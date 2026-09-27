@@ -36,7 +36,7 @@
 
     <div class="materias flex flex-wrap justify-center" aria-live="polite">
       @if (estadoMaterias() === 'erro') {
-        <p>Não conseguimos carregar as matérias. <button class="link-acao link-botao" type="button" (click)="carregarMaterias()">Tentar novamente</button></p>
+        <p role="alert">Não conseguimos carregar as matérias. <button class="link-acao link-botao" type="button" (click)="carregarMaterias()">Tentar novamente</button></p>
       } @else if (estadoMaterias() === 'sucesso' && !materiasDoCurso().length) {
         <p>A grade deste curso está em confirmação. Você pode escolher outro curso para consultar as matérias.</p>
       } @else if (estadoMaterias() === 'sucesso') {

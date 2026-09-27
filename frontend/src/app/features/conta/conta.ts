@@ -72,7 +72,13 @@ export class Conta {
 
   protected salvarDados(): void {
     this.tentouSalvar.set(true);
-    if (!this.nome().trim() || !this.curso() || this.salvando()) return;
+    if (!this.nome().trim() || !this.curso()) {
+      // O erro está escrito junto do campo (aria-describedby). Levar o foco até ele é o que faz o
+      // leitor de tela ler "Nome, inválido, Conte como quer ser chamado(a)"; sem isso, nada é dito.
+      setTimeout(() => document.getElementById(!this.nome().trim() ? 'nome' : 'curso')?.focus());
+      return;
+    }
+    if (this.salvando()) return;
     this.salvando.set(true);
     this.resultadoDados.set(null);
     this.auth.atualizarConta({ nome: this.nome().trim(), curso: this.curso() })

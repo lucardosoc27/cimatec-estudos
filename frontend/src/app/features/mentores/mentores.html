@@ -35,7 +35,7 @@
                 @if (resultado.recomendados.length > 2) { <div class="pilha__fundo pilha__fundo--dois" inert aria-hidden="true"></div> }
                 <article class="cartao-mentor relative overflow-hidden">
                   <div class="retrato flex items-center justify-center relative">
-                    @if (item.mentor.foto) { <img [src]="item.mentor.foto" [alt]="item.mentor.nome" class="absolute inset-0 w-full h-full object-cover" /> }
+                    @if (item.mentor.foto) { <img [src]="item.mentor.foto" alt="" class="absolute inset-0 w-full h-full object-cover" /> }
                     @else { <app-avatar [nome]="item.mentor.nome" [foto]="null" [tamanho]="132" /> }
                     @if (idComSelo() === item.mentor.id) { <span class="selo-combina absolute top-4 left-4"><span aria-hidden="true">✓</span> Combina bem com você</span> }
                     <ul class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2" aria-label="Em comum">
