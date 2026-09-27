@@ -7,6 +7,7 @@ import { finalize } from 'rxjs';
 
 import { CURSOS } from '../../models/curso';
 import { AuthService } from '../../services/auth.service';
+import { mensagemDoErro } from '../../shared/util/erros-http';
 
 @Component({
   selector: 'app-auth',
@@ -111,7 +112,10 @@ export class Auth {
           this.tentativas.update((valor) => valor + 1);
           this.erro.set('e-mail ou senha inválidos');
         } else {
-          this.erro.set('Não foi possível entrar agora. Verifique sua conexão e tente novamente.');
+          // 400 (senha maior que 64, por exemplo) traz a mensagem do servidor; só sem resposta
+          // ou com erro do servidor é que a tela fala em conexão. Não conta tentativa: o servidor
+          // recusou o pedido antes de conferir a senha.
+          this.erro.set(mensagemDoErro(erro, 'Não foi possível entrar agora. Verifique sua conexão e tente novamente.'));
         }
         this.focarErro();
       },

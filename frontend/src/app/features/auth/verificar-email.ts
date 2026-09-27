@@ -6,6 +6,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { AuthService } from '../../services/auth.service';
+import { mensagemDoErro } from '../../shared/util/erros-http';
 
 type EstadoVerificacao = 'enviamos' | 'confirmar' | 'ativada' | 'expirado' | 'ja-usado' | 'invalido';
 
@@ -70,7 +71,7 @@ export class VerificarEmail {
       error: (erro: HttpErrorResponse) => {
         this.erro.set(erro.status === 429
           ? 'Aguarde um pouco antes de pedir outro link.'
-          : 'Não foi possível reenviar agora. Seu e-mail foi mantido; tente novamente.');
+          : mensagemDoErro(erro, 'Não foi possível reenviar agora. Seu e-mail foi mantido; tente novamente.'));
       },
     });
   }
