@@ -374,7 +374,14 @@ Aprovada no Stitch, mas **desatualizada** com as decisões de 24/09. Corrigir an
 
 Eduarda e Felipe ficam como **não verificados**: não aparecem nas buscas.
 
-**A decidir com o Luã:** quais mentores ficam sem consentimento de foto (é preciso ter alguns, para o avatar padrão aparecer) e quais têm vitrine pública (o carrossel da landing precisa de vários).
+**Decidido em 2026-09-27:** a vitrine pública nunca mostra foto (DECISOES.md, entrada de
+2026-09-22), então "quais têm vitrine pública" não depende de ter foto. Hoje, 10 dos 18
+mentores verificados têm `vitrinePublicaEm`; os outros 8 não aparecem no carrossel, e isso é
+esperado, não pendência.
+
+**Ainda a decidir com o Luã:** quais mentores ficam sem consentimento de `fotoParaLogadosEm`
+(a foto para quem está logado, em `/mentores`) — é preciso ter alguns, para o avatar padrão
+aparecer ali também.
 
 ### Cursos e matérias
 Arquivo `materias-cursos-senai-ba.md`: grades reais do SENAI Bahia, com a fonte e o grau de confiança de cada uma. Química, Mecânica, Multimídia e Eletromecânica estão **a confirmar com a coordenação**.
