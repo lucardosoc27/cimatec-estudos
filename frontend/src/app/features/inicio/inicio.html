@@ -34,7 +34,7 @@
           </p>
 
           <p class="pedido__status" [attr.data-status]="pedido.status">
-            Status: <strong>{{ rotuloStatus[pedido.status] }}</strong>
+            Status: <app-status [status]="pedido.status" />
           </p>
 
           @switch (pedido.status) {

@@ -18,10 +18,11 @@ import { ROTULO_MODALIDADE } from '../../models/disponibilidade';
 import { PRAZO_RESPOSTA_HORAS, Pedido, ROTULO_STATUS, podeSerCancelado } from '../../models/pedido';
 import { PedidoEncerradoError, PedidosService } from '../../services/pedidos.service';
 import { EstadoTela } from '../../shared/estado-tela';
+import { Status } from '../../shared/status/status';
 
 @Component({
   selector: 'app-pedido-detalhe',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, Status],
   templateUrl: './pedido-detalhe.html',
   styleUrl: './pedido-detalhe.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

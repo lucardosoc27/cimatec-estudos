@@ -3,13 +3,14 @@ import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 import { ROTULO_MODALIDADE } from '../../models/disponibilidade';
-import { Pedido, ROTULO_STATUS } from '../../models/pedido';
+import { Pedido } from '../../models/pedido';
 import { PedidosService } from '../../services/pedidos.service';
 import { EstadoTela } from '../../shared/estado-tela';
+import { Status } from '../../shared/status/status';
 
 @Component({
   selector: 'app-inicio',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, Status],
   templateUrl: './inicio.html',
   styleUrl: './inicio.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,7 +21,6 @@ export class Inicio {
   protected readonly estado = signal<EstadoTela>('carregando');
   protected readonly pedidos = signal<Pedido[]>([]);
 
-  protected readonly rotuloStatus = ROTULO_STATUS;
   protected readonly rotuloModalidade = ROTULO_MODALIDADE;
 
   constructor() {

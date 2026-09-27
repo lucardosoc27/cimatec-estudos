@@ -30,7 +30,7 @@
         </p>
         <!-- tabindex="-1": não entra na ordem do Tab, mas aceita foco por código depois do cancelamento -->
         <p #statusPedido tabindex="-1" class="pedido__status" [attr.data-status]="p.status">
-          Status: <strong>{{ rotuloStatus[p.status] }}</strong>
+          Status: <app-status [status]="p.status" />
         </p>
         @if (cancelamentoNaoAconteceu()) {
           <p class="pedido__aviso" role="status">

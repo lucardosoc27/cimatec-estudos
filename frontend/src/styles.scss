@@ -15,9 +15,9 @@
 :root {
   /* Paleta: azul institucional SENAI CIMATEC como base, laranja como ação.
      Contrastes medidos e registrados em DECISOES.md (2026-09-21). */
-  --cor-primaria: #1D4FA0;          /* azul: link, seleção de rádio, botão secundário, pílula "Aguardando" (7,84:1 sobre branco) */
+  --cor-primaria: #1D4FA0;          /* azul: link, seleção de rádio, botão secundário (7,84:1 sobre branco) */
   --cor-primaria-escura: #1B3E8C;   /* azul escuro: hover de link e do botão secundário */
-  --cor-primaria-suave: #E8EEF9;    /* azul clarinho: fundo do status Aguardando e do secundário ocupado, dentro de cartão */
+  --cor-primaria-suave: #E8EEF9;    /* azul clarinho: fundo do link ativo e do secundário ocupado, dentro de cartão */
   --cor-secundario-hover: #BCC8E7;  /* preenchimento do hover do secundário: precisa registrar contra a PÁGINA (1,29:1), não contra o cartão */
   --cor-acao: #BF4409;              /* laranja da ação principal (texto branco sobre ele: 5,19:1) */
   --cor-acao-escura: #A83A07;       /* hover da ação principal (6,42:1) */
@@ -40,10 +40,10 @@
 
   /* Semânticas: cada status do pedido usa um par texto/fundo daqui, sempre com o rótulo escrito */
   --cor-sucesso: #0B6B3A;  --cor-sucesso-fundo: #DDF5E6;   /* Aceito, mentor verificado (5,75:1) */
-  --cor-erro: #B42318;     --cor-erro-fundo: #FDECEA;      /* Recusado, erro de tela, botão de perigo (5,75:1) */
+  --cor-erro: #B42318;     --cor-erro-fundo: #FDECEA;      /* erro de tela, botão de perigo (5,75:1) */
   --cor-erro-escura: #9E1E13;                              /* hover e "ocupado" do botão de perigo (branco sobre ele: 7,93:1) */
-  --cor-alerta: #8A4B00;   --cor-alerta-fundo: #FBEEDC;    /* Expirado (5,95:1) */
-  --cor-neutro: #4A5568;   --cor-neutro-fundo: #EDF0F4;    /* Cancelado (6,58:1) */
+  --cor-alerta: #8A4B00;   --cor-alerta-fundo: #FBEEDC;    /* Aguardando resposta (5,95:1) */
+  --cor-neutro: #4A5568;   --cor-neutro-fundo: #EDF0F4;    /* Enviado, Recusado, Expirado, Cancelado (6,58:1) */
   /* Apelido de --cor-primaria: o anel de foco segue a marca. Tem nome próprio porque responde
      a outra pergunta e carrega restrição própria — a WCAG cobra 3:1 do anel contra o que estiver
      em volta. Se um dia as duas restrições divergirem, volta a ser hex, com registro. */
@@ -183,7 +183,7 @@ a:not(.botao):hover { color: var(--cor-primaria-escura); }
 
   /* Desabilitado ("Enviando…" num secundário): sem esta regra, .botao:disabled pintaria fundo e
      borda de laranja escuro por baixo do texto azul (1,22:1). O texto continua --cor-primaria da
-     regra base, sobre --cor-primaria-suave: 6,73:1, o mesmo par da pílula "Aguardando". */
+     regra base, sobre --cor-primaria-suave: 6,73:1. */
   &:disabled {
     background: var(--cor-primaria-suave);
     border-color: var(--cor-primaria);
@@ -329,25 +329,9 @@ form {
 .pedido__quando { color: var(--cor-texto-suave); }
 .pedido__mentor { margin-top: var(--espaco-1); }  /* matéria, mentor e data são um bloco: 4px separa sem soltar */
 
-/* Status: o rótulo por extenso ("Aguardando resposta") é o que comunica; a pílula colorida
-   é reforço. Cada status usa um par texto/fundo dos tokens, todos acima de 4,5:1. */
-.pedido__status {
-  /* O status é o que precisa estar sempre visível, então descola do bloco de cima */
-  margin-top: var(--espaco-3);
-
-  strong {
-    display: inline-block;
-    padding: var(--espaco-1) var(--espaco-3);
-    border-radius: var(--raio-pilula);
-    font-weight: 700;
-  }
-
-  &[data-status='aguardando'] strong { color: var(--cor-primaria); background: var(--cor-primaria-suave); } /* 6,73:1 */
-  &[data-status='aceito']     strong { color: var(--cor-sucesso);  background: var(--cor-sucesso-fundo); }  /* 5,75:1 */
-  &[data-status='recusado']   strong { color: var(--cor-erro);     background: var(--cor-erro-fundo); }     /* 5,75:1 */
-  &[data-status='expirado']   strong { color: var(--cor-alerta);   background: var(--cor-alerta-fundo); }   /* 5,95:1 */
-  &[data-status='cancelado']  strong { color: var(--cor-neutro);   background: var(--cor-neutro-fundo); }   /* 6,58:1 */
-}
+/* O status é o que precisa estar sempre visível, então descola do bloco de cima.
+   A pílula em si é o <app-status>, com as cores em .status, mais abaixo. */
+.pedido__status { margin-top: var(--espaco-3); }
 
 /* Tailwind organiza o layout; os tokens e componentes definem a identidade visual. */
 input, select, textarea, button { font: inherit; }
@@ -360,12 +344,12 @@ input[type=checkbox], input[type=radio] { accent-color: var(--cor-primaria); }
 button { touch-action: manipulation; }
 button:disabled { cursor: wait; }
 img { max-width: 100%; }
-.status { display: inline-flex; gap: 6px; align-items: center; padding: 5px 12px; border-radius: var(--raio-pilula); font-size: .875rem; font-weight: 600; }
-.status[data-status=aguardando] { color: var(--cor-primaria); background: var(--cor-primaria-suave); }
-.status[data-status=aceito] { color: var(--cor-sucesso); background: var(--cor-sucesso-fundo); }
-.status[data-status=recusado] { color: var(--cor-erro); background: var(--cor-erro-fundo); }
-.status[data-status=expirado] { color: var(--cor-alerta); background: var(--cor-alerta-fundo); }
-.status[data-status=cancelado], .status[data-status=enviado] { color: var(--cor-neutro); background: var(--cor-neutro-fundo); }
+/* Selo de status: o único lugar com o par de cores de cada status (ESPECIFICACAO-TELAS.md,
+   "Selo de status"). O rótulo por extenso é o que comunica; a cor é reforço. 16px como o corpo. */
+.status { display: inline-flex; gap: 6px; align-items: center; padding: 5px 12px; border-radius: var(--raio-pilula); font-weight: 600; }
+.status[data-status=aguardando] { color: var(--cor-alerta); background: var(--cor-alerta-fundo); }   /* 5,95:1 */
+.status[data-status=aceito] { color: var(--cor-sucesso); background: var(--cor-sucesso-fundo); }     /* 5,75:1 */
+.status[data-status=enviado], .status[data-status=recusado], .status[data-status=expirado], .status[data-status=cancelado] { color: var(--cor-neutro); background: var(--cor-neutro-fundo); } /* 6,58:1 */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
