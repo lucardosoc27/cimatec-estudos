@@ -21,8 +21,8 @@
           <form (submit)="enviar($event)" novalidate class="formulario">
             <div class="w-full">
               <label for="curso-ajuda" class="campo-titulo">Curso</label>
-              <select id="curso-ajuda" [value]="f.curso" (change)="trocarCurso($event)" class="campo-select w-full">
-                @for (curso of cursos; track curso.nome) { <option [value]="curso.nome">{{ curso.nome }}</option> }
+              <select id="curso-ajuda" (change)="trocarCurso($event)" class="campo-select w-full">
+                @for (curso of cursos; track curso.nome) { <option [value]="curso.nome" [selected]="curso.nome === f.curso">{{ curso.nome }}</option> }
               </select>
               <p class="texto-suave mt-2">Preenchido com o seu curso de cadastro. Você pode trocar para buscar outra matéria.</p>
             </div>
