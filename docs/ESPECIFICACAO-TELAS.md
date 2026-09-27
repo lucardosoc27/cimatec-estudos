@@ -317,6 +317,10 @@ Existe para a Política de Privacidade ser verdadeira: os direitos do titular (v
   - e-mail institucional (não editável, com o texto "O e-mail institucional não pode ser alterado");
   - curso (seleção editável).
   - Botão "Salvar alterações".
+- **"Ajudar colegas"** (decisão de 27/09, "virar mentor"):
+  - "Quero receber pedidos de ajuda": chave liga/desliga, **sempre desligada numa conta nova**, com a data em que foi ligada.
+  - Texto de apoio: "Você decide se aceita cada pedido."
+  - Desligar volta a data para `null`, como nos consentimentos.
 - **"Sua privacidade":**
   - Termos e Política: "Aceito em <data> (versão <n>)", com link para ler. É obrigatório e não tem chave.
   - "Mostrar minha foto para quem está logado": chave liga/desliga, com a data.
@@ -327,7 +331,7 @@ Existe para a Política de Privacidade ser verdadeira: os direitos do titular (v
   - O texto das consequências: "Seus dados e pedidos são apagados. Sessões já aceitas são canceladas e o mentor é avisado."
   - Botão de perigo "Excluir minha conta".
   - A confirmação é uma janela que **pede a senha**, com os botões "Excluir definitivamente" (perigo) e "Cancelar". O foco volta ao botão de origem ao fechar.
-- **Back-end:** `GET /api/auth/eu` (já existe), `PATCH /api/conta` (nome e curso), `PATCH /api/conta/consentimentos` e `DELETE /api/conta` (com a senha).
+- **Back-end:** `GET /api/auth/eu` (já existe), `PATCH /api/conta` (nome e curso), `PATCH /api/conta/consentimentos`, `PATCH /api/conta/mentoria` (já existe, commit 5b) e `DELETE /api/conta` (com a senha).
 - **Limitação já registrada:** o consentimento é um campo com data, não um histórico. Retirar o consentimento apaga a data anterior.
 
 ### Landing (`/`)

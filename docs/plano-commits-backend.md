@@ -92,16 +92,36 @@ e API atrás do mesmo domínio, API em `/api`; `DECISOES.md` 2026-09-27). O CORS
 retirado, porque não existe chamada entre origens em nenhum ambiente, e a URL do site virou a
 propriedade `app.url`.
 
-## Commit 5b — O front passa a usar o login do Spring
+## Commit 5b — Virar mentor
 
-**Entrega:** `SESSAO_SIMULADA` some junto com o arquivo `sessao-simulada.ts`; a tela de login
-trata o 403 de conta pendente com a mensagem do servidor; os dados do mock passam a ler "quem
-está logado" do `AuthService` (`DECISOES.md` 2026-09-26); as contas de demonstração são
-recriadas pelo cadastro e verificadas pelo link do console. Prova no navegador: cadastro,
-verificação, login, `/inicio`, logout.
+Entrou no plano em 2026-09-27 (`DECISOES.md`, mesma data): num sistema de mentoria entre
+estudantes, "como alguém vira mentor" precisa ter resposta dentro do sistema.
 
-**Não entrega:** limite de tentativas, recuperação de senha, `/api/conta` (a tela Minha conta
-fica sem servidor até o commit 7), pedidos e mentores no Spring.
+**Entrega:** na conta, a data `mentoria_desde` (nula = a pessoa não recebe pedidos), pela mesma
+convenção dos consentimentos; `PATCH /api/conta/mentoria` com `{ "receberPedidos": true | false }`,
+protegido pelo "nega por padrão" (exige sessão e token CSRF); ligar de novo não muda a data;
+desligar volta a data para nula; `GET /api/auth/eu` passa a devolver `papeis` a partir dessa
+data e o próprio `mentoriaDesde`. No front, só a chave "Quero receber pedidos de ajuda" em Minha
+conta, ligada à rota real.
+
+**Não entrega:** matérias, descrição e horários do mentor (o "cadastro de mentor" de 2026-09-20
+continua escopo futuro, e esses dados seguem no mock); mudança no mock de dados ou na sessão
+simulada (até o 5c, a chave em Minha conta recebe 404 da sessão simulada e volta ao valor
+anterior, com a mensagem de erro da tela); o que acontece com pedidos recebidos quando a pessoa
+desliga (decide-se junto com os pedidos no Spring).
+
+## Commit 5c — O front passa a usar o login do Spring
+
+**Entrega:** `SESSAO_SIMULADA` some junto com o arquivo `sessao-simulada.ts`; o interceptor do
+mock deixa de responder `/api/auth/*` e `/api/conta*`, que passam a chegar ao Spring; a tela de
+login trata o 403 de conta pendente com a mensagem do servidor e o caminho para reenviar o link;
+o mock de pedidos encontra a persona pelo e-mail devolvido por `/api/auth/eu`; as contas de
+demonstração são recriadas pelo cadastro, verificadas pelo link do console, e a Ana liga a
+mentoria pela tela Minha conta. Prova no navegador: cadastro, verificação, login, rota protegida
+com dados, logout, e voltar pelo navegador depois de sair.
+
+**Não entrega:** limite de tentativas, recuperação de senha, nome, curso, consentimentos e
+exclusão de conta no Spring (commit 7), pedidos e mentores no Spring.
 
 ## Commit 6 — Limite de tentativas
 
@@ -117,7 +137,7 @@ restarts, biblioteca de rate limit.
 ## Depois do commit 6 (proposta, ordem a confirmar com o autor)
 
 7. Minha conta: `PATCH /api/conta`, `PATCH /api/conta/consentimentos`, `DELETE /api/conta`
-   com senha, que a tela já chama.
+   com senha, que a tela já chama (a chave de mentoria já chegou no 5b).
 8. Recuperação de senha: token de uso único com expiração curta e resposta idêntica exista ou não
    o e-mail. Primeiro item a cair se o prazo apertar.
 9. Pedidos e mentores no Spring (seção 6 da `ESPECIFICACAO-TELAS.md`), quando `USAR_MOCK` sai
