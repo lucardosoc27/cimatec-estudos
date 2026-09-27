@@ -8,11 +8,11 @@ import { Materia } from '../../models/materia';
 import { MateriasService } from '../../services/materias.service';
 import { Avatar } from '../../shared/avatar/avatar';
 
+/** Sem foto: a vitrine pública nunca envia retrato de mentor (DECISOES.md, 2026-09-22). */
 interface MentorPublico {
   id: string;
   nome: string;
   curso: string;
-  foto: string | null;
   descricao: string;
   materias?: string[];
 }

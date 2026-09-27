@@ -82,7 +82,7 @@
         @for (mentor of mentoresVisiveis(); track mentor.id; let posicao = $index) {
           <article class="mentor-publico flex flex-col" [class.mentor-publico--segundo]="posicao === 1" [class.mentor-publico--terceiro]="posicao === 2" role="group" aria-roledescription="slide" [attr.aria-label]="primeiroNome(mentor.nome) + ', ' + mentor.curso">
             <div class="flex items-center gap-4">
-              <app-avatar [nome]="primeiroNome(mentor.nome)" [foto]="mentor.foto" [tamanho]="64" tom="neutro" />
+              <app-avatar [nome]="primeiroNome(mentor.nome)" [tamanho]="64" tom="neutro" />
               <div class="min-w-0"><h3>{{ primeiroNome(mentor.nome) }}</h3><p class="mentor-publico__curso">{{ mentor.curso }}</p></div>
             </div>
             @if (mentor.materias?.length) {

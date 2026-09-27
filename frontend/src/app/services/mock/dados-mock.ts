@@ -135,7 +135,11 @@ function publico({ respostaSimulada, consentimentos, ...mentor }: MentorMock): M
   return { ...mentor, foto: consentimentos.fotoParaLogadosEm ? mentor.foto : null };
 }
 
-/** Vitrine da landing: só quem consentiu, primeiro nome, sem horário. Foto só com o consentimento de foto. */
+/**
+ * Vitrine da landing: só quem consentiu, primeiro nome, sem horário.
+ * Sem foto, nunca: DECISOES.md, entrada de 2026-09-22. O campo nem existe nesta resposta —
+ * a regra é tirada na origem, não escondida depois no template.
+ */
 function vitrine(base: Base) {
   return verificados(base)
     .filter((m) => m.consentimentos.vitrinePublicaEm)
@@ -143,7 +147,6 @@ function vitrine(base: Base) {
       id: m.id,
       nome: m.nome.split(' ')[0],
       curso: m.curso,
-      foto: publico(m).foto,
       descricao: m.descricao,
       materias: m.materias.map((id) => base.materias.find((x) => x.id === id)?.nome).filter(Boolean),
     }));
