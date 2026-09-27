@@ -1,9 +1,11 @@
 package br.senai.cimatec.estudos.auth;
 
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -34,11 +36,13 @@ public class AuthController {
     private final AuthenticationManager autenticador;
     private final SessionAuthenticationStrategy estrategiaDeSessao;
     private final SecurityContextRepository repositorioDeContexto;
+    private final LimiteDeTentativas limite;
     private final SecurityContextHolderStrategy contextos = SecurityContextHolder.getContextHolderStrategy();
 
     public AuthController(CadastroService cadastro, VerificacaoService verificacao, UsuarioRepository usuarios,
             AuthenticationManager autenticador, SessionAuthenticationStrategy estrategiaDeSessao,
-            SecurityContextRepository repositorioDeContexto) {
+            SecurityContextRepository repositorioDeContexto, LimiteDeTentativas limite) {
+        this.limite = limite;
         this.cadastro = cadastro;
         this.verificacao = verificacao;
         this.usuarios = usuarios;
@@ -84,12 +88,29 @@ public class AuthController {
      *    pendente com senha certa lança DisabledException (ver TratamentoDeErros);
      * 2. estratégia de sessão: troca o id da sessão e apaga o token CSRF antigo;
      * 3. guardar o contexto na HttpSession, explicitamente, senão o login dura uma requisição.
+     * Antes de tudo, o limite de tentativas: bloqueado, a senha nem é conferida.
      */
     @PostMapping("/login")
     public UsuarioResposta entrar(@Valid @RequestBody LoginRequest pedido, HttpServletRequest request,
             HttpServletResponse response) {
-        Authentication autenticacao = autenticador.authenticate(
-            UsernamePasswordAuthenticationToken.unauthenticated(pedido.email(), pedido.senha()));
+        // Mesma normalização do UsuarioDetailsService: "Ana@..." e " ana@..." são a mesma conta
+        // também para o limite, senão variar maiúsculas daria 5 tentativas novas.
+        String conta = pedido.email().trim().toLowerCase(Locale.ROOT);
+        String origem = request.getRemoteAddr();
+        limite.registrarTentativa(conta, origem).ifPresent(segundos -> {
+            throw new LoginBloqueadoException(segundos);
+        });
+
+        Authentication autenticacao;
+        try {
+            autenticacao = autenticador.authenticate(
+                UsernamePasswordAuthenticationToken.unauthenticated(conta, pedido.senha()));
+        } catch (DisabledException pendente) {
+            // Conta pendente com a senha certa: a senha foi provada, então a tentativa volta.
+            limite.registrarAcerto(conta, origem);
+            throw pendente;
+        }
+        limite.registrarAcerto(conta, origem);
         estrategiaDeSessao.onAuthentication(autenticacao, request, response);
 
         SecurityContext contexto = contextos.createEmptyContext();

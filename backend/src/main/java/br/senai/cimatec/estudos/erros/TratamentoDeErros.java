@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import br.senai.cimatec.estudos.auth.LoginBloqueadoException;
 import br.senai.cimatec.estudos.auth.ReenvioBloqueadoException;
 
 /**
@@ -62,6 +63,17 @@ public class TratamentoDeErros {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Map<String, String> credenciaisInvalidas(AuthenticationException erro) {
         return Map.of("message", "e-mail ou senha inválidos");
+    }
+
+    /**
+     * Login bloqueado pelo limite: 429 com Retry-After. Mesmo corpo para conta que existe e para
+     * e-mail que não existe, e a senha não é conferida, então o tempo também não muda.
+     */
+    @ExceptionHandler(LoginBloqueadoException.class)
+    public ResponseEntity<Map<String, String>> loginBloqueado(LoginBloqueadoException erro) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+            .header(HttpHeaders.RETRY_AFTER, String.valueOf(erro.getSegundos()))
+            .body(Map.of("message", erro.getMessage()));
     }
 
     /** 429 com Retry-After em segundos: a tela lê o header e mostra a contagem. */

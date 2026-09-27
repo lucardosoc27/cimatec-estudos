@@ -128,10 +128,12 @@ exclusão de conta no Spring (commit 7), pedidos e mentores no Spring.
 
 ## Commit 6 — Limite de tentativas
 
-**Entrega:** limite por IP e por conta no login, com bloqueio temporário e 429 com
-`Retry-After`; contadores em memória com limpeza periódica das entradas antigas; o mesmo
-mecanismo cobre o reenvio de verificação do commit 4. No fim, `code-review` do back-end inteiro,
-antes de o Angular passar a depender dele.
+**Entrega:** limite no login por conta (e-mail digitado, exista ou não: 5 em 15 minutos) e por
+origem (IP da conexão: 20 em 15 minutos); a tentativa conta antes de a senha ser conferida, e o
+acerto a devolve; estourou, 429 com `Retry-After` sem conferir a senha, e destrava sozinho em 15
+minutos; contadores em memória, com as entradas vencidas apagadas a cada chamada
+(`DECISOES.md` 2026-09-27). O reenvio do link continua com o intervalo próprio do commit 4.
+Depois do commit, `code-review` do back-end inteiro, com a lista do que um atacante tentaria.
 
 **Não entrega:** leitura de `X-Forwarded-For` (atrás do proxy do `ng serve` todos parecem vir do
 mesmo IP; ver limitações em `DECISOES.md` 2026-09-24), persistência dos contadores entre
