@@ -43,6 +43,7 @@
 .convite h3 { font-size: var(--texto-destaque); }
 .convite p { margin-top: var(--espaco-2); }
 .convite .botao { background: var(--cor-superficie); flex-shrink: 0; }
+.depoimentos__grade { margin-top: var(--espaco-5); }
 .faq__itens { max-width: 820px; margin: var(--espaco-5) auto 0; }
 .faq details { border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-pequeno); overflow: clip; }
 .faq summary { padding: var(--espaco-3); min-height: var(--alvo-toque); font-weight: 700; cursor: pointer; }

@@ -141,7 +141,7 @@
       <h2 id="titulo-depoimentos">O que dizem os colegas<span class="sr-only">, exemplos ilustrativos</span></h2>
       <p>Situações criadas pela equipe para mostrar como a mentoria funciona. Não são depoimentos de pessoas reais.</p>
     </div>
-    <div class="grid gap-4 md:grid-cols-3">
+    <div class="depoimentos__grade grid gap-4 md:grid-cols-3">
       @for (d of depoimentos; track d.nome) {
         <article class="depoimento flex flex-col gap-4">
           <p class="flex-1">“{{ d.texto }}”</p>
