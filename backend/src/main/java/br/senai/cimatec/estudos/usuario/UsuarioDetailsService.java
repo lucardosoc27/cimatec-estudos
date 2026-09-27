@@ -37,7 +37,7 @@ public class UsuarioDetailsService implements UserDetailsService {
             .password(usuario.getSenhaHash())
             .roles("ALUNO")
             // Conta com e-mail ainda não verificado não entra (DisabledException no login).
-            .disabled(usuario.getVerificacao() != Verificacao.VERIFICADO)
+            .disabled(!usuario.estaVerificado())
             .build();
     }
 }

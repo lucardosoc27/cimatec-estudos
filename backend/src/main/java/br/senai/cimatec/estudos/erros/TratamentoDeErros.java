@@ -2,13 +2,17 @@ package br.senai.cimatec.estudos.erros;
 
 import java.util.Map;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import br.senai.cimatec.estudos.auth.ReenvioBloqueadoException;
 
 /**
  * Converte erro de validação em 400 com corpo { "message": "..." }, que é o que o Angular
@@ -35,6 +39,14 @@ public class TratamentoDeErros {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> corpoIlegivel(HttpMessageNotReadableException erro) {
         return Map.of("message", "Não foi possível ler os dados enviados. Confira os campos e tente novamente.");
+    }
+
+    /** 429 com Retry-After em segundos: a tela lê o header e mostra a contagem. */
+    @ExceptionHandler(ReenvioBloqueadoException.class)
+    public ResponseEntity<Map<String, String>> reenvioCedoDemais(ReenvioBloqueadoException erro) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+            .header(HttpHeaders.RETRY_AFTER, String.valueOf(erro.getSegundos()))
+            .body(Map.of("message", erro.getMessage()));
     }
 
     /** Regras que dependem de configuração ou de banco, conferidas no serviço. */

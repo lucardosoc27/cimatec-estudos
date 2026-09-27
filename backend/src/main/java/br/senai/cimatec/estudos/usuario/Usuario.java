@@ -69,6 +69,18 @@ public class Usuario {
     @Column(name = "criado_em", nullable = false)
     private Instant criadoEm;
 
+    // Verificação do e-mail. Fica o hash SHA-256 do token, nunca o token: quem ler o banco não
+    // consegue montar o link. Um token por conta: pedir outro apaga o anterior.
+    @Column(name = "verificacao_token_hash", length = 64)
+    private String verificacaoTokenHash;
+
+    @Column(name = "verificacao_expira_em")
+    private Instant verificacaoExpiraEm;
+
+    // Registro do consumo do token: preenchido uma vez, no primeiro uso.
+    @Column(name = "verificado_em")
+    private Instant verificadoEm;
+
     /** Exigido pelo JPA. O código do projeto usa o construtor de baixo. */
     protected Usuario() {
     }
@@ -130,5 +142,28 @@ public class Usuario {
 
     public Instant getCriadoEm() {
         return criadoEm;
+    }
+
+    public Instant getVerificacaoExpiraEm() {
+        return verificacaoExpiraEm;
+    }
+
+    public Instant getVerificadoEm() {
+        return verificadoEm;
+    }
+
+    public boolean estaVerificado() {
+        return verificacao == Verificacao.VERIFICADO;
+    }
+
+    /** Guarda um token novo (só o hash) e invalida o anterior, que deixa de bater com o banco. */
+    public void iniciarVerificacao(String tokenHash, Instant expiraEm) {
+        this.verificacaoTokenHash = tokenHash;
+        this.verificacaoExpiraEm = expiraEm;
+    }
+
+    public void confirmarVerificacao(Instant agora) {
+        this.verificacao = Verificacao.VERIFICADO;
+        this.verificadoEm = agora;
     }
 }

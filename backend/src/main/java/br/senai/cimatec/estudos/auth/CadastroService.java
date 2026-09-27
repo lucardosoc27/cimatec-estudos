@@ -32,12 +32,16 @@ public class CadastroService {
 
     private final UsuarioRepository usuarios;
     private final PasswordEncoder codificador;
+    private final VerificacaoService verificacao;
+    private final IntervaloDeReenvio intervalo;
     private final String dominio;
 
-    public CadastroService(UsuarioRepository usuarios, PasswordEncoder codificador,
-            @Value("${app.email.dominio}") String dominio) {
+    public CadastroService(UsuarioRepository usuarios, PasswordEncoder codificador, VerificacaoService verificacao,
+            IntervaloDeReenvio intervalo, @Value("${app.email.dominio}") String dominio) {
         this.usuarios = usuarios;
         this.codificador = codificador;
+        this.verificacao = verificacao;
+        this.intervalo = intervalo;
         this.dominio = dominio;
     }
 
@@ -64,6 +68,10 @@ public class CadastroService {
         // qual e-mail já tem conta.
         String senhaHash = codificador.encode(pedido.senha());
 
+        // O cadastro conta como um envio: pedir "reenviar" logo depois espera o intervalo mínimo.
+        // Registrado para todo e-mail, exista ou não, pelo mesmo motivo da resposta igual.
+        intervalo.segundosAteLiberar(email);
+
         if (usuarios.existsByEmail(email)) {
             log.info("Cadastro com e-mail já existente: nenhuma conta criada (sem servidor de e-mail, o aviso ao dono da conta fica só neste log)");
             return;
@@ -72,6 +80,7 @@ public class CadastroService {
             Usuario usuario = usuarios.save(new Usuario(pedido.nome().trim(), email, senhaHash, pedido.curso(),
                 TERMOS_VERSAO, pedido.quisFotoParaLogados(), pedido.quisVitrinePublica()));
             log.info("Conta {} criada, aguardando verificação do e-mail", usuario.getId());
+            verificacao.iniciar(usuario);
         } catch (DataIntegrityViolationException corrida) {
             // Dois cadastros do mesmo e-mail ao mesmo tempo: o UNIQUE do banco segura o segundo.
             log.info("Cadastro com e-mail já existente (corrida): nenhuma conta criada");

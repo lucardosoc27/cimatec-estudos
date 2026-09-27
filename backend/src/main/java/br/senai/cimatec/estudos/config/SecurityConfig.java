@@ -44,6 +44,8 @@ public class SecurityConfig {
                 // de cadastro. Qualquer outra combinação cai no anyRequest() abaixo.
                 .requestMatchers(HttpMethod.GET, "/api/auth/csrf").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/cadastro").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/verificacao").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/reenviar").permitAll()
                 // Negar por padrão: tudo o mais exige login. Login e logout entram no commit 5.
                 .anyRequest().authenticated())
             // Sem formLogin nem httpBasic, o padrão seria responder 403 a quem não está
