@@ -1,4 +1,12 @@
-<h1 class="titulo">Seus pedidos de ajuda</h1>
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+  <div>
+    <h1 class="titulo titulo--compacto">Olá, {{ primeiroNome() }}</h1>
+    @if (!ehMentor()) { <p class="apoio">Travou em alguma matéria? Um colega que já passou por isso pode ajudar.</p> }
+  </div>
+  <a routerLink="/pedir-ajuda" class="botao w-full md:w-auto">Pedir ajuda →</a>
+</div>
+
+<h2 class="subtitulo secao-titulo">Pedidos que você fez</h2>
 
 @switch (estado()) {
   @case ('carregando') {
@@ -25,43 +33,46 @@
   @case ('sucesso') {
     <ul class="lista">
       @for (pedido of pedidos(); track pedido.id) {
-        <li class="pedido">
-          <h2 class="pedido__materia">{{ pedido.materiaNome }}</h2>
-          <p class="pedido__mentor">com {{ pedido.mentorNome }}</p>
-          <p class="pedido__quando">
-            {{ pedido.data | date: 'EEEE, dd/MM' }} às {{ pedido.hora }}
-            · {{ rotuloModalidade[pedido.modalidade] }}
-          </p>
+        <li class="pedido flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+          <app-avatar [nome]="pedido.mentorNome" [foto]="pedido.mentorFoto" [tamanho]="56" />
+          <div class="min-w-0 flex-1">
+            <h3 class="pedido__materia">{{ pedido.materiaNome }}</h3>
+            <p class="pedido__mentor">com {{ pedido.mentorNome }}</p>
+            <p class="pedido__quando">
+              {{ pedido.data | date: 'EEEE, dd/MM' }} às {{ pedido.hora }}
+              · {{ rotuloModalidade[pedido.modalidade] }}
+            </p>
 
-          <p class="pedido__status" [attr.data-status]="pedido.status">
-            Status: <app-status [status]="pedido.status" />
-          </p>
+            <p class="pedido__status">
+              Status: <app-status [status]="pedido.status" />
+            </p>
 
-          @switch (pedido.status) {
-            @case ('aguardando') {
-              <p class="pedido__detalhe">
-                O mentor tem até {{ pedido.expiraEm | date: "EEEE, dd/MM 'às' HH:mm" }} para responder.
-              </p>
+            @switch (pedido.status) {
+              @case ('aguardando') {
+                <p class="pedido__detalhe">
+                  O mentor tem até {{ pedido.expiraEm | date: "EEEE, dd/MM 'às' HH:mm" }} para responder.
+                </p>
+              }
+              @case ('expirado') {
+                <p class="pedido__detalhe">
+                  O mentor não respondeu no prazo.
+                  <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
+                    Ver outros mentores de {{ pedido.materiaNome }}
+                  </a>
+                </p>
+              }
+              @case ('recusado') {
+                <p class="pedido__detalhe">
+                  Este mentor não pôde atender.
+                  <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
+                    Ver outros mentores de {{ pedido.materiaNome }}
+                  </a>
+                </p>
+              }
             }
-            @case ('expirado') {
-              <p class="pedido__detalhe">
-                O mentor não respondeu no prazo.
-                <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
-                  Ver outros mentores de {{ pedido.materiaNome }}
-                </a>
-              </p>
-            }
-            @case ('recusado') {
-              <p class="pedido__detalhe">
-                Este mentor não pôde atender.
-                <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
-                  Ver outros mentores de {{ pedido.materiaNome }}
-                </a>
-              </p>
-            }
-          }
 
-          <a [routerLink]="['/pedidos', pedido.id]" class="link-acao pedido__link">Ver detalhes</a>
+            <a [routerLink]="['/pedidos', pedido.id]" class="link-acao pedido__link">Ver pedido →</a>
+          </div>
         </li>
       }
     </ul>

@@ -1,3 +1,7 @@
+.apoio { color: var(--cor-texto-suave); }
+/* Margem na classe, não em mb-4: o reset de h2 no styles.scss fica fora de @layer e venceria o utilitário */
+.secao-titulo { margin-bottom: var(--espaco-3); }
+
 .lista {
   display: flex;
   flex-direction: column;
@@ -12,7 +16,7 @@
    (src/styles.scss), mesmo desenho da tela 5. */
 .pedido__detalhe { margin-top: var(--espaco-1); }
 
-/* "Ver detalhes" é a ação do cartão, não continuação do texto */
+/* "Ver pedido →" é a ação do cartão, não continuação do texto */
 .pedido__link {
   margin-top: var(--espaco-3);
 }
