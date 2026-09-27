@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component;
  * - Conta = o e-mail DIGITADO, normalizado, exista ou não. Se só contasse para conta existente,
  *   o bloqueio (429) entregaria quem tem cadastro.
  * - Origem = a chave da Origem (IP; IPv6 agrupado por /64). Pega quem testa uma senha em muitas
- *   contas.
+ *   contas. É só um freio, com números folgados (application.properties): atrás de proxy ou de
+ *   NAT muita gente divide o mesmo IP, e o controle principal é o limite por conta.
  * - A origem é conferida primeiro. Origem bloqueada para ali: não conta a conta nem cria entrada
  *   no mapa por conta. Antes, um IP já bloqueado continuava trancando contas de outras pessoas
  *   (revisão de segurança de 2026-09-27, D3).
@@ -32,12 +33,14 @@ public class LimiteDeTentativas {
 
     public LimiteDeTentativas(
             @Value("${app.login.limite-por-conta}") int limitePorConta,
-            @Value("${app.login.limite-por-origem}") int limitePorOrigem,
             @Value("${app.login.janela}") Duration janela,
             @Value("${app.login.bloqueio}") Duration bloqueio,
+            @Value("${app.login.limite-por-origem}") int limitePorOrigem,
+            @Value("${app.login.janela-origem}") Duration janelaOrigem,
+            @Value("${app.login.bloqueio-origem}") Duration bloqueioOrigem,
             @Value("${app.limites.teto}") int teto) {
         this.porConta = new Contador(limitePorConta, janela, bloqueio, teto);
-        this.porOrigem = new Contador(limitePorOrigem, janela, bloqueio, teto);
+        this.porOrigem = new Contador(limitePorOrigem, janelaOrigem, bloqueioOrigem, teto);
     }
 
     /**

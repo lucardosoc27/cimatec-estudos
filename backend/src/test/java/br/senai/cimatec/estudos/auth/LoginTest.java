@@ -109,6 +109,24 @@ class LoginTest {
         mvc.perform(post("/api/auth/logout").session(sessaoLogada())).andExpect(status().isForbidden());
     }
 
+    @Test
+    void errosDeUmaTurmaAtrasDoMesmoNatNaoTrancamOLoginDeTodos() throws Exception {
+        // Números de produção: esta classe não troca os limites. Uma turma atrás do mesmo NAT
+        // (um IP só) erra 25 senhas, cada pessoa na própria conta; quem digita certo ainda entra.
+        String nat = "10.20.30.40";
+        for (int i = 0; i < 25; i++) {
+            entrarDe("colega" + i + "@exemplo.com", "senha-errada-1", nat).andExpect(status().isUnauthorized());
+        }
+        entrarDe(VERIFICADA, SENHA, nat).andExpect(status().isOk());
+    }
+
+    private ResultActions entrarDe(String email, String senha, String ip) throws Exception {
+        return mvc.perform(post("/api/auth/login").with(csrf())
+            .with(req -> { req.setRemoteAddr(ip); return req; })
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"email\": \"" + email + "\", \"senha\": \"" + senha + "\"}"));
+    }
+
     private MockHttpSession sessaoLogada() throws Exception {
         MvcResult resultado = entrar(VERIFICADA, SENHA).andExpect(status().isOk()).andReturn();
         return (MockHttpSession) resultado.getRequest().getSession(false);
