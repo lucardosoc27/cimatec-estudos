@@ -49,7 +49,7 @@ e-mail (anti-enumeração, `DECISOES.md` 2026-09-27); `ddl-auto=update` sem Flyw
 **Não entrega:** verificação do e-mail (a conta nasce `PENDENTE` e fica assim), login, logout,
 `/api/auth/eu`, papel de mentor, limite de tentativas, envio de e-mail.
 
-## Commit 4 — Verificação do e-mail institucional
+## Commit 4 — Verificação do e-mail institucional (`7fbb731`)
 
 **Entrega:** token de uso único, 32 bytes aleatórios, guardado como **hash SHA-256** (nunca em
 texto claro), válido por **24 horas**, consumido no primeiro uso com registro da data;
@@ -58,28 +58,45 @@ texto claro), válido por **24 horas**, consumido no primeiro uso com registro d
 /api/auth/reenviar` com `{ "email" }`, que responde igual exista ou não a conta, invalida o token
 anterior a cada novo envio e respeita um intervalo mínimo entre reenvios (429 com `Retry-After`,
 contado em memória por e-mail, exista a conta ou não). Conta verificada passa a `VERIFICADO`;
-`PENDENTE` continua `disabled`. Sem servidor de e-mail, o link é impresso no console **só no
-perfil `dev` do Spring**, que o `spring-boot:run` ativa e o jar de produção não.
+`PENDENTE` continua `disabled`. **Envio de e-mail está fora do escopo do projeto**, por
+decisão: a entrega do link é o console do Spring, no perfil `dev`, que o `spring-boot:run` ativa.
+Fora desse perfil não existe implementação de entrega, e o servidor se recusa a subir: conta que
+ninguém consegue verificar seria conta desabilitada para sempre.
 
-**Não entrega:** login (a conta verificada ainda não consegue entrar), envio de e-mail de
-verdade, recuperação de senha, limite por IP. A sessão simulada do front continua ligada, então
-a tela `/verificar-email` ainda não fala com o Spring: a prova é por `curl`.
+**Não entrega:** login (a conta verificada ainda não consegue entrar), recuperação de senha,
+limite por IP. A sessão simulada do front continua ligada, então a tela `/verificar-email` ainda
+não fala com o Spring: a prova é por `curl`.
 
-## Commit 5 — Login, logout e `/api/auth/eu`
+## Commit 5a — Login, logout e `/api/auth/eu` no Spring
 
-**Entrega:** bean `AuthenticationManager`; `POST /api/auth/login` em controller próprio, na
-ordem da pesquisa: autenticar, `SessionAuthenticationStrategy` (troca o id da sessão e apaga o
-token CSRF antigo), salvar o contexto explicitamente na `HttpSession`; erro genérico "e-mail ou
-senha inválidos" para senha errada, e-mail inexistente e conta não verificada; `POST
-/api/auth/logout` pela configuração, respondendo 200; `GET /api/auth/eu` devolvendo o usuário
-logado no formato do `Usuario` do front; cookie de sessão com `SameSite=Lax` e `Secure` por
-propriedade, `Secure` desligado só em localhost. No front: `SESSAO_SIMULADA` some junto com o
-arquivo `sessao-simulada.ts`, e os dados do mock passam a ler "quem está logado" do
-`AuthService` (`DECISOES.md` 2026-09-26). Prova por `curl`: login e depois `/eu` com o mesmo
-cookie.
+Dividido em dois porque junta configuração de sessão no Spring com integração do front, que
+falham por motivos diferentes. Nesta metade nada dentro de `frontend/` muda.
 
-**Não entrega:** limite de tentativas, recuperação de senha, `PATCH`/`DELETE /api/conta`
-(a tela Minha conta fica sem servidor até o commit 7), pedidos e mentores no Spring.
+**Entrega:** bean `AuthenticationManager` com `DaoAuthenticationProvider`, que confere a senha
+**antes** de olhar se a conta está verificada, para conta pendente com senha errada responder
+igual a senha errada de conta verificada; `POST /api/auth/login` em controller próprio, na ordem
+da pesquisa: autenticar, `SessionAuthenticationStrategy` (troca o id da sessão e apaga o token
+CSRF antigo), salvar o contexto explicitamente na `HttpSession`; resposta 401 idêntica (status e
+corpo) para senha errada e e-mail inexistente, com o hash calculado nos dois casos; 403 "confirme
+seu e-mail" só para quem provou a senha de uma conta pendente; `POST /api/auth/logout` pela
+configuração, invalidando a sessão no servidor e respondendo 200; `GET /api/auth/eu` devolvendo o
+usuário logado no formato do `Usuario` do front; cookie de sessão `HttpOnly`, `SameSite=Lax` e
+`Secure` por propriedade, com `Secure` desligado só em desenvolvimento local. Prova por `curl`:
+login e depois `/eu` com o mesmo cookie; cookie de antes do logout não autentica mais.
+
+**Não entrega:** qualquer mudança no front (a sessão simulada continua ligada), limite de
+tentativas, recuperação de senha, `PATCH`/`DELETE /api/conta`, pedidos e mentores no Spring.
+
+## Commit 5b — O front passa a usar o login do Spring
+
+**Entrega:** `SESSAO_SIMULADA` some junto com o arquivo `sessao-simulada.ts`; a tela de login
+trata o 403 de conta pendente com a mensagem do servidor; os dados do mock passam a ler "quem
+está logado" do `AuthService` (`DECISOES.md` 2026-09-26); as contas de demonstração são
+recriadas pelo cadastro e verificadas pelo link do console. Prova no navegador: cadastro,
+verificação, login, `/inicio`, logout.
+
+**Não entrega:** limite de tentativas, recuperação de senha, `/api/conta` (a tela Minha conta
+fica sem servidor até o commit 7), pedidos e mentores no Spring.
 
 ## Commit 6 — Limite de tentativas
 
