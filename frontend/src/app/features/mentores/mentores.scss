@@ -1,6 +1,7 @@
 :host { display: block; }
 .texto-suave { color: var(--cor-texto-suave); }
-.curso { color: var(--cor-primaria); font-weight: 600; }
+/* Texto secundário, não azul: em azul o curso parecia link */
+.curso { color: var(--cor-texto-suave); font-weight: 600; }
 .alternador { padding: 4px; border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-pilula); background: white; }
 .alternador button { min-height: 44px; padding: 8px 14px; border-radius: var(--raio-pilula); color: var(--cor-texto-suave); cursor: pointer; }
 .alternador button[aria-pressed='true'] { background: var(--cor-primaria); color: white; }
