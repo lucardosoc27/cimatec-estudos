@@ -43,6 +43,8 @@ export class VerificarEmail {
       error: (erro: HttpErrorResponse) => {
         if (erro.status === 400 || erro.status === 404) this.estado.set('invalido');
         else if (erro.status === 410) this.estado.set('expirado');
+        // Limite por origem das rotas públicas: o servidor diz para esperar.
+        else if (erro.status === 429) this.erro.set(erro.error?.message || 'Muitos pedidos. Aguarde alguns minutos e tente de novo.');
         else this.erro.set('Não foi possível confirmar seu e-mail agora. Tente novamente.');
       },
     });

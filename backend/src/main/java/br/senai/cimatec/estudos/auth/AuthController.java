@@ -37,12 +37,15 @@ public class AuthController {
     private final SessionAuthenticationStrategy estrategiaDeSessao;
     private final SecurityContextRepository repositorioDeContexto;
     private final LimiteDeTentativas limite;
+    private final LimiteDasRotasPublicas limitePublico;
     private final SecurityContextHolderStrategy contextos = SecurityContextHolder.getContextHolderStrategy();
 
     public AuthController(CadastroService cadastro, VerificacaoService verificacao, UsuarioRepository usuarios,
             AuthenticationManager autenticador, SessionAuthenticationStrategy estrategiaDeSessao,
-            SecurityContextRepository repositorioDeContexto, LimiteDeTentativas limite) {
+            SecurityContextRepository repositorioDeContexto, LimiteDeTentativas limite,
+            LimiteDasRotasPublicas limitePublico) {
         this.limite = limite;
+        this.limitePublico = limitePublico;
         this.cadastro = cadastro;
         this.verificacao = verificacao;
         this.usuarios = usuarios;
@@ -60,9 +63,13 @@ public class AuthController {
     public void csrf() {
     }
 
-    /** @Valid dispara as anotações do CadastroRequest antes de o serviço rodar. */
+    /**
+     * @Valid dispara as anotações do CadastroRequest antes de o serviço rodar. O limite por
+     * origem vem antes do serviço, e portanto antes do BCrypt.
+     */
     @PostMapping("/cadastro")
-    public void cadastrar(@Valid @RequestBody CadastroRequest pedido) {
+    public void cadastrar(@Valid @RequestBody CadastroRequest pedido, HttpServletRequest request) {
+        limitePublico.registrar(Origem.de(request));
         cadastro.cadastrar(pedido);
     }
 
@@ -72,12 +79,15 @@ public class AuthController {
      * Sempre 200: o estado vai no corpo, porque nenhum dos quatro é erro do cliente.
      */
     @PostMapping("/verificacao")
-    public Map<String, ResultadoVerificacao> verificar(@Valid @RequestBody VerificacaoRequest pedido) {
+    public Map<String, ResultadoVerificacao> verificar(@Valid @RequestBody VerificacaoRequest pedido,
+            HttpServletRequest request) {
+        limitePublico.registrar(Origem.de(request));
         return Map.of("estado", verificacao.verificar(pedido.token()));
     }
 
     @PostMapping("/reenviar")
-    public void reenviar(@Valid @RequestBody ReenvioRequest pedido) {
+    public void reenviar(@Valid @RequestBody ReenvioRequest pedido, HttpServletRequest request) {
+        limitePublico.registrar(Origem.de(request));
         verificacao.reenviar(pedido.email());
     }
 

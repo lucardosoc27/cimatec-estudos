@@ -22,6 +22,10 @@ public class LimiteAtingidoException extends RuntimeException {
         return new LimiteAtingidoException("Aguarde " + segundos + " segundos antes de pedir outro link.", segundos);
     }
 
+    static LimiteAtingidoException rotaPublica(long segundos) {
+        return new LimiteAtingidoException("Muitos pedidos deste endereço. Aguarde alguns minutos e tente de novo.", segundos);
+    }
+
     public long getSegundos() {
         return segundos;
     }
