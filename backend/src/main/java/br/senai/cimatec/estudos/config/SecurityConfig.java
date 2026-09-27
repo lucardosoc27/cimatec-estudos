@@ -5,9 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.savedrequest.NullRequestCache;
@@ -37,8 +40,11 @@ public class SecurityConfig {
                 // A página de erro interna do Spring precisa abrir, senão um 403 do CSRF
                 // viraria outra resposta ao ser encaminhado para /error.
                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                // Negar por padrão: tudo exige login. Os endpoints públicos de cadastro
-                // e login entram aqui, um por um, quando existirem.
+                // Públicos, um por um, com o método explícito: só o GET de csrf e só o POST
+                // de cadastro. Qualquer outra combinação cai no anyRequest() abaixo.
+                .requestMatchers(HttpMethod.GET, "/api/auth/csrf").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/cadastro").permitAll()
+                // Negar por padrão: tudo o mais exige login. Login e logout entram no commit 5.
                 .anyRequest().authenticated())
             // Sem formLogin nem httpBasic, o padrão seria responder 403 a quem não está
             // logado. Uma API responde 401: "não sei quem você é".
@@ -49,6 +55,17 @@ public class SecurityConfig {
             // voltar" é o Angular (?voltar=).
             .requestCache(cache -> cache.requestCache(new NullRequestCache()));
         return http.build();
+    }
+
+    /**
+     * BCrypt: hash lento de propósito (fator de custo 10, uns 100 ms), com sal aleatório por
+     * senha. Duas pessoas com a mesma senha têm hashes diferentes, e testar um dicionário
+     * contra o banco vazado custa 100 ms por tentativa. É o mesmo bean que o
+     * DaoAuthenticationProvider usa para comparar a senha no login.
+     */
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     /**
