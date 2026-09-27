@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.senai.cimatec.estudos.erros.SessaoSemContaException;
 import br.senai.cimatec.estudos.usuario.Usuario;
 import br.senai.cimatec.estudos.usuario.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -139,6 +140,6 @@ public class AuthController {
 
     private Usuario usuarioLogado(Authentication autenticacao) {
         // getName() é o "username" do UserDetails, que no UsuarioDetailsService é o e-mail.
-        return usuarios.findByEmail(autenticacao.getName()).orElseThrow();
+        return usuarios.findByEmail(autenticacao.getName()).orElseThrow(SessaoSemContaException::new);
     }
 }

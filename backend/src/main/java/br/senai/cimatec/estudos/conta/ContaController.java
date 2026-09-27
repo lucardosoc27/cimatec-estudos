@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.senai.cimatec.estudos.auth.UsuarioResposta;
+import br.senai.cimatec.estudos.erros.SessaoSemContaException;
 import br.senai.cimatec.estudos.usuario.Usuario;
 import br.senai.cimatec.estudos.usuario.UsuarioRepository;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class ContaController {
     @PatchMapping("/mentoria")
     @Transactional
     public UsuarioResposta mentoria(@Valid @RequestBody MentoriaRequest pedido, Authentication autenticacao) {
-        Usuario usuario = usuarios.findByEmail(autenticacao.getName()).orElseThrow();
+        Usuario usuario = usuarios.findByEmail(autenticacao.getName()).orElseThrow(SessaoSemContaException::new);
         if (pedido.receberPedidos()) {
             // O H2 guarda até microssegundos. Cortar antes faz esta resposta e o /eu seguinte
             // mostrarem exatamente a mesma data.

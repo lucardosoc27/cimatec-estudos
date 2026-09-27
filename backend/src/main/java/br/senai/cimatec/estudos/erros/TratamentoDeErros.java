@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.senai.cimatec.estudos.auth.LimiteAtingidoException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Converte erro de validação em 400 com corpo { "message": "..." }, que é o que o Angular
@@ -74,6 +76,20 @@ public class TratamentoDeErros {
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
             .header(HttpHeaders.RETRY_AFTER, String.valueOf(erro.getSegundos()))
             .body(Map.of("message", erro.getMessage()));
+    }
+
+    /**
+     * Sessão válida de uma conta que não existe mais: 401, como quem não está logado, e a sessão
+     * é encerrada aqui, para o cookie antigo não servir para mais nada.
+     */
+    @ExceptionHandler(SessaoSemContaException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Map<String, String> sessaoSemConta(SessaoSemContaException erro, HttpServletRequest request) {
+        HttpSession sessao = request.getSession(false);
+        if (sessao != null) {
+            sessao.invalidate();
+        }
+        return Map.of("message", erro.getMessage());
     }
 
     /** Regras que dependem de configuração ou de banco, conferidas no serviço. */

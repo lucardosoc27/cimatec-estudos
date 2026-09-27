@@ -3,6 +3,7 @@ package br.senai.cimatec.estudos.auth;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -118,6 +119,25 @@ class LoginTest {
             entrarDe("colega" + i + "@exemplo.com", "senha-errada-1", nat).andExpect(status().isUnauthorized());
         }
         entrarDe(VERIFICADA, SENHA, nat).andExpect(status().isOk());
+    }
+
+    @Test
+    void contaApagadaComSessaoVivaResponde401EEncerraASessao() throws Exception {
+        MockHttpSession sessao = sessaoLogada();
+        usuarios.delete(usuarios.findByEmail(VERIFICADA).orElseThrow());
+
+        mvc.perform(get("/api/auth/eu").session(sessao)).andExpect(status().isUnauthorized());
+        assertThat(sessao.isInvalid()).isTrue();
+    }
+
+    @Test
+    void contaApagadaComSessaoVivaNaoMudaAChaveDeMentoria() throws Exception {
+        MockHttpSession sessao = sessaoLogada();
+        usuarios.delete(usuarios.findByEmail(VERIFICADA).orElseThrow());
+
+        mvc.perform(patch("/api/conta/mentoria").with(csrf()).session(sessao)
+                .contentType(MediaType.APPLICATION_JSON).content("{\"receberPedidos\": true}"))
+            .andExpect(status().isUnauthorized());
     }
 
     private ResultActions entrarDe(String email, String senha, String ip) throws Exception {
