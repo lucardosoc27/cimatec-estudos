@@ -237,7 +237,8 @@ a:not(.botao):hover { color: var(--cor-primaria-escura); }
 .pedido,
 .mentor,
 .perfil,
-.confirmacao {
+.confirmacao,
+.depoimento {
   padding: var(--espaco-3);
   border-radius: var(--raio);
   background: var(--cor-superficie);
@@ -251,7 +252,8 @@ a:not(.botao):hover { color: var(--cor-primaria-escura); }
   .pedido,
   .mentor,
   .perfil,
-  .confirmacao {
+  .confirmacao,
+  .depoimento {
     padding: var(--espaco-4);
   }
 }

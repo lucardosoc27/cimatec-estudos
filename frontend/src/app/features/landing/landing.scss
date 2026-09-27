@@ -24,7 +24,7 @@
 .controle { padding-inline: var(--espaco-3); }
 .carrossel, .vitrine__estado { margin-top: var(--espaco-5); }
 .mentor-publico { gap: var(--espaco-4); padding: var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); min-width: 0; }
-.mentor-publico h3 { font-size: var(--texto-destaque); overflow-wrap: anywhere; }
+.mentor-publico h3, .depoimento h3 { font-size: var(--texto-destaque); overflow-wrap: anywhere; }
 .mentor-publico__curso { color: var(--cor-primaria); font-weight: 600; }
 .mentor-publico__materias strong { display: block; margin-bottom: var(--espaco-1); }
 .mentor-publico__descricao { color: var(--cor-texto-suave); overflow-wrap: anywhere; }

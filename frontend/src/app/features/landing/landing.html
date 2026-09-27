@@ -82,7 +82,7 @@
         @for (mentor of mentoresVisiveis(); track mentor.id; let posicao = $index) {
           <article class="mentor-publico flex flex-col" [class.mentor-publico--segundo]="posicao === 1" [class.mentor-publico--terceiro]="posicao === 2" role="group" aria-roledescription="slide" [attr.aria-label]="primeiroNome(mentor.nome) + ', ' + mentor.curso">
             <div class="flex items-center gap-4">
-              <app-avatar [nome]="primeiroNome(mentor.nome)" [foto]="mentor.foto" [tamanho]="64" />
+              <app-avatar [nome]="primeiroNome(mentor.nome)" [foto]="mentor.foto" [tamanho]="64" tom="neutro" />
               <div class="min-w-0"><h3>{{ primeiroNome(mentor.nome) }}</h3><p class="mentor-publico__curso">{{ mentor.curso }}</p></div>
             </div>
             @if (mentor.materias?.length) {
@@ -128,6 +128,27 @@
     <div class="convite flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div><h3>Aprender junto faz diferença.</h3><p>Encontre apoio para continuar os estudos no seu curso técnico.</p></div>
       <a class="botao botao--secundario" routerLink="/cadastro">Criar conta →</a>
+    </div>
+  </div>
+</section>
+
+<section class="depoimentos faixa" aria-labelledby="titulo-depoimentos">
+  <div class="landing-largura">
+    <div class="secao-central">
+      <p class="sobretitulo">Quem já pediu ajuda</p>
+      <h2 id="titulo-depoimentos">O que dizem os colegas</h2>
+      <p>Histórias reais de quem destravou uma matéria com a ajuda de um colega.</p>
+    </div>
+    <div class="grid gap-4 md:grid-cols-3">
+      @for (d of depoimentos; track d.nome) {
+        <article class="depoimento flex flex-col gap-4">
+          <p class="flex-1">“{{ d.texto }}”</p>
+          <div class="flex items-center gap-3">
+            <app-avatar [nome]="d.nome" [foto]="d.foto" [tamanho]="48" />
+            <div class="min-w-0"><h3>{{ d.nome }}</h3><p class="mentor-publico__curso">{{ d.curso }}</p></div>
+          </div>
+        </article>
+      }
     </div>
   </div>
 </section>

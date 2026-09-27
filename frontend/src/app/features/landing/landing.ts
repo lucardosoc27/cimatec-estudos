@@ -17,6 +17,13 @@ interface MentorPublico {
   materias?: string[];
 }
 
+interface Depoimento {
+  nome: string;
+  curso: string;
+  foto: string;
+  texto: string;
+}
+
 type Estado = 'carregando' | 'sucesso' | 'erro';
 
 @Component({
@@ -51,6 +58,22 @@ export class Landing {
     materia: this.materiaSelecionada() || null,
     turnos: this.turno() || null,
   }));
+
+  /** Fixos, sem estado de carregamento: são texto de marketing, não dado de aluno de verdade. */
+  readonly depoimentos: readonly Depoimento[] = [
+    {
+      nome: 'Bernardo', curso: 'Biotecnologia', foto: 'assets/ilustracoes/bernardo.png',
+      texto: 'Travei em Fundamentos de Estatística e quase desisti antes da prova. Uma colega do curso me mostrou como organizar os dados numa sessão só, e o resto fez sentido.',
+    },
+    {
+      nome: 'Carolina', curso: 'Redes de Computadores', foto: 'assets/ilustracoes/carolina.png',
+      texto: 'Configuração de Servidores de Rede parecia impossível sozinha. Depois de uma sessão com uma colega mais experiente, entendi a lógica e terminei o laboratório.',
+    },
+    {
+      nome: 'Cibele', curso: 'Desenvolvimento de Sistemas', foto: 'assets/ilustracoes/cibele.png',
+      texto: 'Comecei ajudando colegas em Lógica de Programação só para revisar o que eu já sabia. Hoje é uma das partes do curso que eu mais gosto de fazer.',
+    },
+  ];
 
   constructor() {
     this.carregarMaterias();
