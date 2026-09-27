@@ -131,6 +131,20 @@ class LimiteDeTentativasTest {
         entrar(email, SENHA, origem).andExpect(status().isOk());
     }
 
+    @Test
+    void origemBloqueadaNaoContaTentativaNaContaDeOutraPessoa() throws Exception {
+        // Esgota a origem (limite 6 neste teste) com contas inventadas.
+        for (int i = 0; i < 7; i++) {
+            entrar("alvo" + i + "@exemplo.com", "senha-comum-1", origem);
+        }
+        // Já bloqueada, a origem insiste na conta da vítima mais vezes do que o limite por conta.
+        for (int i = 0; i < 4; i++) {
+            entrar(email, "senha-errada-1", origem).andExpect(status().isTooManyRequests());
+        }
+        // A vítima, da origem dela, entra com a senha certa: nada daquilo contou contra a conta.
+        entrar(email, SENHA, "10.7.7.7").andExpect(status().isOk());
+    }
+
     private ResultActions entrar(String quem, String senha, String ip) throws Exception {
         return mvc.perform(post("/api/auth/login").with(csrf())
             .with(req -> { req.setRemoteAddr(ip); return req; })

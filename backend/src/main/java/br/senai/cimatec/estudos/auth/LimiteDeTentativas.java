@@ -18,11 +18,19 @@ import org.springframework.stereotype.Component;
  *   escreve (DECISOES.md, 2026-09-24). Pega quem testa uma senha em muitas contas.
  * - A tentativa é contada ANTES de conferir a senha, numa operação atômica: requisições em
  *   paralelo não passam todas pelo mesmo buraco. Quem acerta a senha devolve a tentativa.
+ * - A origem é conferida primeiro. Origem bloqueada para ali: não conta a conta nem cria entrada
+ *   nova no mapa por conta. Antes, um IP já bloqueado continuava trancando contas de outras
+ *   pessoas e enchendo a memória (revisão de segurança de 2026-09-27, D3).
  * - Estourou: bloqueio temporário; destrava sozinho quando o prazo passa.
  *
  * Contadores em memória: zeram quando o servidor reinicia e não valem para mais de uma
  * instância (limitação registrada em 2026-09-24). As entradas vencidas são apagadas a cada
  * chamada, sem agendador, para o mapa não crescer para sempre.
+ *
+ * Teto de memória: só tentativa que passou pela origem cria entrada por conta, e cada origem
+ * passa no máximo limitePorOrigem (20) por janela de 15 minutos. Uma entrada vive no máximo
+ * janela + bloqueio (30 minutos), então cada origem mantém no máximo 3 x 20 = 60 entradas vivas,
+ * cada uma com chave de até 254 caracteres (LoginRequest): menos de 60 KB por endereço de origem.
  */
 @Component
 public class LimiteDeTentativas {
@@ -56,13 +64,23 @@ public class LimiteDeTentativas {
     public Optional<Long> registrarTentativa(String conta, String origem) {
         Instant agora = Instant.now();
         limparVencidas(agora);
-        Instant ateConta = contar(porConta, conta, limitePorConta, agora);
         Instant ateOrigem = contar(porOrigem, origem, limitePorOrigem, agora);
-        Instant ate = ateConta.isAfter(ateOrigem) ? ateConta : ateOrigem;
-        if (!ate.isAfter(agora)) {
-            return Optional.empty();
+        if (ateOrigem.isAfter(agora)) {
+            // Origem bloqueada: a conta só é LIDA (get não cria entrada), para o Retry-After
+            // dizer o prazo maior quando a conta também está bloqueada.
+            Contagem daConta = porConta.get(conta);
+            Instant ateConta = daConta != null ? daConta.bloqueadoAte() : Instant.EPOCH;
+            return Optional.of(segundosAte(ateConta.isAfter(ateOrigem) ? ateConta : ateOrigem, agora));
         }
-        return Optional.of(Math.max(1, Duration.between(agora, ate).toSeconds() + 1));
+        Instant ateConta = contar(porConta, conta, limitePorConta, agora);
+        if (ateConta.isAfter(agora)) {
+            return Optional.of(segundosAte(ateConta, agora));
+        }
+        return Optional.empty();
+    }
+
+    private static long segundosAte(Instant ate, Instant agora) {
+        return Math.max(1, Duration.between(agora, ate).toSeconds() + 1);
     }
 
     /**
