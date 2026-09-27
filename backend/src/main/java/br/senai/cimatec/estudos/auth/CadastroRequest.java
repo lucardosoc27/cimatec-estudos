@@ -30,6 +30,9 @@ public record CadastroRequest(
     String senha,
 
     @NotBlank(message = "Selecione seu curso.")
+    // O serviço já confere o nome na lista dos nove; o tamanho recusa antes o que nunca estaria
+    // nela, com o mesmo texto. 60 é o tamanho da coluna.
+    @Size(max = 60, message = "Selecione um curso da lista.")
     String curso,
 
     // Boolean (objeto), não boolean: o Jackson recusa JSON sem o campo quando o tipo é

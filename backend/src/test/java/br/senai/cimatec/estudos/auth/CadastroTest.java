@@ -126,6 +126,18 @@ class CadastroTest {
     }
 
     @Test
+    void corpoMaiorQue16KbERecusadoSemSerLidoInteiro() throws Exception {
+        // Cadastro válido com um campo inventado de 20 mil caracteres. O Jackson ignoraria o campo,
+        // mas só depois de ler tudo para a memória; com o limite, ele para de ler no meio.
+        String inchado = CORPO_VALIDO.replace("{", "{\"lixo\": \"" + "x".repeat(20_000) + "\", ");
+        mvc.perform(post("/api/auth/cadastro").with(csrf())
+                .contentType(MediaType.APPLICATION_JSON).content(inchado))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("Não foi possível ler os dados enviados. Confira os campos e tente novamente."));
+        assertThat(usuarios.count()).isZero();
+    }
+
+    @Test
     void rotaNaoLiberadaSemSessaoResponde401() throws Exception {
         mvc.perform(get("/api/auth/eu")).andExpect(status().isUnauthorized());
         mvc.perform(get("/api/mentores")).andExpect(status().isUnauthorized());

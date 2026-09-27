@@ -117,6 +117,20 @@ class LimiteDeTentativasTest {
         entrar(email, SENHA, "10.8.8.8").andExpect(status().isOk());
     }
 
+    @Test
+    void emailOuSenhaGrandesDemaisSaoRecusadosSemContarTentativa() throws Exception {
+        // Maiores do que qualquer conta real: o cadastro aceita e-mail até 254 e senha até 64.
+        String emailGrande = "a".repeat(250) + "@exemplo.com";
+        String senhaGrande = "a1".repeat(33);
+        // Oito pedidos, mais do que o limite por origem (6) e por conta (3) deste teste: se
+        // contassem como tentativa, a origem e a conta estariam travadas no fim.
+        for (int i = 0; i < 4; i++) {
+            entrar(emailGrande, "senha-errada-1", origem).andExpect(status().isBadRequest());
+            entrar(email, senhaGrande, origem).andExpect(status().isBadRequest());
+        }
+        entrar(email, SENHA, origem).andExpect(status().isOk());
+    }
+
     private ResultActions entrar(String quem, String senha, String ip) throws Exception {
         return mvc.perform(post("/api/auth/login").with(csrf())
             .with(req -> { req.setRemoteAddr(ip); return req; })
