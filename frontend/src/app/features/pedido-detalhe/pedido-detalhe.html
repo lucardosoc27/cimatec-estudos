@@ -29,7 +29,7 @@
           {{ p.data | date: 'EEEE, dd/MM' }} às {{ p.hora }} · {{ rotuloModalidade[p.modalidade] }}
         </p>
         <!-- tabindex="-1": não entra na ordem do Tab, mas aceita foco por código depois do cancelamento -->
-        <p #statusPedido tabindex="-1" class="pedido__status" [attr.data-status]="p.status">
+        <p #statusPedido tabindex="-1" class="pedido__status">
           Status: <app-status [status]="p.status" />
         </p>
         @if (cancelamentoNaoAconteceu()) {
