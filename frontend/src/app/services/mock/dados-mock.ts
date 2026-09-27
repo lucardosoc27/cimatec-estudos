@@ -110,6 +110,13 @@ function responder(req: HttpRequest<unknown>, rota: string, base: Base, usuario:
 
   const conta = persona(usuario);
   if (!usuario || !conta) return erro(401);
+  // O perfil de mentora da própria pessoa: 404 = ainda não tem matérias cadastradas. Só as
+  // personas do mock têm; o cadastro de matérias é continuação do projeto (plano de commits).
+  if (req.method === 'GET' && rota === '/api/mentores/eu') {
+    const id = PERSONAS[usuario.emailInstitucional.toLowerCase()]?.mentorId;
+    const mentor = verificados(base).find((m) => m.id === id);
+    return mentor ? ok(publico(mentor)) : erro(404);
+  }
   if (rota.startsWith('/api/conta')) return minhaConta(req, rota, usuario, next);
   const lista = atualizarExpirados(pedidos ?? []);
   pedidos = lista;

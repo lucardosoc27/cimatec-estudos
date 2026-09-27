@@ -44,6 +44,11 @@
         </li>
       </ul>
       @if (erroMentoria()) { <p class="mensagem mensagem--erro" role="alert">Não foi possível gravar sua escolha. A chave voltou ao valor anterior; tente de novo.</p> }
+      @switch (naBusca()) {
+        @case ('carregando') { <p class="suave pequeno" role="status">Conferindo se você já aparece na busca…</p> }
+        @case ('sem-materias') { <p class="suave" role="status">Você ainda não cadastrou as matérias que quer ensinar, então não aparece na busca de quem pede ajuda. O cadastro de matérias não faz parte desta versão do Cimatec Estudos.</p> }
+        @case ('erro') { <p class="mensagem mensagem--erro" role="alert">Não foi possível conferir se você já aparece na busca. Recarregue a página para tentar de novo.</p> }
+      }
     </section>
 
     <section class="cartao" aria-labelledby="titulo-privacidade">

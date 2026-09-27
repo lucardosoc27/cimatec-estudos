@@ -11,8 +11,11 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 
+import { HttpErrorResponse } from '@angular/common/http';
+
 import { CURSOS } from '../../models/curso';
 import { AuthService } from '../../services/auth.service';
+import { MentoresService } from '../../services/mentores.service';
 
 type Consentimento = 'fotoParaLogados' | 'vitrinePublica';
 
@@ -29,6 +32,7 @@ type Consentimento = 'fotoParaLogados' | 'vitrinePublica';
 })
 export class Conta {
   private readonly auth = inject(AuthService);
+  private readonly mentores = inject(MentoresService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -50,6 +54,13 @@ export class Conta {
   // Mentoria: separada dos consentimentos, porque não é dado pessoal exposto, é um papel.
   protected readonly gravandoMentoria = signal(false);
   protected readonly erroMentoria = signal(false);
+  // Com a chave ligada: a pessoa já aparece na busca? Depende de ter matérias cadastradas.
+  // null = chave desligada, não há o que conferir.
+  protected readonly naBusca = signal<'carregando' | 'sem-materias' | 'aparece' | 'erro' | null>(null);
+
+  constructor() {
+    if (this.usuario()?.papeis.includes('mentor')) this.conferirBusca();
+  }
 
   // Exclusão: a senha fica no signal para sobreviver a um erro.
   protected readonly senha = signal('');
@@ -100,12 +111,27 @@ export class Conta {
     this.auth.atualizarMentoria(caixa.checked)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => this.gravandoMentoria.set(false),
+        next: (usuario) => {
+          this.gravandoMentoria.set(false);
+          if (usuario.papeis.includes('mentor')) this.conferirBusca();
+          else this.naBusca.set(null);
+        },
         error: () => {
           caixa.checked = !caixa.checked;
           this.gravandoMentoria.set(false);
           this.erroMentoria.set(true);
         },
+      });
+  }
+
+  /** 404 do perfil de mentor = ainda sem matérias cadastradas, então fora da busca. */
+  private conferirBusca(): void {
+    this.naBusca.set('carregando');
+    this.mentores.meuPerfil()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.naBusca.set('aparece'),
+        error: (erro: HttpErrorResponse) => this.naBusca.set(erro.status === 404 ? 'sem-materias' : 'erro'),
       });
   }
 

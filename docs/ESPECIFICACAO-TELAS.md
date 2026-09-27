@@ -322,6 +322,7 @@ Existe para a Política de Privacidade ser verdadeira: os direitos do titular (v
   - "Quero receber pedidos de ajuda": chave liga/desliga, **sempre desligada numa conta nova**, com a data em que foi ligada.
   - Texto de apoio: "Você decide se aceita cada pedido."
   - Desligar volta a data para `null`, como nos consentimentos.
+  - Com a chave ligada e sem matérias cadastradas, o aviso neutro: "Você ainda não cadastrou as matérias que quer ensinar, então não aparece na busca de quem pede ajuda. O cadastro de matérias não faz parte desta versão do Cimatec Estudos." (decisão de 27/09; quem tem matérias no mock não vê o aviso).
 - **"Sua privacidade":**
   - Termos e Política: "Aceito em <data> (versão <n>)", com link para ler. É obrigatório e não tem chave.
   - "Mostrar minha foto para quem está logado": chave liga/desliga, com a data.

@@ -19,6 +19,12 @@ export class MentoresService {
   listarVerificados(): Observable<Mentor[]> { return this.http.get<Mentor[]>(this.url); }
 
   /**
+   * O perfil de mentor de quem está logado, com as matérias que ensina. 404 quando a pessoa
+   * ainda não tem matérias cadastradas: aí ela não aparece na busca, mesmo com a chave ligada.
+   */
+  meuPerfil(): Observable<Mentor> { return this.http.get<Mentor>(`${this.url}/eu`); }
+
+  /**
    * Tela 4. Quando a API existir, vira GET /api/mentores/:id, e o servidor responde 404
    * para mentor não verificado. Emite `undefined` quando não encontra.
    */
