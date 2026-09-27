@@ -1,5 +1,6 @@
 :host { display: block; }
-.conta { max-width: 736px; margin-inline: auto; padding: var(--espaco-5) var(--espaco-3) var(--espaco-6); display: flex; flex-direction: column; gap: var(--espaco-4); }
+/* Sem padding próprio: o respiro vem do <main class="conteudo"> (app.scss), como nas outras telas */
+.conta { max-width: 736px; margin-inline: auto; display: flex; flex-direction: column; gap: var(--espaco-4); }
 .titulo { margin-bottom: 0; }
 
 /* Mesmo acabamento do cartão global (styles.scss); aqui só o espaçamento interno das seções */
@@ -46,7 +47,6 @@
 .janela__acoes { display: flex; flex-wrap: wrap; gap: var(--espaco-2); }
 
 @media (min-width: 48rem) {
-  .conta { padding: var(--espaco-6) var(--espaco-4); }
   .cartao { padding: var(--espaco-4); }
 }
 @media (prefers-reduced-motion: reduce) { .chave, .chave::after { transition: none; } }
