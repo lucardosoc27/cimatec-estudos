@@ -47,6 +47,10 @@ export class Conta {
   protected readonly gravando = signal<Consentimento | null>(null);
   protected readonly erroConsentimento = signal(false);
 
+  // Mentoria: separada dos consentimentos, porque não é dado pessoal exposto, é um papel.
+  protected readonly gravandoMentoria = signal(false);
+  protected readonly erroMentoria = signal(false);
+
   // Exclusão: a senha fica no signal para sobreviver a um erro.
   protected readonly senha = signal('');
   protected readonly excluindo = signal(false);
@@ -81,6 +85,26 @@ export class Conta {
           caixa.checked = !caixa.checked;
           this.gravando.set(null);
           this.erroConsentimento.set(true);
+        },
+      });
+  }
+
+  /**
+   * Ligar ou desligar "Quero receber pedidos de ajuda". Mesmo comportamento das chaves de
+   * privacidade: se o servidor recusar, a chave volta ao valor anterior e a tela avisa.
+   */
+  protected alternarMentoria(evento: Event): void {
+    const caixa = evento.target as HTMLInputElement;
+    this.gravandoMentoria.set(true);
+    this.erroMentoria.set(false);
+    this.auth.atualizarMentoria(caixa.checked)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.gravandoMentoria.set(false),
+        error: () => {
+          caixa.checked = !caixa.checked;
+          this.gravandoMentoria.set(false);
+          this.erroMentoria.set(true);
         },
       });
   }

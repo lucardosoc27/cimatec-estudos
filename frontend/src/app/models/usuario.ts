@@ -18,6 +18,12 @@ export interface Usuario {
   papeis: Papel[];
   verificacao: SituacaoVerificacao;
   consentimentos: Consentimentos;
+  /**
+   * Desde quando a pessoa aceita receber pedidos de ajuda (ISO); null = não recebe. É ela que
+   * faz o servidor incluir 'mentor' em `papeis`. Opcional só até o commit 5c: a sessão simulada
+   * não manda o campo, e esta rodada não mexe nela.
+   */
+  mentoriaDesde?: string | null;
 }
 
 /**

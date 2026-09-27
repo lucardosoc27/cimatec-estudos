@@ -97,6 +97,14 @@ export class AuthService {
     );
   }
 
+  /** "Quero receber pedidos de ajuda". A resposta traz `papeis` atualizado, e o Início segue sozinho. */
+  atualizarMentoria(receberPedidos: boolean): Observable<Usuario> {
+    return this.csrf().pipe(
+      switchMap(() => this.http.patch<Usuario>('/api/conta/mentoria', { receberPedidos })),
+      tap((usuario) => this.usuario.set(usuario)),
+    );
+  }
+
   excluirConta(senha: string): Observable<void> {
     return this.csrf().pipe(
       switchMap(() => this.http.delete<void>('/api/conta', { body: { senha } })),

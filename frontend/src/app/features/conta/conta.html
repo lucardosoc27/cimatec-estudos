@@ -31,6 +31,21 @@
       </form>
     </section>
 
+    <section class="cartao" aria-labelledby="titulo-mentoria">
+      <h2 id="titulo-mentoria" class="subtitulo">Ajudar colegas</h2>
+      <ul class="escolhas">
+        <li class="escolha">
+          <label for="chave-mentoria">
+            <strong>Quero receber pedidos de ajuda</strong>
+            <span class="suave">Você decide se aceita cada pedido.</span>
+            @if (u.mentoriaDesde; as em) { <span class="suave pequeno">Ligado em {{ em | date: 'dd/MM/yyyy' }}</span> }
+          </label>
+          <input id="chave-mentoria" type="checkbox" role="switch" class="chave" [checked]="u.papeis.includes('mentor')" [disabled]="gravandoMentoria()" (change)="alternarMentoria($event)">
+        </li>
+      </ul>
+      @if (erroMentoria()) { <p class="mensagem mensagem--erro" role="alert">Não foi possível gravar sua escolha. A chave voltou ao valor anterior; tente de novo.</p> }
+    </section>
+
     <section class="cartao" aria-labelledby="titulo-privacidade">
       <h2 id="titulo-privacidade" class="subtitulo">Sua privacidade</h2>
       <ul class="escolhas">
