@@ -59,7 +59,7 @@ export class Landing {
     turnos: this.turno() || null,
   }));
 
-  /** Fixos, sem estado de carregamento: são texto de marketing, não dado de aluno de verdade. */
+  /** Exemplos ilustrativos escritos pela equipe, não depoimentos reais. Fixos, sem estado de carregamento. */
   readonly depoimentos: readonly Depoimento[] = [
     {
       nome: 'Bernardo', curso: 'Biotecnologia', foto: 'assets/ilustracoes/bernardo.png',

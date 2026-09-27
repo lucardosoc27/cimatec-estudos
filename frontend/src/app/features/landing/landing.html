@@ -135,9 +135,11 @@
 <section class="depoimentos faixa" aria-labelledby="titulo-depoimentos">
   <div class="landing-largura">
     <div class="secao-central">
-      <p class="sobretitulo">Quem já pediu ajuda</p>
-      <h2 id="titulo-depoimentos">O que dizem os colegas</h2>
-      <p>Histórias reais de quem destravou uma matéria com a ajuda de um colega.</p>
+      <p class="sobretitulo">Exemplos ilustrativos</p>
+      <!-- O trecho sr-only entra no nome do título e da região: quem navega por títulos ou por
+           regiões com leitor de tela ouve o aviso sem passar pelo sobretítulo nem pela linha de apoio -->
+      <h2 id="titulo-depoimentos">O que dizem os colegas<span class="sr-only">, exemplos ilustrativos</span></h2>
+      <p>Situações criadas pela equipe para mostrar como a mentoria funciona. Não são depoimentos de pessoas reais.</p>
     </div>
     <div class="grid gap-4 md:grid-cols-3">
       @for (d of depoimentos; track d.nome) {
