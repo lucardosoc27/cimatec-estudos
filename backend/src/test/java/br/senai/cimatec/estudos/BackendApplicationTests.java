@@ -6,10 +6,15 @@ import java.sql.Connection;
 
 import javax.sql.DataSource;
 
+import java.util.Properties;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import br.senai.cimatec.estudos.auth.UltimoLinkCapturado;
 
@@ -20,6 +25,9 @@ class BackendApplicationTests {
 
 	@Autowired
 	private DataSource banco;
+
+	@Autowired
+	private Environment ambiente;
 
 	@Test
 	void contextLoads() {
@@ -35,6 +43,19 @@ class BackendApplicationTests {
 		try (Connection conexao = banco.getConnection()) {
 			assertThat(conexao.getMetaData().getURL()).startsWith("jdbc:h2:mem:");
 		}
+	}
+
+	/**
+	 * Produção segura por omissão: sem o perfil dev (e os testes rodam sem ele), o cookie de
+	 * sessão é Secure. Quem desliga é o application-dev.properties, de forma explícita.
+	 */
+	@Test
+	void cookieDeSessaoESecureForaDoPerfilDev() throws Exception {
+		assertThat(ambiente.getProperty("server.servlet.session.cookie.secure", Boolean.class)).isTrue();
+		assertThat(ambiente.getActiveProfiles()).doesNotContain("dev");
+
+		Properties dev = PropertiesLoaderUtils.loadProperties(new ClassPathResource("application-dev.properties"));
+		assertThat(dev.getProperty("server.servlet.session.cookie.secure")).isEqualTo("false");
 	}
 
 }
