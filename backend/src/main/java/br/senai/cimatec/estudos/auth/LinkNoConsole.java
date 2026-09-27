@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import br.senai.cimatec.estudos.usuario.Usuario;
 
 /**
- * ATALHO DE DESENVOLVIMENTO: imprime o link de verificação no console, com o token dentro.
- * Só existe no perfil "dev", que o spring-boot:run ativa (pom.xml) e o jar de produção não.
- * Registro e condição de saída: DECISOES.md, entrada de 2026-09-27.
+ * Imprime o link de verificação no console, com o token dentro. Só existe no perfil "dev",
+ * que o spring-boot:run ativa (pom.xml). É a entrega do projeto, já que envio de e-mail
+ * está fora do escopo (DECISOES.md, 2026-09-27).
  */
 @Component
 @Profile("dev")
@@ -20,6 +20,6 @@ public class LinkNoConsole implements EntregaDoLink {
 
     @Override
     public void entregar(Usuario usuario, String link) {
-        log.info("[DEV] Link de verificação da conta {}: {}", usuario.getId(), link);
+        log.info("Link de verificação da conta {}: {}", usuario.getId(), link);
     }
 }

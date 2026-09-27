@@ -5,6 +5,8 @@ import java.util.Map;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,6 +41,27 @@ public class TratamentoDeErros {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> corpoIlegivel(HttpMessageNotReadableException erro) {
         return Map.of("message", "Não foi possível ler os dados enviados. Confira os campos e tente novamente.");
+    }
+
+    /**
+     * Conta pendente com a senha certa: 403, "sei quem você é, mas ainda não pode entrar". Só
+     * chega aqui quem provou a senha (ver AuthenticationManager em SecurityConfig), então a
+     * mensagem não revela a existência da conta para quem não a tem.
+     */
+    @ExceptionHandler(DisabledException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Map<String, String> contaPendente(DisabledException erro) {
+        return Map.of("message", "Confirme seu e-mail institucional antes de entrar. Não chegou? Peça um novo link.");
+    }
+
+    /**
+     * Senha errada e e-mail inexistente: mesmo status, mesmo corpo. A exceção que chega aqui
+     * já é a mesma nos dois casos (o DaoAuthenticationProvider esconde "usuário não existe").
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Map<String, String> credenciaisInvalidas(AuthenticationException erro) {
+        return Map.of("message", "e-mail ou senha inválidos");
     }
 
     /** 429 com Retry-After em segundos: a tela lê o header e mostra a contagem. */
