@@ -19,5 +19,5 @@ fieldset { min-width: 0; padding: 0; border: 0; }
 /* Tipografia e espaçamento que brigavam com classe do projeto ficam aqui (regra A do CLAUDE.md) */
 .identificacao { text-align: center; }
 .materia-resumo, .dia-legenda { font-weight: 700; }
-.capitalizado, .dia-legenda { text-transform: capitalize; }
+.capitalizado { text-transform: capitalize; }
 @media (min-width: 48rem) { .perfil--principal { padding: var(--espaco-5); } }

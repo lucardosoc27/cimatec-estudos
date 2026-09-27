@@ -39,7 +39,7 @@
             <h3 class="pedido__materia">{{ pedido.materiaNome }}</h3>
             <p class="pedido__mentor">com {{ pedido.mentorNome }}</p>
             <p class="pedido__quando">
-              {{ pedido.data | date: 'EEEE, dd/MM' }} às {{ pedido.hora }}
+              {{ pedido.data | diaEData }} às {{ pedido.hora }}
               · {{ rotuloModalidade[pedido.modalidade] }}
             </p>
 

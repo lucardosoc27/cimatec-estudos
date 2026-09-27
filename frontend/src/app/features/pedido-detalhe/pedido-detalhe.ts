@@ -17,12 +17,13 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ROTULO_MODALIDADE } from '../../models/disponibilidade';
 import { PRAZO_RESPOSTA_HORAS, Pedido, ROTULO_STATUS, podeSerCancelado } from '../../models/pedido';
 import { PedidoEncerradoError, PedidosService } from '../../services/pedidos.service';
+import { DiaEDataPipe } from '../../shared/dia-e-data.pipe';
 import { EstadoTela } from '../../shared/estado-tela';
 import { Status } from '../../shared/status/status';
 
 @Component({
   selector: 'app-pedido-detalhe',
-  imports: [DatePipe, RouterLink, Status],
+  imports: [DatePipe, RouterLink, DiaEDataPipe, Status],
   templateUrl: './pedido-detalhe.html',
   styleUrl: './pedido-detalhe.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -35,7 +35,7 @@
                 <section class="perfil w-full" aria-labelledby="escolher-horario">
                   <h2 id="escolher-horario" class="subtitulo mb-5">Escolha um horário</h2>
                   @for (dia of dias(); track dia.data) {
-                    <fieldset class="mb-5 last:mb-0"><legend class="dia-legenda mb-3">{{ dia.data | date: 'EEEE, dd/MM' }}</legend>
+                    <fieldset class="mb-5 last:mb-0"><legend class="dia-legenda mb-3">{{ dia.data | diaEData }}</legend>
                       <div class="grid gap-3">
                         @for (opcao of dia.horarios; track opcao.horario.id) {
                           <button type="button" class="horario flex items-center justify-between gap-3" [class.horario--ocupado]="ocupados().includes(opcao.horario.id)" [disabled]="ocupados().includes(opcao.horario.id) || enviando()" [attr.aria-pressed]="horarioId() === opcao.horario.id" (click)="escolherHorario(opcao.horario.id)">

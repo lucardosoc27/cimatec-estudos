@@ -1,4 +1,4 @@
-import { cursoSemestre } from './formatacao';
+import { cursoSemestre, maiusculaInicial } from './formatacao';
 
 describe('cursoSemestre', () => {
   it('mostra o número do semestre com o curso', () => {
@@ -9,5 +9,15 @@ describe('cursoSemestre', () => {
   it('mostra "Egresso" quando o semestre é null', () => {
     expect(cursoSemestre({ semestre: null, curso: 'Análise e Desenvolvimento' }))
       .toBe('Egresso · Análise e Desenvolvimento');
+  });
+});
+
+describe('maiusculaInicial', () => {
+  it('sobe só a primeira letra, mesmo com hífen', () => {
+    expect(maiusculaInicial('segunda-feira, 28/09')).toBe('Segunda-feira, 28/09');
+  });
+
+  it('devolve texto vazio sem erro', () => {
+    expect(maiusculaInicial('')).toBe('');
   });
 });

@@ -7,12 +7,13 @@ import { Pedido } from '../../models/pedido';
 import { AuthService } from '../../services/auth.service';
 import { PedidosService } from '../../services/pedidos.service';
 import { Avatar } from '../../shared/avatar/avatar';
+import { DiaEDataPipe } from '../../shared/dia-e-data.pipe';
 import { EstadoTela } from '../../shared/estado-tela';
 import { Status } from '../../shared/status/status';
 
 @Component({
   selector: 'app-inicio',
-  imports: [DatePipe, RouterLink, Avatar, Status],
+  imports: [DatePipe, RouterLink, Avatar, DiaEDataPipe, Status],
   templateUrl: './inicio.html',
   styleUrl: './inicio.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -13,6 +12,7 @@ import { MentoresService } from '../../services/mentores.service';
 import { PedidoRascunhoService } from '../../services/pedido-rascunho.service';
 import { PedidoDuplicadoError, PedidosService } from '../../services/pedidos.service';
 import { Avatar } from '../../shared/avatar/avatar';
+import { DiaEDataPipe } from '../../shared/dia-e-data.pipe';
 import { EstadoTela } from '../../shared/estado-tela';
 import { proximaData } from '../../shared/util/datas';
 import { descreverHorario, idDoMentorComSelo, separarHorarios } from '../../shared/util/recomendacao';
@@ -21,7 +21,7 @@ interface OpcaoHorario { horario: HorarioLivre; data: string; }
 class HorarioIndisponivelError extends Error {}
 
 @Component({
-  selector: 'app-mentor-perfil', imports: [DatePipe, RouterLink, Avatar],
+  selector: 'app-mentor-perfil', imports: [RouterLink, Avatar, DiaEDataPipe],
   templateUrl: './mentor-perfil.html', styleUrl: './mentor-perfil.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
