@@ -1,5 +1,6 @@
 package br.senai.cimatec.estudos.usuario;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,4 +14,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
     boolean existsByEmail(String email);
 
     Optional<Usuario> findByVerificacaoTokenHash(String tokenHash);
+
+    /** DELETE das contas nessa situação cujo link venceu antes de "limite"; devolve quantas. */
+    long deleteByVerificacaoAndVerificacaoExpiraEmBefore(Verificacao verificacao, Instant limite);
 }
