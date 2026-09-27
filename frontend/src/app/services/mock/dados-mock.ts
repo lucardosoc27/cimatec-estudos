@@ -99,7 +99,13 @@ function ehDoMock(rota: string): boolean {
 function responder(req: HttpRequest<unknown>, rota: string, base: Base, usuario: Usuario | null,
     next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
   if (req.method === 'GET' && rota === '/api/materias') return ok(base.materias);
-  if (req.method === 'GET' && rota === '/api/mentores') return ok(verificados(base).map(publico));
+  // A pessoa logada nunca aparece na própria busca: tirada aqui, na origem, e não na tela.
+  // Como o perfil (tela 4) busca nesta mesma lista, ela também não abre o próprio perfil de
+  // mentora pela URL. No Spring, a mesma regra vai para o servidor (DECISOES.md, 2026-09-27).
+  if (req.method === 'GET' && rota === '/api/mentores') {
+    const proprio = usuario ? PERSONAS[usuario.emailInstitucional.toLowerCase()]?.mentorId : null;
+    return ok(verificados(base).filter((m) => m.id !== proprio).map(publico));
+  }
   if (req.method === 'GET' && rota === '/api/vitrine') return ok(vitrine(base));
 
   const conta = persona(usuario);
