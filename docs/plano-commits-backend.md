@@ -92,7 +92,7 @@ e API atrás do mesmo domínio, API em `/api`; `DECISOES.md` 2026-09-27). O CORS
 retirado, porque não existe chamada entre origens em nenhum ambiente, e a URL do site virou a
 propriedade `app.url`.
 
-## Commit 5b — Virar mentor
+## Commit 5b — Virar mentor (`54fac1c` no Spring, `6209fca` em Minha conta)
 
 Entrou no plano em 2026-09-27 (`DECISOES.md`, mesma data): num sistema de mentoria entre
 estudantes, "como alguém vira mentor" precisa ter resposta dentro do sistema.
@@ -104,11 +104,11 @@ desligar volta a data para nula; `GET /api/auth/eu` passa a devolver `papeis` a 
 data e o próprio `mentoriaDesde`. No front, só a chave "Quero receber pedidos de ajuda" em Minha
 conta, ligada à rota real.
 
-**Não entrega:** matérias, descrição e horários do mentor (o "cadastro de mentor" de 2026-09-20
-continua escopo futuro, e esses dados seguem no mock); mudança no mock de dados ou na sessão
-simulada (até o 5c, a chave em Minha conta recebe 404 da sessão simulada e volta ao valor
-anterior, com a mensagem de erro da tela); o que acontece com pedidos recebidos quando a pessoa
-desliga (decide-se junto com os pedidos no Spring).
+**Não entrega:** matérias, descrição e horários do mentor (ver "O que fica como continuação",
+no fim deste arquivo); mudança no mock de dados ou na sessão simulada (até o 5c, a chave em Minha
+conta recebia 404 da sessão simulada e voltava ao valor anterior, com a mensagem de erro da tela).
+Desligar a chave não mexe em pedido que já chegou: a pessoa só para de receber novos
+(`DECISOES.md`, 2026-09-27).
 
 ## Commit 5c — O front passa a usar o login do Spring
 
@@ -142,3 +142,13 @@ restarts, biblioteca de rate limit.
    o e-mail. Primeiro item a cair se o prazo apertar.
 9. Pedidos e mentores no Spring (seção 6 da `ESPECIFICACAO-TELAS.md`), quando `USAR_MOCK` sai
    e `/api/mentores` passa a exigir sessão de verdade (`DECISOES.md` 2026-09-27).
+
+## O que fica como continuação, por decisão
+
+**Cadastro de matérias, descrição e horários do mentor** não entra neste projeto. É escopo
+declarado, não pendência: o sistema entrega o **ciclo de consentimento** (cadastro com e-mail
+institucional, verificação, termos, chave "Quero receber pedidos de ajuda") e o **ciclo de
+pedido** (pedir, recomendar, aceitar ou recusar, cancelar, expirar). O que cada mentor ensina, e
+em que horários, é a continuação natural do projeto e vem depois dele, alimentando o mesmo
+modelo (`Mentor`, `SeloMateria`, `HorarioLivre`) que a recomendação já usa. Até lá, esses dados
+vêm de `mentores.json`.
