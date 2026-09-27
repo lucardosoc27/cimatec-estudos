@@ -19,6 +19,7 @@ import { Avatar } from '../../shared/avatar/avatar';
 import { DiaEDataPipe } from '../../shared/dia-e-data.pipe';
 import { EstadoTela } from '../../shared/estado-tela';
 import { Status } from '../../shared/status/status';
+import { dataHora } from '../../shared/util/datas';
 
 /**
  * As duas seções do Início que só quem é mentor vê: "Pedidos que você recebeu" e "Suas próximas
@@ -46,11 +47,14 @@ export class LadoMentor {
   // As duas seções saem da mesma lista. Trocar o status de um pedido nela (aceito) já o tira de
   // uma seção e o põe na outra: computed recalcula sozinho, sem mover nada à mão.
   protected readonly pendentes = computed(() => this.recebidos().filter((p) => p.status === 'aguardando'));
-  protected readonly sessoes = computed(() =>
-    this.recebidos()
-      .filter((p) => p.status === 'aceito')
-      .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora)),
-  );
+  // "Próximas": sessão aceita cuja data e hora ainda não chegaram. Uma sessão de ontem não é próxima,
+  // mesmo aceita — passou sem que ninguém a cancelasse, e não há nada para o mentor fazer com ela aqui.
+  protected readonly sessoes = computed(() => {
+    const agora = Date.now();
+    return this.recebidos()
+      .filter((p) => p.status === 'aceito' && dataHora(p.data, p.hora).getTime() > agora)
+      .sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
+  });
 
   /** Pedido com requisição em voo: os botões dele ficam ocupados. */
   protected readonly respondendo = signal<string | null>(null);

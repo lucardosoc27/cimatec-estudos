@@ -1,4 +1,4 @@
-import { proximaData, formatarDataLocal, somarHoras } from './datas';
+import { proximaData, formatarDataLocal, somarHoras, dataHora } from './datas';
 
 describe('proximaData', () => {
   // segunda-feira, 7 de setembro de 2026, 10:00
@@ -31,5 +31,11 @@ describe('somarHoras', () => {
   it('soma 48 horas', () => {
     const inicio = new Date(2026, 8, 7, 10, 0);
     expect(somarHoras(inicio, 48)).toEqual(new Date(2026, 8, 9, 10, 0));
+  });
+});
+
+describe('dataHora', () => {
+  it('junta data e hora no fuso local', () => {
+    expect(dataHora('2026-09-30', '14:05')).toEqual(new Date(2026, 8, 30, 14, 5));
   });
 });

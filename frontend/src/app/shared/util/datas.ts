@@ -34,3 +34,10 @@ export function formatarDataLocal(d: Date): string {
 export function somarHoras(d: Date, horas: number): Date {
   return new Date(d.getTime() + horas * 60 * 60 * 1000);
 }
+
+/** `data` ('YYYY-MM-DD') e `hora` ('HH:mm') como um só Date no fuso local, para comparar com "agora". */
+export function dataHora(data: string, hora: string): Date {
+  const [ano, mes, dia] = data.split('-').map(Number);
+  const [hh, mm] = hora.split(':').map(Number);
+  return new Date(ano, mes - 1, dia, hh, mm, 0, 0);
+}
