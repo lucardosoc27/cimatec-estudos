@@ -334,8 +334,8 @@ Existe para a Política de Privacidade ser verdadeira: os direitos do titular (v
 Aprovada no Stitch, mas **desatualizada** com as decisões de 24/09. Corrigir antes de implementar:
 - As abas de curso têm "Internet das Coisas", que não é curso. Usar os 9 cursos reais.
 - Tirar Cálculo e Física do campo de busca e do rodapé ("Matérias frequentes").
-- O carrossel tem de usar **os mesmos mentores da lista de 18**, com o mesmo curso e o mesmo retrato. Tirar o Lucas; a Beatriz é de Edificações.
-- **Só entram no carrossel público os mentores com `vitrinePublicaEm`**: só primeiro nome, sem idade e sem horário.
+- O carrossel tem de usar **os mesmos mentores da lista de 18**, com o mesmo curso. Tirar o Lucas; a Beatriz é de Edificações. **Sem foto**: DECISOES.md, entrada de 2026-09-22 (esta seção, escrita em 24/09, ainda citava "o mesmo retrato"; a decisão de 22/09 é anterior e vale).
+- **Só entram no carrossel público os mentores com `vitrinePublicaEm`**: primeiro nome, curso, matérias e descrição, sem idade, sem horário e sem foto.
 - Trocar o nome do depoimento "Bernardo", porque Bernardo é o usuário de exemplo.
 - "Como funciona": ilustração no lugar das fotos, ou sem imagem.
 - O rodapé diz "© 2025". Trocar para 2026.
