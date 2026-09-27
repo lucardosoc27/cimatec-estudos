@@ -99,7 +99,8 @@ body {
   background-attachment: fixed;
 }
 
-h1, h2, h3, p, ul { margin: 0; }
+/* Margem zero de h1, h2, h3, p e ul vem do preflight do Tailwind, dentro de @layer base.
+   Repetir aqui, fora de layer, anulava os utilitários de margem (mt-2, mb-4) nesses elementos. */
 
 /* Hierarquia: título em peso 800 e espaçamento levemente negativo dá a personalidade da fonte;
    subtítulos em 700. Tamanhos ficam nas classes (.titulo, .subtitulo) e nos cartões. */
