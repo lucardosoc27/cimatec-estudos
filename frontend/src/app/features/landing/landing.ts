@@ -62,8 +62,8 @@ export class Landing {
   /** Exemplos ilustrativos escritos pela equipe, não depoimentos reais. Fixos, sem estado de carregamento. */
   readonly depoimentos: readonly Depoimento[] = [
     {
-      nome: 'Bernardo', curso: 'Biotecnologia', foto: 'assets/ilustracoes/bernardo.png',
-      texto: 'Travei em Fundamentos de Estatística e quase desisti antes da prova. Uma colega do curso me mostrou como organizar os dados numa sessão só, e o resto fez sentido.',
+      nome: 'Rodrigo', curso: 'Edificações', foto: 'assets/ilustracoes/rodrigo.png',
+      texto: 'Travei em Fundamentos de Topografia e quase desisti antes da prova. Uma colega do curso me mostrou como organizar os dados numa sessão só, e o resto fez sentido.',
     },
     {
       nome: 'Carolina', curso: 'Redes de Computadores', foto: 'assets/ilustracoes/carolina.png',
