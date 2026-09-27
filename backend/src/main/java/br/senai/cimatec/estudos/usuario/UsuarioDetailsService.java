@@ -35,6 +35,9 @@ public class UsuarioDetailsService implements UserDetailsService {
             .orElseThrow(() -> new UsernameNotFoundException("e-mail não cadastrado"));
         return User.withUsername(usuario.getEmail())
             .password(usuario.getSenhaHash())
+            // Só ALUNO. "Mentor" não entra aqui de propósito: as permissões ficam guardadas na
+            // sessão na hora do login, e quem desligasse a mentoria continuaria mentor até sair.
+            // Rota do lado do mentor lê mentoria_desde do banco a cada requisição.
             .roles("ALUNO")
             // Conta com e-mail ainda não verificado não entra (DisabledException no login).
             .disabled(!usuario.estaVerificado())

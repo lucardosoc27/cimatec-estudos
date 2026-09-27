@@ -18,10 +18,11 @@ public record UsuarioResposta(
     // O servidor não guarda foto: ela é do mock. Fica null até existir armazenamento.
     String foto,
     String termosVersao,
-    // Todo usuário é aluno; mentor é escopo futuro (DECISOES.md 2026-09-20).
+    // Todo usuário é aluno; é também mentor enquanto mentoriaDesde não for nula.
     List<String> papeis,
     String verificacao,
-    Consentimentos consentimentos) {
+    Consentimentos consentimentos,
+    Instant mentoriaDesde) {
 
     public record Consentimentos(Instant termosEPoliticaEm, Instant fotoParaLogadosEm, Instant vitrinePublicaEm) {
     }
@@ -34,9 +35,10 @@ public record UsuarioResposta(
             usuario.getCurso(),
             null,
             usuario.getTermosVersao(),
-            List.of("aluno"),
+            usuario.recebePedidos() ? List.of("aluno", "mentor") : List.of("aluno"),
             usuario.estaVerificado() ? "verificado" : "pendente",
             new Consentimentos(usuario.getTermosEPoliticaEm(), usuario.getFotoParaLogadosEm(),
-                usuario.getVitrinePublicaEm()));
+                usuario.getVitrinePublicaEm()),
+            usuario.getMentoriaDesde());
     }
 }

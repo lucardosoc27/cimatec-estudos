@@ -81,6 +81,12 @@ public class Usuario {
     @Column(name = "verificado_em")
     private Instant verificadoEm;
 
+    // Desde quando a pessoa aceita receber pedidos de ajuda; null = não recebe. Data, e não
+    // verdadeiro/falso, pela mesma convenção dos consentimentos. Nasce null: toda conta começa
+    // só como aluno (DECISOES.md, 2026-09-27, "Virar mentor").
+    @Column(name = "mentoria_desde")
+    private Instant mentoriaDesde;
+
     /** Exigido pelo JPA. O código do projeto usa o construtor de baixo. */
     protected Usuario() {
     }
@@ -160,6 +166,26 @@ public class Usuario {
     public void iniciarVerificacao(String tokenHash, Instant expiraEm) {
         this.verificacaoTokenHash = tokenHash;
         this.verificacaoExpiraEm = expiraEm;
+    }
+
+    public Instant getMentoriaDesde() {
+        return mentoriaDesde;
+    }
+
+    public boolean recebePedidos() {
+        return mentoriaDesde != null;
+    }
+
+    /** Ligar de novo não muda a data: ela diz desde quando a chave está ligada sem parar. */
+    public void ligarMentoria(Instant agora) {
+        if (mentoriaDesde == null) {
+            mentoriaDesde = agora;
+        }
+    }
+
+    /** Desligar apaga a data: nula é o único jeito de dizer "não recebe" (sem histórico, de propósito). */
+    public void desligarMentoria() {
+        mentoriaDesde = null;
     }
 
     public void confirmarVerificacao(Instant agora) {
