@@ -89,7 +89,7 @@ public class VerificacaoService {
     public void reenviar(String emailInformado) {
         String email = emailInformado.trim().toLowerCase(Locale.ROOT);
         intervalo.segundosAteLiberar(email).ifPresent(segundos -> {
-            throw new ReenvioBloqueadoException(segundos);
+            throw LimiteAtingidoException.reenvio(segundos);
         });
         usuarios.findByEmail(email).ifPresentOrElse(usuario -> {
             if (usuario.estaVerificado()) {

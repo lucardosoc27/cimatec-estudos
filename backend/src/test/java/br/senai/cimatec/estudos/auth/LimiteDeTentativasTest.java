@@ -145,6 +145,18 @@ class LimiteDeTentativasTest {
         entrar(email, SENHA, "10.7.7.7").andExpect(status().isOk());
     }
 
+    @Test
+    void enderecosIpv6DoMesmoBloco64SaoAMesmaOrigem() throws Exception {
+        // Esgota a origem (limite 6 neste teste) a partir de um endereço do bloco 2001:db8:0:1::/64.
+        for (int i = 0; i < 7; i++) {
+            entrar("alvo" + i + "@exemplo.com", "senha-comum-1", "2001:db8:0:1::" + (i + 1));
+        }
+        // Outro endereço do MESMO bloco /64: é a mesma assinatura, continua bloqueado.
+        entrar(email, SENHA, "2001:db8:0:1:ffff:ffff:ffff:ffff").andExpect(status().isTooManyRequests());
+        // O bloco vizinho é outra origem.
+        entrar(email, SENHA, "2001:db8:0:2::1").andExpect(status().isOk());
+    }
+
     private ResultActions entrar(String quem, String senha, String ip) throws Exception {
         return mvc.perform(post("/api/auth/login").with(csrf())
             .with(req -> { req.setRemoteAddr(ip); return req; })

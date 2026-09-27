@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import br.senai.cimatec.estudos.auth.LoginBloqueadoException;
-import br.senai.cimatec.estudos.auth.ReenvioBloqueadoException;
+import br.senai.cimatec.estudos.auth.LimiteAtingidoException;
 
 /**
  * Converte erro de validação em 400 com corpo { "message": "..." }, que é o que o Angular
@@ -66,19 +65,12 @@ public class TratamentoDeErros {
     }
 
     /**
-     * Login bloqueado pelo limite: 429 com Retry-After. Mesmo corpo para conta que existe e para
-     * e-mail que não existe, e a senha não é conferida, então o tempo também não muda.
+     * Um limite em memória recusou o pedido (login, rotas públicas, reenvio): 429 com Retry-After.
+     * No login, o corpo é o mesmo para conta que existe e para e-mail que não existe, e a senha
+     * não é conferida, então o tempo também não muda.
      */
-    @ExceptionHandler(LoginBloqueadoException.class)
-    public ResponseEntity<Map<String, String>> loginBloqueado(LoginBloqueadoException erro) {
-        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-            .header(HttpHeaders.RETRY_AFTER, String.valueOf(erro.getSegundos()))
-            .body(Map.of("message", erro.getMessage()));
-    }
-
-    /** 429 com Retry-After em segundos: a tela lê o header e mostra a contagem. */
-    @ExceptionHandler(ReenvioBloqueadoException.class)
-    public ResponseEntity<Map<String, String>> reenvioCedoDemais(ReenvioBloqueadoException erro) {
+    @ExceptionHandler(LimiteAtingidoException.class)
+    public ResponseEntity<Map<String, String>> limiteAtingido(LimiteAtingidoException erro) {
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
             .header(HttpHeaders.RETRY_AFTER, String.valueOf(erro.getSegundos()))
             .body(Map.of("message", erro.getMessage()));

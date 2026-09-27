@@ -96,9 +96,9 @@ public class AuthController {
         // Mesma normalização do UsuarioDetailsService: "Ana@..." e " ana@..." são a mesma conta
         // também para o limite, senão variar maiúsculas daria 5 tentativas novas.
         String conta = pedido.email().trim().toLowerCase(Locale.ROOT);
-        String origem = request.getRemoteAddr();
+        String origem = Origem.de(request);
         limite.registrarTentativa(conta, origem).ifPresent(segundos -> {
-            throw new LoginBloqueadoException(segundos);
+            throw LimiteAtingidoException.login(segundos);
         });
 
         Authentication autenticacao;
