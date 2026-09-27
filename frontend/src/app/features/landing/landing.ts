@@ -66,11 +66,11 @@ export class Landing {
       texto: 'Travei em Fundamentos de Topografia e quase desisti antes da prova. Uma colega do curso me mostrou como organizar os dados numa sessão só, e o resto fez sentido.',
     },
     {
-      nome: 'Carolina', curso: 'Redes de Computadores', foto: 'assets/ilustracoes/carolina.png',
+      nome: 'Carolina', curso: 'Redes de Computadores', foto: 'assets/ilustracoes/depoimento-carolina.png',
       texto: 'Configuração de Servidores de Rede parecia impossível sozinha. Depois de uma sessão com uma colega mais experiente, entendi a lógica e terminei o laboratório.',
     },
     {
-      nome: 'Cibele', curso: 'Desenvolvimento de Sistemas', foto: 'assets/ilustracoes/cibele.png',
+      nome: 'Cibele', curso: 'Desenvolvimento de Sistemas', foto: 'assets/ilustracoes/depoimento-cibele.png',
       texto: 'Comecei ajudando colegas em Lógica de Programação só para revisar o que eu já sabia. Hoje é uma das partes do curso que eu mais gosto de fazer.',
     },
   ];

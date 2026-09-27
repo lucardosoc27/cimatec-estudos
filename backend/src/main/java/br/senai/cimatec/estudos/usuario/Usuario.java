@@ -19,8 +19,9 @@ import jakarta.persistence.Table;
  *
  * A senha NÃO fica aqui: fica o hash BCrypt dela, que não permite recuperar a senha original.
  *
- * Todo usuário é aluno. "Virar mentor" é escopo futuro (DECISOES.md, 2026-09-20), então ainda
- * não existe coluna de papel: quando existir, entra como campo próprio.
+ * Todo usuário é aluno. É também mentor enquanto mentoriaDesde não for nula: a chave "Quero
+ * receber pedidos de ajuda", em Minha conta (DECISOES.md, 2026-09-27, "Virar mentor"). Não há
+ * coluna de papel: o papel sai dessa data.
  */
 @Entity
 @Table(name = "usuarios")

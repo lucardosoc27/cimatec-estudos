@@ -225,7 +225,7 @@ Não existe nesta tela: "SENAI CIMATEC • Salvador", "Disponível esta semana",
 **"Resumo do seu pedido":** matéria, "o que você precisa" e modalidade (mostrar **"Ambos"**, o nome da opção na tela 2, e não "Presencial ou Online"), mais o link "Alterar".
 
 **"Escolha um horário":**
-- **Só horários realmente livres**, no turno escolhido, agrupados por dia ("Terça, 30/09": 14h–15h e 15h–16h).
+- **Só horários realmente livres**, no turno escolhido, agrupados por dia ("Terça, 29/09": 14h–15h e 15h–16h).
 - Cada horário diz o local: **"CIMATEC - Orlando Gomes" ou "Online"**. Nenhum outro local (nada de Lab 04, Biblioteca, Sala de Estudos ou Teams).
 - Aviso: "O contato da <nome> aparece depois que ela aceitar o pedido. Ela tem até 48h para responder."
 - Botão "Enviar pedido →". No celular fica no fluxo da página, antes do rodapé. Botão fixo no rodapé só se o Luã pedir, e sem cobrir o último horário.
@@ -356,11 +356,11 @@ Aprovada no Stitch, mas **desatualizada** com as decisões de 24/09. Corrigir an
 ## 4. Dados de demonstração (mock)
 
 ### Usuários de exemplo
-- **Bernardo**: aluno, Redes de Computadores, **sem foto** (avatar "B"). Pedidos: com a **Ana** (Configuração de Servidores de Rede, Terça 30/09, 14h–15h, CIMATEC - Orlando Gomes, aguardando) e com o **Diego** (Instalação e Manutenção de Redes Corporativas, Quinta 02/10, 14h–15h, aceito).
+- **Bernardo**: aluno, Redes de Computadores, **sem foto** (avatar "B"). Pedidos: com a **Ana** (Configuração de Servidores de Rede, Terça 29/09, 14h–15h, CIMATEC - Orlando Gomes, aguardando) e com o **Diego** (Instalação e Manutenção de Redes Corporativas, Quinta 01/10, 14h–15h, aceito).
 - **Ana**: mentora **e** aluna, Técnico em Redes de Computadores, retrato com fundo ciano, "12 sessões concluídas".
   - Ensina: Configuração de Servidores de Rede; Instalação e Manutenção de Redes Corporativas; Infraestrutura de Redes de Computadores.
   - Recebeu o pedido do Bernardo.
-  - Próxima sessão: com o **Pedro** (aluno sem foto, avatar "P"; Infraestrutura de Redes de Computadores; Quinta 02/10, 15h–16h; Online).
+  - Próxima sessão: com o **Pedro** (aluno sem foto, avatar "P"; Infraestrutura de Redes de Computadores; Quinta 01/10, 15h–16h; Online).
   - E-mail de exemplo: `ana@exemplo.com`, **claramente fictício**. Não inventar o domínio do CIMATEC.
 - **Diego** e **Bruno**: mentores de Redes, com 5 e 3 sessões concluídas, livres quinta à tarde e quarta à tarde.
 
