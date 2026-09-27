@@ -42,8 +42,8 @@ public class VerificacaoService {
 
     public VerificacaoService(UsuarioRepository usuarios, EntregaDoLink entrega, IntervaloDeReenvio intervalo,
             @Value("${app.verificacao.validade}") Duration validade,
-            // A mesma origem que o CORS aceita: é onde o front está, então é onde o link leva.
-            @Value("${app.cors.origem}") String urlDoFront) {
+            // A URL pública do site: o link de verificação leva para lá.
+            @Value("${app.url}") String urlDoFront) {
         this.usuarios = usuarios;
         this.entrega = entrega;
         this.intervalo = intervalo;

@@ -2,7 +2,6 @@ package br.senai.cimatec.estudos.config;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,9 +25,6 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfAuthenticationStrategy;
 import org.springframework.security.web.savedrequest.NullRequestCache;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import jakarta.servlet.DispatcherType;
 
@@ -47,8 +42,8 @@ public class SecurityConfig {
             // devolve no header X-XSRF-TOKEN. Um site atacante consegue fazer o navegador
             // mandar o cookie, mas não consegue LER o valor para montar o header.
             .csrf(csrf -> csrf.spa())
-            // Usa o bean corsConfigurationSource abaixo.
-            .cors(Customizer.withDefaults())
+            // Sem CORS, de propósito: front e API ficam na mesma origem em todo ambiente
+            // (DECISOES.md, 2026-09-27), então nunca há chamada entre origens.
             .authorizeHttpRequests(regras -> regras
                 // A página de erro interna do Spring precisa abrir, senão um 403 do CSRF
                 // viraria outra resposta ao ser encaminhado para /error.
@@ -138,23 +133,5 @@ public class SecurityConfig {
     @Bean
     SecurityContextRepository securityContextRepository() {
         return new HttpSessionSecurityContextRepository();
-    }
-
-    /**
-     * Em desenvolvimento o Angular fala com o Spring pelo proxy do ng serve (mesma origem),
-     * então o CORS não entra em ação. Fica configurado para produção, com origem explícita:
-     * nunca "*" junto com credenciais.
-     */
-    @Bean
-    CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.origem}") String origemDoFront) {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(origemDoFront));
-        config.setAllowedMethods(List.of("GET", "POST"));
-        config.setAllowedHeaders(List.of("Content-Type", "X-XSRF-TOKEN"));
-        config.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource origem = new UrlBasedCorsConfigurationSource();
-        origem.registerCorsConfiguration("/api/**", config);
-        return origem;
     }
 }

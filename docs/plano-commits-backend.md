@@ -67,7 +67,7 @@ ninguém consegue verificar seria conta desabilitada para sempre.
 limite por IP. A sessão simulada do front continua ligada, então a tela `/verificar-email` ainda
 não fala com o Spring: a prova é por `curl`.
 
-## Commit 5a — Login, logout e `/api/auth/eu` no Spring
+## Commit 5a — Login, logout e `/api/auth/eu` no Spring (`4f0cdc3`)
 
 Dividido em dois porque junta configuração de sessão no Spring com integração do front, que
 falham por motivos diferentes. Nesta metade nada dentro de `frontend/` muda.
@@ -86,6 +86,11 @@ login e depois `/eu` com o mesmo cookie; cookie de antes do logout não autentic
 
 **Não entrega:** qualquer mudança no front (a sessão simulada continua ligada), limite de
 tentativas, recuperação de senha, `PATCH`/`DELETE /api/conta`, pedidos e mentores no Spring.
+
+**Depois do 5a, em commit próprio:** topologia de produção fechada em "mesma origem" (Angular
+e API atrás do mesmo domínio, API em `/api`; `DECISOES.md` 2026-09-27). O CORS do commit 2 foi
+retirado, porque não existe chamada entre origens em nenhum ambiente, e a URL do site virou a
+propriedade `app.url`.
 
 ## Commit 5b — O front passa a usar o login do Spring
 
