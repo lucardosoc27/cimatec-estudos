@@ -41,6 +41,8 @@ export class Auth {
   protected readonly bloqueadoAte = signal(0);
   protected readonly segundos = signal(0);
   protected readonly tentativas = signal(0);
+  // Conta com e-mail ainda não confirmado: o servidor só diz isso a quem provou a senha (403).
+  protected readonly contaPendente = signal(false);
   protected readonly regras = computed(() => [
     { texto: '8 caracteres ou mais', atendida: this.senha().length >= 8 },
     { texto: 'Pelo menos uma letra', atendida: /[a-zA-ZÀ-ÖØ-öø-ÿ]/.test(this.senha()) },
@@ -60,6 +62,7 @@ export class Auth {
     if (this.enviando() || this.segundos() > 0) return;
     this.tentou.set(true);
     this.erro.set('');
+    this.contaPendente.set(false);
     if (form.invalid || (this.cadastro() && (!this.senhaValida() || this.senha() !== this.confirmacao()))) {
       form.control.markAllAsTouched();
       this.erro.set('Confira os campos indicados antes de continuar.');
@@ -98,11 +101,17 @@ export class Auth {
           this.bloqueadoAte.set(Date.now() + segundos * 1000);
           this.segundos.set(segundos);
           this.erro.set('Muitas tentativas. Aguarde antes de tentar novamente.');
-        } else if (erro.status === 0 || erro.status >= 500) {
-          this.erro.set('Não foi possível entrar agora. Verifique sua conexão e tente novamente.');
-        } else {
+        } else if (erro.status === 403 && erro.error?.message) {
+          // Senha certa, e-mail não confirmado. Não conta como tentativa: a senha estava certa.
+          this.auth.emailParaVerificar.set(this.email().trim());
+          this.contaPendente.set(true);
+          this.erro.set(erro.error.message);
+        } else if (erro.status === 401) {
+          // Senha errada ou e-mail inexistente: o servidor responde igual nos dois casos.
           this.tentativas.update((valor) => valor + 1);
           this.erro.set('e-mail ou senha inválidos');
+        } else {
+          this.erro.set('Não foi possível entrar agora. Verifique sua conexão e tente novamente.');
         }
         this.focarErro();
       },

@@ -267,7 +267,8 @@ Não existe nesta tela: "Monitora oficial credenciada pelo Núcleo de Apoio Disc
 **Aba "Entrar":**
 - E-mail institucional e senha, com "mostrar senha" e o link "Esqueci minha senha".
 - Botão "Entrar".
-- Erro sempre genérico: "e-mail ou senha inválidos".
+- Erro sempre genérico: "e-mail ou senha inválidos" (401), para senha errada e para e-mail inexistente; conta como tentativa.
+- Conta com e-mail ainda não confirmado e senha certa (403): a mensagem do servidor ("Confirme seu e-mail institucional antes de entrar…") com o link "Pedir um novo link de confirmação →" para `/verificar-email`, com o e-mail já preenchido. Não conta como tentativa. Só aparece para quem provou a senha, então não revela se o e-mail existe.
 
 **Aba "Criar conta":**
 - O rótulo do primeiro campo é **"Nome"**, com o placeholder "Como quer ser chamado(a)". **Não** usar "Nome completo": pela minimização, o sistema não precisa do nome civil.

@@ -2,6 +2,8 @@ import {
   HttpBackend,
   HttpClient,
   HttpErrorResponse,
+  HttpEvent,
+  HttpHandlerFn,
   HttpInterceptorFn,
   HttpRequest,
   HttpResponse,
@@ -12,18 +14,48 @@ import { Observable, delay, forkJoin, map, of, shareReplay, switchMap, throwErro
 import { Materia } from '../../models/materia';
 import { Mentor } from '../../models/mentor';
 import { PRAZO_RESPOSTA_HORAS, Pedido, podeSerCancelado } from '../../models/pedido';
+import { Usuario } from '../../models/usuario';
 import { proximaData, somarHoras } from '../../shared/util/datas';
+import { AuthService } from '../auth.service';
 import { MentorMock } from './mentor-mock';
 import { PedidoMock } from './pedido-mock';
-import { contaSimulada } from './sessao-simulada';
 
 /*
- * MOCK DE DADOS: responde a /api/materias, /api/mentores, /api/vitrine e /api/pedidos
- * lendo assets/*.json. Os serviços continuam chamando /api: quando o Spring tiver esses
- * endpoints, basta USAR_MOCK = false. Nenhum serviço muda.
- * Os pedidos dependem da sessão simulada para saber quem está logado.
+ * MOCK DE DADOS: responde ao que o Spring ainda não tem, lendo assets/*.json: /api/materias,
+ * /api/mentores, /api/vitrine, /api/pedidos e a parte de /api/conta do commit 7 (nome e curso,
+ * consentimentos, exclusão). Tudo em /api/auth/* e o PATCH /api/conta/mentoria passam direto,
+ * porque moram no Spring. Os serviços continuam chamando /api: quando o Spring tiver o resto,
+ * basta USAR_MOCK = false.
+ *
+ * Quem está logado vem do /api/auth/eu de verdade (AuthService.usuario). A persona do mock é
+ * escolhida pelo e-mail dessa conta (PERSONAS): DECISOES.md, entrada de 2026-09-27.
  */
 export const USAR_MOCK = true;
+
+/** O que o mock precisa saber de quem está logado. */
+interface Conta { usuarioId: string; mentorId: string | null; nome: string; curso: string; email: string; }
+
+/**
+ * Personas com pedidos em assets/pedidos.json, ligadas pelo e-mail. As contas de demonstração
+ * nascem pelo cadastro com estes e-mails. E-mail sem persona = conta própria, sem pedidos.
+ */
+const PERSONAS: Record<string, { usuarioId: string; mentorId: string | null }> = {
+  'bernardo@exemplo.com': { usuarioId: 'u-bernardo', mentorId: null },
+  'ana@exemplo.com': { usuarioId: 'u-ana', mentorId: 'm-ana' },
+};
+
+function persona(usuario: Usuario | null): Conta | null {
+  if (!usuario) return null;
+  const fixa = PERSONAS[usuario.emailInstitucional.toLowerCase()];
+  return {
+    usuarioId: fixa?.usuarioId ?? usuario.id,
+    // O lado de mentor só existe se o servidor disse que a pessoa é mentora (chave em Minha conta).
+    mentorId: usuario.papeis.includes('mentor') ? fixa?.mentorId ?? null : null,
+    nome: usuario.nome,
+    curso: usuario.curso,
+    email: usuario.emailInstitucional,
+  };
+}
 
 const LOCAL_PRESENCIAL = 'CIMATEC - Orlando Gomes';
 
@@ -36,9 +68,10 @@ let pedidos: Pedido[] | null = null;
 
 export const dadosMockInterceptor: HttpInterceptorFn = (req, next) => {
   const rota = req.url.split('?')[0];
-  const nossa = ['/api/materias', '/api/mentores', '/api/vitrine', '/api/pedidos'].some((r) => rota.startsWith(r));
-  if (!nossa) return next(req);
+  if (!ehDoMock(rota)) return next(req);
 
+  // O usuário que o guard já carregou do Spring. Interceptor funcional pode usar inject().
+  const usuario = inject(AuthService).usuario();
   // HttpClient ligado direto ao HttpBackend: lê os assets sem passar de novo pelos interceptors.
   const http = new HttpClient(inject(HttpBackend));
   base$ ??= forkJoin({
@@ -53,16 +86,25 @@ export const dadosMockInterceptor: HttpInterceptorFn = (req, next) => {
     }),
     shareReplay(1),
   );
-  return base$.pipe(switchMap((base) => responder(req, rota, base)), delay(300));
+  return base$.pipe(switchMap((base) => responder(req, rota, base, usuario, next)), delay(300));
 };
 
-function responder(req: HttpRequest<unknown>, rota: string, base: Base): Observable<HttpResponse<unknown>> {
+/** Só o que o Spring ainda não tem. /api/auth/* e a chave de mentoria são do Spring: passam direto. */
+function ehDoMock(rota: string): boolean {
+  if (rota.startsWith('/api/auth/') || rota === '/api/conta/mentoria') return false;
+  return ['/api/materias', '/api/mentores', '/api/vitrine', '/api/pedidos', '/api/conta']
+    .some((r) => rota === r || rota.startsWith(r + '/'));
+}
+
+function responder(req: HttpRequest<unknown>, rota: string, base: Base, usuario: Usuario | null,
+    next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
   if (req.method === 'GET' && rota === '/api/materias') return ok(base.materias);
   if (req.method === 'GET' && rota === '/api/mentores') return ok(verificados(base).map(publico));
   if (req.method === 'GET' && rota === '/api/vitrine') return ok(vitrine(base));
 
-  const conta = contaSimulada();
-  if (!conta) return erro(401);
+  const conta = persona(usuario);
+  if (!usuario || !conta) return erro(401);
+  if (rota.startsWith('/api/conta')) return minhaConta(req, rota, usuario, next);
   const lista = atualizarExpirados(pedidos ?? []);
   pedidos = lista;
 
@@ -97,7 +139,39 @@ function responder(req: HttpRequest<unknown>, rota: string, base: Base): Observa
     : { ...pedido, status: 'recusado' }));
 }
 
-function criar(corpo: Record<string, string>, conta: NonNullable<ReturnType<typeof contaSimulada>>, base: Base) {
+/**
+ * Minha conta até o commit 7: nome, curso e consentimentos mudam só na memória do navegador
+ * (o AuthService guarda a resposta; recarregar a página volta ao que o servidor tem). A chave
+ * de mentoria não passa aqui. Limitação registrada: DECISOES.md, 2026-09-27.
+ */
+function minhaConta(req: HttpRequest<unknown>, rota: string, usuario: Usuario, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+  const corpo = (req.body ?? {}) as Record<string, unknown>;
+  if (req.method === 'PATCH' && rota === '/api/conta') {
+    const nome = String(corpo['nome'] ?? '').trim();
+    const curso = String(corpo['curso'] ?? '');
+    if (!nome || !curso) return erro(400, { message: 'Nome e curso são obrigatórios.' });
+    return ok({ ...usuario, nome, curso });
+  }
+  if (req.method === 'PATCH' && rota === '/api/conta/consentimentos') {
+    const agora = new Date().toISOString();
+    const consentimentos = {
+      ...usuario.consentimentos,
+      ...(typeof corpo['fotoParaLogados'] === 'boolean' && { fotoParaLogadosEm: corpo['fotoParaLogados'] ? agora : null }),
+      ...(typeof corpo['vitrinePublica'] === 'boolean' && { vitrinePublicaEm: corpo['vitrinePublica'] ? agora : null }),
+    };
+    // O servidor não guarda foto, então ela continua null mesmo com o consentimento ligado.
+    return ok({ ...usuario, consentimentos });
+  }
+  if (req.method === 'DELETE' && rota === '/api/conta') {
+    if (!corpo['senha']) return erro(401);
+    // Nada é apagado (a exclusão chega no commit 7), mas a saída é de verdade: esta mesma
+    // requisição vira o POST de logout do Spring, e a sessão morre no servidor.
+    return next(req.clone({ method: 'POST', url: '/api/auth/logout', body: {} }));
+  }
+  return erro(404);
+}
+
+function criar(corpo: Record<string, string>, conta: Conta, base: Base) {
   const mentor = verificados(base).find((m) => m.id === corpo['mentorId']);
   const materia = base.materias.find((m) => m.id === corpo['materiaId']);
   if (!mentor || !materia || !mentor.materias.includes(materia.id)) return erro(404);

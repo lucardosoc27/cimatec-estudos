@@ -112,13 +112,16 @@ Desligar a chave não mexe em pedido que já chegou: a pessoa só para de recebe
 
 ## Commit 5c — O front passa a usar o login do Spring
 
-**Entrega:** `SESSAO_SIMULADA` some junto com o arquivo `sessao-simulada.ts`; o interceptor do
-mock deixa de responder `/api/auth/*` e `/api/conta*`, que passam a chegar ao Spring; a tela de
-login trata o 403 de conta pendente com a mensagem do servidor e o caminho para reenviar o link;
-o mock de pedidos encontra a persona pelo e-mail devolvido por `/api/auth/eu`; as contas de
-demonstração são recriadas pelo cadastro, verificadas pelo link do console, e a Ana liga a
-mentoria pela tela Minha conta. Prova no navegador: cadastro, verificação, login, rota protegida
-com dados, logout, e voltar pelo navegador depois de sair.
+**Entrega:** `SESSAO_SIMULADA` some junto com o arquivo `sessao-simulada.ts`; `/api/auth/*` e
+`PATCH /api/conta/mentoria` passam direto pelo mock e chegam ao Spring, pelo proxy do `ng serve`
+(URL relativa, para o `HttpClient` mandar o `X-XSRF-TOKEN`); o mock de dados passa a responder,
+além dos dados, a nome e curso, consentimentos e exclusão de conta, em cima do usuário real
+(`DECISOES.md` 2026-09-27, "Minha conta grava só na memória"); a persona do mock é escolhida pelo
+e-mail devolvido por `/api/auth/eu`; o lado da mentora no Início vem de `papeis` do `/eu` real; a
+tela de entrar separa 401 (inválidos, conta tentativa) de 403 (conta pendente: mensagem do servidor
+e link para pedir outro, sem contar tentativa). Prova no navegador: cadastro, link do console,
+verificação, entrar, chave em Minha conta, lado da mentora, lista de mentores, sair, voltar pelo
+navegador e recarregar depois de sair.
 
 **Não entrega:** limite de tentativas, recuperação de senha, nome, curso, consentimentos e
 exclusão de conta no Spring (commit 7), pedidos e mentores no Spring.

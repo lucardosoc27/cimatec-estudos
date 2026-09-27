@@ -29,7 +29,7 @@
       <p class="descricao">{{ cadastro() ? 'Junte-se à comunidade de mentoria entre alunos do SENAI CIMATEC.' : 'Acesse sua conta para continuar seus estudos ou mentorias.' }}</p>
 
       <form #form="ngForm" (ngSubmit)="enviar(form)" novalidate class="w-full" [attr.aria-busy]="enviando()">
-        @if (erro()) { <p id="auth-erro" tabindex="-1" class="mensagem mensagem--erro w-full" role="alert">{{ erro() }}</p> }
+        @if (erro()) { <p id="auth-erro" tabindex="-1" class="mensagem mensagem--erro w-full" role="alert">{{ erro() }} @if (contaPendente()) { <a routerLink="/verificar-email" class="link-acao">Pedir um novo link de confirmação →</a> }</p> }
         @if (cadastro()) {
           <div class="campo w-full">
             <label for="nome">Nome <span aria-hidden="true">*</span></label>
