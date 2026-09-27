@@ -87,6 +87,10 @@ function responder(req: HttpRequest<unknown>, rota: string, base: Base): Observa
   }
   if (!ehMentor) return erro(403);
   if (pedido.status !== 'aguardando') return erro(409, { codigo: 'PEDIDO_ENCERRADO', pedido });
+  // Revalida na agenda da mentora: outra sessão já aceita no mesmo dia e hora bloqueia o aceite.
+  const ocupado = acao === 'aceitar' && lista.some((p) => p.id !== pedido.id && p.mentorId === pedido.mentorId
+    && p.status === 'aceito' && p.data === pedido.data && p.hora === pedido.hora);
+  if (ocupado) return erro(409, { codigo: 'HORARIO_OCUPADO' });
   // O contato só passa a existir no pedido depois do aceite.
   return ok(trocar(acao === 'aceitar'
     ? { ...pedido, status: 'aceito', contatoMentor: { email: conta.email } }

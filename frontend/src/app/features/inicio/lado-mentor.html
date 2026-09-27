@@ -1,0 +1,108 @@
+<section class="secao" aria-labelledby="titulo-recebidos">
+  <h2 id="titulo-recebidos" tabindex="-1" class="subtitulo secao-titulo">Pedidos que você recebeu</h2>
+  <!-- Região sempre presente: o leitor de tela só anuncia mudança em região que já existia -->
+  <p class="retorno" role="status">{{ aviso() }}</p>
+
+  @switch (estado()) {
+    @case ('carregando') { <p class="aviso" role="status">Carregando os pedidos que você recebeu…</p> }
+    @case ('erro') {
+      <div class="aviso aviso--erro" role="alert">
+        <p>Não foi possível carregar os pedidos que você recebeu. Verifique sua conexão.</p>
+        <button type="button" class="botao botao--secundario" (click)="carregar()">Tentar de novo</button>
+      </div>
+    }
+    @default {
+      @if (pendentes().length === 0) {
+        <p class="apoio">Nenhum pedido novo.</p>
+      } @else {
+        <ul class="lista">
+          @for (p of pendentes(); track p.id) {
+            <li class="pedido">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                  <app-avatar [nome]="p.alunoNome ?? ''" [foto]="p.alunoFoto" [tamanho]="48" />
+                  <h3 class="pessoa"><span class="pessoa__nome">{{ p.alunoNome }}</span> · <span class="pessoa__curso">{{ p.alunoCurso }}</span></h3>
+                </div>
+                <app-status [status]="p.status" [recebido]="true" />
+              </div>
+
+              <div class="detalhe flex flex-col md:flex-row md:justify-between gap-2 md:gap-4 mt-4">
+                <div>
+                  <p class="detalhe__materia">{{ p.materiaNome }}</p>
+                  @if (p.necessidade) { <p class="suave">O que {{ p.alunoNome }} precisa: {{ p.necessidade }}</p> }
+                </div>
+                <div class="detalhe__lado">
+                  <p class="detalhe__quando">{{ p.data | diaEData }} às {{ p.hora }}</p>
+                  <p class="suave">{{ p.local ?? rotuloModalidade[p.modalidade] }}</p>
+                </div>
+              </div>
+
+              <p class="suave pequeno mt-3">
+                Recebido {{ p.criadoEm | date: "dd/MM, 'às' HH:mm" }} · responda até {{ p.expiraEm | date: "dd/MM, 'às' HH:mm" }}
+              </p>
+
+              @if (erro()?.id === p.id) { <p class="aviso aviso--erro mt-3" role="alert">{{ erro()?.mensagem }}</p> }
+
+              @if (confirmandoRecusa() === p.id) {
+                <div class="confirmacao-recusa mt-4">
+                  <p id="confirmar-{{ p.id }}" tabindex="-1" class="confirmacao-recusa__pergunta">Recusar o pedido de {{ p.alunoNome }}?</p>
+                  <p class="suave">{{ p.alunoNome }} vê só "Recusado", sem motivo, e pode pedir a outro mentor.</p>
+                  <div class="flex flex-wrap gap-3 mt-3">
+                    <button type="button" class="botao botao--perigo" [disabled]="respondendo() === p.id" (click)="recusar(p)">
+                      {{ respondendo() === p.id ? 'Recusando…' : 'Sim, recusar' }}
+                    </button>
+                    <button type="button" class="botao botao--secundario" (click)="voltarDaRecusa(p)">Voltar</button>
+                  </div>
+                </div>
+              } @else {
+                <div class="flex flex-wrap gap-3 mt-4">
+                  <button type="button" class="botao" [disabled]="respondendo() === p.id" (click)="aceitar(p)">
+                    {{ respondendo() === p.id ? 'Aceitando…' : 'Aceitar →' }}
+                  </button>
+                  <button type="button" id="recusar-{{ p.id }}" class="botao botao--secundario" [disabled]="respondendo() === p.id" (click)="pedirConfirmacaoRecusa(p)">Recusar</button>
+                </div>
+              }
+            </li>
+          }
+        </ul>
+      }
+    }
+  }
+</section>
+
+<section class="secao" aria-labelledby="titulo-sessoes">
+  <h2 id="titulo-sessoes" class="subtitulo secao-titulo">Suas próximas sessões</h2>
+  @switch (estado()) {
+    @case ('carregando') { <p class="aviso" role="status">Carregando suas sessões…</p> }
+    @case ('erro') { <p class="apoio">As sessões aparecem aqui quando os pedidos carregarem.</p> }
+    @default {
+      @if (sessoes().length === 0) {
+        <p class="apoio">Nenhuma sessão marcada. Quando você aceitar um pedido, ele aparece aqui.</p>
+      } @else {
+        <ul class="lista">
+          @for (s of sessoes(); track s.id) {
+            <li class="pedido flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+              @if (!recemAceitos().has(s.id)) { <app-avatar [nome]="s.alunoNome ?? ''" [foto]="s.alunoFoto" [tamanho]="48" /> }
+              <div class="min-w-0 flex-1">
+                <h3 id="sessao-{{ s.id }}" tabindex="-1" class="pessoa"><span class="pessoa__nome">{{ s.alunoNome }}</span> · <span class="pessoa__curso">{{ s.alunoCurso }}</span></h3>
+                <p class="mt-1">{{ s.materiaNome }}@if (s.necessidade) { · {{ s.necessidade }} }</p>
+                <p class="suave">{{ s.data | diaEData }} às {{ s.hora }} · {{ s.local ?? rotuloModalidade[s.modalidade] }}</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-3">
+                @if (recemAceitos().has(s.id)) {
+                  <!-- Estado final do "encontro": os dois avatares encostados. Decorativos: o texto ao lado diz tudo. -->
+                  <span class="par" aria-hidden="true">
+                    <app-avatar [nome]="s.alunoNome ?? ''" [foto]="s.alunoFoto" [tamanho]="44" />
+                    <app-avatar class="par__eu" [nome]="eu()?.nome ?? ''" [foto]="eu()?.foto" [tamanho]="44" />
+                  </span>
+                  <span class="selo-sessao"><span aria-hidden="true">✓</span> Sessão marcada</span>
+                }
+                <app-status [status]="s.status" />
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    }
+  }
+</section>

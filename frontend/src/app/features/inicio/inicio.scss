@@ -1,5 +1,4 @@
 .apoio { color: var(--cor-texto-suave); }
-/* Margem na classe, não em mb-4: o reset de h2 no styles.scss fica fora de @layer e venceria o utilitário */
 .secao-titulo { margin-bottom: var(--espaco-3); }
 
 .lista {
@@ -12,11 +11,9 @@
   .lista { gap: var(--espaco-4); }
 }
 
-/* .pedido, .pedido__materia, .pedido__mentor, .pedido__quando e .pedido__status são globais
-   (src/styles.scss), mesmo desenho da tela 5. */
-.pedido__detalhe { margin-top: var(--espaco-1); }
+/* .pedido (cartão) é global, em src/styles.scss. O nome do mentor abre o cartão, como no print. */
+.pedido__nome { font-size: var(--texto-destaque); }
+.pedido__detalhe { margin-top: var(--espaco-2); }
 
-/* "Ver pedido →" é a ação do cartão, não continuação do texto */
-.pedido__link {
-  margin-top: var(--espaco-3);
-}
+/* Vazio do aluno: cartão centralizado, sem ilustração e sem números (especificação, Tela 1) */
+.aviso--centralizado { align-items: center; text-align: center; max-width: 600px; margin-inline: auto; }

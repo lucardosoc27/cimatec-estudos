@@ -1,0 +1,33 @@
+:host { display: flex; flex-direction: column; gap: var(--espaco-6); }
+
+.secao-titulo { margin-bottom: var(--espaco-3); }
+.apoio, .suave { color: var(--cor-texto-suave); }
+.pequeno { font-size: .875rem; }
+.retorno:empty { display: none; }
+.retorno { margin-bottom: var(--espaco-3); font-weight: 600; }
+
+.lista { display: flex; flex-direction: column; gap: var(--espaco-3); }
+
+/* "Bernardo · Redes de Computadores": o nome pesa, o curso fica em texto secundário */
+.pessoa { font-size: var(--texto-corpo); font-weight: 400; }
+.pessoa__nome { font-size: var(--texto-destaque); font-weight: 700; }
+.pessoa__curso { color: var(--cor-texto-suave); }
+
+/* Caixa do que foi pedido: fundo azul-claro dentro do cartão branco (texto suave nela: 6,46:1) */
+.detalhe { padding: var(--espaco-3); border-radius: var(--raio-pequeno); background: var(--cor-primaria-suave); }
+.detalhe__materia, .detalhe__quando { font-weight: 700; }
+@media (min-width: 48rem) { .detalhe__lado { text-align: right; } }  /* alinhamento é tipografia: classe, não utilitário (regra A) */
+
+.confirmacao-recusa { padding-top: var(--espaco-3); border-top: 1px solid var(--cor-borda-suave); }
+.confirmacao-recusa__pergunta { font-weight: 700; }
+
+/* Par "Sessão marcada": o avatar da mentora encosta no do aluno, com um anel branco separando */
+.par { display: inline-flex; }
+.par__eu { margin-left: -10px; border-radius: 50%; box-shadow: 0 0 0 2px var(--cor-superficie); }
+
+/* Selo ciano: o único uso do ciano em texto, e sempre com texto escuro (8,97:1). Não é status. */
+.selo-sessao { display: inline-flex; gap: 6px; align-items: center; padding: 5px 12px; border-radius: var(--raio-pilula); background: var(--cor-marca-ciano); color: var(--cor-texto); font-weight: 700; }
+
+@media (min-width: 48rem) {
+  .lista { gap: var(--espaco-4); }
+}

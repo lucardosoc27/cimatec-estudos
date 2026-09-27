@@ -6,75 +6,83 @@
   <a routerLink="/pedir-ajuda" class="botao w-full md:w-auto">Pedir ajuda →</a>
 </div>
 
-<h2 class="subtitulo secao-titulo">Pedidos que você fez</h2>
+<!-- Mentor também é aluno: as seções de mentor vêm antes, e "Pedidos que você fez" aparece para todos -->
+@if (ehMentor()) { <app-lado-mentor class="mb-12" /> }
 
-@switch (estado()) {
-  @case ('carregando') {
-    <p class="aviso" role="status">Carregando seus pedidos…</p>
+<section aria-labelledby="titulo-feitos">
+  <!-- Aluno sem pedidos vê só o cartão de boas-vindas, sem título de seção vazia em cima (print bernardo-sem-pedidos) -->
+  @if (ehMentor() || estado() !== 'vazio') {
+    <h2 id="titulo-feitos" class="subtitulo secao-titulo">Pedidos que você fez</h2>
   }
 
-  @case ('erro') {
-    <div class="aviso aviso--erro" role="alert">
-      <p>Não foi possível carregar seus pedidos. Verifique sua conexão.</p>
-      <button type="button" class="botao botao--secundario" (click)="carregar()">
-        Tentar de novo
-      </button>
-    </div>
-  }
+  @switch (estado()) {
+    @case ('carregando') {
+      <p class="aviso" role="status">Carregando seus pedidos…</p>
+    }
 
-  @case ('vazio') {
-    <div class="aviso">
-      <p>Você ainda não pediu ajuda a nenhum mentor.</p>
-      <p>Escolha uma matéria e um turno, e a gente mostra quem pode te ajudar.</p>
-      <a routerLink="/pedir-ajuda" class="botao">Pedir ajuda</a>
-    </div>
-  }
+    @case ('erro') {
+      <div class="aviso aviso--erro" role="alert">
+        <p>Não foi possível carregar seus pedidos. Verifique sua conexão.</p>
+        <button type="button" class="botao botao--secundario" (click)="carregar()">
+          Tentar de novo
+        </button>
+      </div>
+    }
 
-  @case ('sucesso') {
-    <ul class="lista">
-      @for (pedido of pedidos(); track pedido.id) {
-        <li class="pedido flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-          <app-avatar [nome]="pedido.mentorNome" [foto]="pedido.mentorFoto" [tamanho]="56" />
-          <div class="min-w-0 flex-1">
-            <h3 class="pedido__materia">{{ pedido.materiaNome }}</h3>
-            <p class="pedido__mentor">com {{ pedido.mentorNome }}</p>
-            <p class="pedido__quando">
-              {{ pedido.data | diaEData }} às {{ pedido.hora }}
-              · {{ rotuloModalidade[pedido.modalidade] }}
-            </p>
-
-            <p class="pedido__status">
-              Status: <app-status [status]="pedido.status" />
-            </p>
-
-            @switch (pedido.status) {
-              @case ('aguardando') {
-                <p class="pedido__detalhe">
-                  O mentor tem até {{ pedido.expiraEm | date: "EEEE, dd/MM 'às' HH:mm" }} para responder.
-                </p>
-              }
-              @case ('expirado') {
-                <p class="pedido__detalhe">
-                  O mentor não respondeu no prazo.
-                  <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
-                    Ver outros mentores de {{ pedido.materiaNome }}
-                  </a>
-                </p>
-              }
-              @case ('recusado') {
-                <p class="pedido__detalhe">
-                  Este mentor não pôde atender.
-                  <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
-                    Ver outros mentores de {{ pedido.materiaNome }}
-                  </a>
-                </p>
-              }
-            }
-
-            <a [routerLink]="['/pedidos', pedido.id]" class="link-acao pedido__link">Ver pedido →</a>
-          </div>
-        </li>
+    @case ('vazio') {
+      @if (ehMentor()) {
+        <p class="apoio">Nenhum pedido em andamento. <a routerLink="/pedir-ajuda" class="link-acao">Pedir ajuda →</a></p>
+      } @else {
+        <div class="aviso aviso--centralizado">
+          <h2 id="titulo-feitos" class="subtitulo">Você ainda não pediu ajuda</h2>
+          <p class="apoio">Quando travar numa matéria, é por aqui que você encontra um colega do seu curso que já passou por isso.</p>
+          <a routerLink="/pedir-ajuda" class="botao">Pedir ajuda →</a>
+        </div>
       }
-    </ul>
+    }
+
+    @case ('sucesso') {
+      <ul class="lista">
+        @for (pedido of pedidos(); track pedido.id) {
+          <li class="pedido flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+            <app-avatar [nome]="pedido.mentorNome" [foto]="pedido.mentorFoto" [tamanho]="56" />
+            <div class="min-w-0 flex-1">
+              <h3 class="pedido__nome">{{ pedido.mentorNome }}</h3>
+              <p>{{ pedido.materiaNome }}</p>
+              <p class="apoio">{{ pedido.data | diaEData }} às {{ pedido.hora }} · {{ rotuloModalidade[pedido.modalidade] }}</p>
+
+              @switch (pedido.status) {
+                @case ('aguardando') {
+                  <p class="pedido__detalhe">
+                    O mentor tem até {{ pedido.expiraEm | date: "EEEE, dd/MM 'às' HH:mm" }} para responder.
+                  </p>
+                }
+                @case ('expirado') {
+                  <p class="pedido__detalhe">
+                    O mentor não respondeu no prazo.
+                    <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
+                      Ver outros mentores de {{ pedido.materiaNome }}
+                    </a>
+                  </p>
+                }
+                @case ('recusado') {
+                  <p class="pedido__detalhe">
+                    Este mentor não pôde atender.
+                    <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
+                      Ver outros mentores de {{ pedido.materiaNome }}
+                    </a>
+                  </p>
+                }
+              }
+            </div>
+            <!-- Status e ação à direita no computador; embaixo, lado a lado, no celular -->
+            <div class="flex sm:flex-col flex-wrap items-center sm:items-end gap-x-4 gap-y-1">
+              <app-status [status]="pedido.status" />
+              <a [routerLink]="['/pedidos', pedido.id]" class="link-acao">Ver pedido →</a>
+            </div>
+          </li>
+        }
+      </ul>
+    }
   }
-}
+</section>
