@@ -22,6 +22,7 @@
 .secao-topo h2, .secao-central h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
 .secao-topo h2 + p, .secao-central h2 + p { margin-top: var(--espaco-2); color: var(--cor-texto-suave); }
 .controle { padding-inline: var(--espaco-3); }
+.controle__icone { width: 1em; height: 1em; margin-right: var(--espaco-1); flex-shrink: 0; }
 .carrossel, .vitrine__estado { margin-top: var(--espaco-5); }
 .mentor-publico { gap: var(--espaco-4); padding: var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); min-width: 0; }
 .mentor-publico h3, .depoimento h3 { font-size: var(--texto-destaque); overflow-wrap: anywhere; }
@@ -31,6 +32,17 @@
 .mentor-publico .link-acao { margin-top: auto; }
 .mentor-publico--segundo, .mentor-publico--terceiro { display: none; }
 .carrossel__posicao { margin-top: var(--espaco-3); color: var(--cor-texto-suave); text-align: center; }
+/* Transição do carrossel: a cada troca os cartões são criados de novo (ver mentoresVisiveis) e
+   entram deslizando e surgindo, do lado para onde ele anda. Só depois da primeira troca, para a
+   carga da página não ganhar animação. Com prefers-reduced-motion, a regra global de styles.scss
+   zera a duração, e o carrossel nem avança sozinho. */
+.carrossel--animado .mentor-publico { animation: carrossel-entra 520ms cubic-bezier(.2, .7, .3, 1) both; }
+.carrossel--animado.carrossel--voltando .mentor-publico { animation-name: carrossel-volta; }
+@keyframes carrossel-entra { from { opacity: 0; transform: translateX(32px); } }
+@keyframes carrossel-volta { from { opacity: 0; transform: translateX(-32px); } }
+/* O cartão que entra desliza de fora da faixa: sem isto, durante a transição a página ganharia
+   rolagem horizontal no celular. "clip" corta só na horizontal, sem criar barra de rolagem. */
+.vitrine { overflow-x: clip; }
 .secao-central { text-align: center; max-width: 680px; margin-inline: auto; }
 .passos { margin: var(--espaco-5) 0 0; padding: 0; list-style: none; }
 .passo { display: flex; flex-direction: column; padding: var(--espaco-4); background: var(--cor-superficie); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); }

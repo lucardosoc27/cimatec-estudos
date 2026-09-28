@@ -30,6 +30,9 @@ interface Depoimento {
 
 type Estado = 'carregando' | 'sucesso' | 'erro';
 
+/** Tempo que cada grupo de mentores fica na tela antes de o carrossel avançar sozinho. */
+const INTERVALO_DO_CARROSSEL_MS = 6000;
+
 @Component({
   selector: 'app-landing',
   imports: [RouterLink, Avatar],
@@ -52,12 +55,33 @@ export class Landing {
   readonly mentores = signal<MentorPublico[]>([]);
   readonly estadoVitrine = signal<Estado>('carregando');
   readonly indice = signal(0);
+  /**
+   * Os mentores na tela agora. A chave junta o índice ao id: a cada troca os cartões são criados
+   * de novo, e é a criação que dispara a transição de entrada no CSS (landing.scss). Com só o id,
+   * o Angular reaproveitaria os cartões e a troca seria um corte seco.
+   */
   readonly mentoresVisiveis = computed(() => {
     const mentores = this.mentores();
-    return Array.from({ length: Math.min(3, mentores.length) }, (_, posicao) =>
-      mentores[(this.indice() + posicao) % mentores.length],
-    );
+    return Array.from({ length: Math.min(3, mentores.length) }, (_, posicao) => {
+      const mentor = mentores[(this.indice() + posicao) % mentores.length];
+      return { ...mentor, chave: `${this.indice()}-${mentor.id}` };
+    });
   });
+
+  // Avanço automático. Anda sozinho só quando nada disso segura: a pessoa apertou Pausar (ou pediu
+  // menos movimento no sistema), o ponteiro está sobre a vitrine, ou o foco está dentro dela.
+  /** Começa pausado para quem pediu menos movimento (prefers-reduced-motion). */
+  readonly pausadoPelaPessoa = signal(matchMedia('(prefers-reduced-motion: reduce)').matches);
+  readonly ponteiroSobre = signal(false);
+  readonly focoDentro = signal(false);
+  readonly avancando = computed(() =>
+    !this.pausadoPelaPessoa() && !this.ponteiroSobre() && !this.focoDentro()
+    && this.estadoVitrine() === 'sucesso' && this.mentores().length > 1);
+  /** 1 = para a frente, -1 = para trás: decide de que lado os cartões entram. */
+  readonly direcao = signal<1 | -1>(1);
+  /** Falso até a primeira troca: na carga da página os cartões aparecem sem animação. */
+  readonly jaMoveu = signal(false);
+  private ultimoAvanco = Date.now();
   readonly filtros = computed(() => ({
     materia: this.materiaSelecionada() || null,
     turnos: this.turno() || null,
@@ -82,6 +106,17 @@ export class Landing {
   constructor() {
     this.carregarMaterias();
     this.carregarVitrine();
+    // Um relógio de meio segundo, e não um setInterval de 6 s: assim o tempo só corre enquanto o
+    // carrossel pode andar. Parado (pausa, ponteiro, foco, aba escondida), o prazo recomeça, e
+    // ele não pula de cartão no instante em que o ponteiro sai.
+    const relogio = setInterval(() => {
+      if (!this.avancando() || document.hidden) {
+        this.ultimoAvanco = Date.now();
+        return;
+      }
+      if (Date.now() - this.ultimoAvanco >= INTERVALO_DO_CARROSSEL_MS) this.mover(1);
+    }, 500);
+    this.destroyRef.onDestroy(() => clearInterval(relogio));
   }
 
   selecionarCurso(nome: string): void {
@@ -121,9 +156,23 @@ export class Landing {
     });
   }
 
-  mover(direcao: number): void {
+  mover(direcao: 1 | -1): void {
     const quantidade = this.mentores().length;
-    if (quantidade > 1) this.indice.update(indice => (indice + direcao + quantidade) % quantidade);
+    if (quantidade < 2) return;
+    this.direcao.set(direcao);
+    this.jaMoveu.set(true);
+    this.indice.update(indice => (indice + direcao + quantidade) % quantidade);
+    this.ultimoAvanco = Date.now(); // troca manual também recomeça a contagem
+  }
+
+  alternarPausa(): void {
+    this.pausadoPelaPessoa.update(pausado => !pausado);
+  }
+
+  /** O foco saiu da vitrine de verdade, e não só passou de um botão para outro dentro dela. */
+  focoSaiu(evento: FocusEvent): void {
+    const vitrine = evento.currentTarget as HTMLElement;
+    if (!vitrine.contains(evento.relatedTarget as Node | null)) this.focoDentro.set(false);
   }
 
   teclaCarrossel(evento: KeyboardEvent): void {

@@ -48,7 +48,7 @@
   </div>
 </section>
 
-<section class="vitrine faixa" aria-labelledby="titulo-vitrine">
+<section class="vitrine faixa" aria-labelledby="titulo-vitrine" (mouseenter)="ponteiroSobre.set(true)" (mouseleave)="ponteiroSobre.set(false)" (focusin)="focoDentro.set(true)" (focusout)="focoSaiu($event)">
   <div class="landing-largura">
     <div class="secao-topo flex flex-wrap items-end justify-between gap-4">
       <div>
@@ -57,7 +57,10 @@
         <p>Alunos voluntários dispostos a ajudar de forma solidária e sem cobranças.</p>
       </div>
       @if (estadoVitrine() === 'sucesso' && mentores().length > 1) {
-        <div class="flex gap-2" aria-label="Controles dos mentores em destaque">
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Controles dos mentores em destaque">
+          <!-- Primeiro dos controles, como pede o padrão de carrossel da WAI-ARIA: quem chega por
+               teclado encontra o Pausar antes de tudo. -->
+          <button class="botao botao--secundario controle" type="button" (click)="alternarPausa()" aria-controls="carrossel-mentores" [attr.aria-label]="pausadoPelaPessoa() ? 'Continuar o avanço automático dos mentores' : 'Pausar o avanço automático dos mentores'">@if (pausadoPelaPessoa()) { <svg class="controle__icone" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg> Continuar } @else { <svg class="controle__icone" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2.5" width="3.5" height="11" rx="1" fill="currentColor"/><rect x="9.5" y="2.5" width="3.5" height="11" rx="1" fill="currentColor"/></svg> Pausar }</button>
           <button class="botao botao--secundario controle" type="button" (click)="mover(-1)" aria-controls="carrossel-mentores">← Anterior</button>
           <button class="botao botao--secundario controle" type="button" (click)="mover(1)" aria-controls="carrossel-mentores">Próximo →</button>
         </div>
@@ -78,8 +81,8 @@
         <a class="link-acao" routerLink="/entrar">Entrar →</a>
       </div>
     } @else {
-      <div id="carrossel-mentores" class="carrossel grid gap-4" role="region" aria-roledescription="carrossel" aria-label="Mentores em destaque. Use as setas do teclado para navegar." tabindex="0" (keydown)="teclaCarrossel($event)">
-        @for (mentor of mentoresVisiveis(); track mentor.id; let posicao = $index) {
+      <div id="carrossel-mentores" class="carrossel grid gap-4" [class.carrossel--animado]="jaMoveu()" [class.carrossel--voltando]="direcao() < 0" role="region" aria-roledescription="carrossel" aria-label="Mentores em destaque. Use as setas do teclado para navegar." tabindex="0" (keydown)="teclaCarrossel($event)">
+        @for (mentor of mentoresVisiveis(); track mentor.chave; let posicao = $index) {
           <article class="mentor-publico flex flex-col" [class.mentor-publico--segundo]="posicao === 1" [class.mentor-publico--terceiro]="posicao === 2" role="group" aria-roledescription="slide" [attr.aria-label]="primeiroNome(mentor.nome) + ', ' + mentor.curso">
             <div class="flex items-center gap-4">
               <app-avatar [nome]="primeiroNome(mentor.nome)" [foto]="mentor.foto" [tamanho]="64" tom="neutro" />
@@ -93,7 +96,9 @@
           </article>
         }
       </div>
-      <p class="carrossel__posicao" role="status" aria-live="polite">{{ indice() + 1 }} de {{ mentores().length }} · {{ primeiroNome(mentores()[indice()].nome) }}</p>
+      <!-- Andando sozinho, o contador não é anunciado (senão o leitor de tela falaria a cada 6 s);
+           parado, anuncia cada troca feita pela pessoa. -->
+      <p class="carrossel__posicao" [attr.aria-live]="avancando() ? 'off' : 'polite'" aria-atomic="true">{{ indice() + 1 }} de {{ mentores().length }} · {{ primeiroNome(mentores()[indice()].nome) }}</p>
     }
   </div>
 </section>
