@@ -86,4 +86,8 @@
 @media (min-width: 64rem) {
   .carrossel { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .mentor-publico--terceiro { display: flex; }
+  /* Herói em tela larga: sobrava espaço vazio em cima e entre os blocos. Só a partir daqui; no
+     celular e no tablet o espaçamento não muda. */
+  .hero { padding-top: var(--espaco-5); padding-bottom: var(--espaco-6); }
+  .busca, .hero__rotulo { margin-top: var(--espaco-4); }
 }
