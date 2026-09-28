@@ -8,12 +8,18 @@ import org.springframework.stereotype.Component;
 import br.senai.cimatec.estudos.usuario.Usuario;
 
 /**
- * Imprime o link de verificação no console, com o token dentro. Só existe no perfil "dev",
- * que o spring-boot:run ativa (pom.xml). É a entrega do projeto, já que envio de e-mail
- * está fora do escopo (DECISOES.md, 2026-09-27).
+ * Escreve o link de verificação, com o token dentro, no log da aplicação. É a entrega do
+ * projeto, já que envio de e-mail está fora do escopo (DECISOES.md, 2026-09-27).
+ *
+ * Existe em dois perfis, e só neles:
+ * - dev: o ./mvnw spring-boot:run liga (pom.xml); o log é o terminal de quem desenvolve;
+ * - demo: o servidor público de demonstração (Render); o log é lido no painel do provedor.
+ *   Quem lê esse log ativa qualquer conta, por isso demonstração não é produção (DECISOES.md,
+ *   2026-09-27, "Perfil demo").
+ * Fora dos dois não há entrega nenhuma e o servidor se recusa a subir (ver EntregaDoLink).
  */
 @Component
-@Profile("dev")
+@Profile({"dev", "demo"})
 public class LinkNoConsole implements EntregaDoLink {
 
     private static final Logger log = LoggerFactory.getLogger(LinkNoConsole.class);

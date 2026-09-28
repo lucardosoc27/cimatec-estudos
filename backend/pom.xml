@@ -106,8 +106,9 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<!-- ./mvnw spring-boot:run é ferramenta de desenvolvimento, então liga o perfil dev
-					     (link de verificação no console). O jar de produção, rodado com java -jar,
-					     não passa por aqui e sobe sem o perfil. -->
+					     (link de verificação no console). O jar, rodado com java -jar, não passa por
+					     aqui: sobe sem perfil (e para, porque não há entrega do link) ou com o perfil
+					     que a variável SPRING_PROFILES_ACTIVE disser (demo, no Render). -->
 					<profiles>
 						<profile>dev</profile>
 					</profiles>
