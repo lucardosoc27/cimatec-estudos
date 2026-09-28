@@ -46,10 +46,14 @@
            entrar e sair por trás da página, em vez de ser cortado. -->
       <div #faixa id="faixa-mentores" class="faixa-mentores" [class.faixa-mentores--parada]="pausado()" [class.faixa-mentores--escolhida]="escolheuMovimento()" tabindex="0" role="region" aria-label="Mentores em destaque. A faixa anda sozinha e para com o foco; use as setas do teclado para rolar.">
         <div class="trilha">
+          <!-- Nas duas metades: a linha da foto e do nome começa pelo topo, então o nome fica na mesma
+               altura em todos os cartões, com o curso em uma ou duas linhas. O cartão de quem ainda
+               não tem matéria (self-start) não estica até a altura dos outros: sem "Ensina:", ele
+               termina logo depois do nome, em vez de mostrar um buraco no meio. -->
           <ul class="trilha__metade">
             @for (mentor of mentores(); track mentor.id) {
-              <li class="mentor-publico flex flex-col">
-                <div class="flex items-center gap-3">
+              <li class="mentor-publico flex flex-col" [class.self-start]="!mentor.materias?.length">
+                <div class="flex items-start gap-3">
                   <app-avatar class="mentor-publico__avatar" [nome]="primeiroNome(mentor.nome)" [foto]="mentor.foto" [tamanho]="56" />
                   <div class="min-w-0"><h3>{{ primeiroNome(mentor.nome) }}</h3><p class="mentor-publico__curso">{{ mentor.curso }}</p></div>
                 </div>
@@ -62,8 +66,8 @@
           </ul>
           <ul class="trilha__metade" aria-hidden="true" inert>
             @for (mentor of mentores(); track mentor.id) {
-              <li class="mentor-publico flex flex-col">
-                <div class="flex items-center gap-3">
+              <li class="mentor-publico flex flex-col" [class.self-start]="!mentor.materias?.length">
+                <div class="flex items-start gap-3">
                   <app-avatar class="mentor-publico__avatar" [nome]="primeiroNome(mentor.nome)" [foto]="mentor.foto" [tamanho]="56" />
                   <div class="min-w-0"><h3>{{ primeiroNome(mentor.nome) }}</h3><p class="mentor-publico__curso">{{ mentor.curso }}</p></div>
                 </div>
