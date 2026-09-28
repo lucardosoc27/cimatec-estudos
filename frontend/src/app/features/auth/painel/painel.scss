@@ -23,15 +23,14 @@
 .pessoa { display: flex; flex-direction: column; justify-content: center; width: 176px; height: 176px; border-radius: 50%; text-align: center; line-height: 1; }
 .pessoa--aluno { border: 3px solid var(--cor-marca-ciano); background: var(--cor-primaria); margin-right: -48px; }
 .pessoa--mentor { background: var(--cor-acao); }
-/* O texto de cada círculo se afasta da sobreposição, como na maquete: o selo "em comum" fica no
-   meio sem cobrir o fim de "você" nem o começo de "mentor" ("mentor" é mais larga, pede mais). */
-.pessoa--aluno { padding-right: 48px; }
-.pessoa--mentor { padding-left: 48px; }
-/* "ESTUDANTE" e "COLEGA" ficam brancos, e não ciano e cinza como na maquete: ciano sobre o círculo
-   azul dá 4,24:1 e o cinza sobre o laranja 4,47:1, os dois abaixo de 4,5:1 para texto pequeno. */
-.pessoa small { margin-bottom: 6px; font-size: .75rem; letter-spacing: .1em; font-weight: 700; }
-.pessoa strong { margin-bottom: 6px; font-size: 1.5rem; font-weight: 800; letter-spacing: -.025em; }
-.pessoa > span { font-size: .75rem; font-weight: 500; }
+/* Uma frase por círculo, numa linha só (nowrap). Na altura do selo "em comum", que fica no meio, a
+   frase teria uns 68 px livres; por isso ela sobe e fica logo acima dele (margin-bottom, com o círculo
+   centralizando o conjunto), onde o círculo ainda é largo. O recuo de 40 px do lado da sobreposição
+   centraliza a frase na parte do círculo que não fica embaixo do outro. Branco sobre o azul: 7,84:1;
+   sobre o laranja: 5,19:1. Os dois passam de 4,5:1 com folga. */
+.pessoa--aluno { padding-right: 40px; }
+.pessoa--mentor { padding-left: 40px; }
+.pessoa strong { margin-bottom: 55px; font-size: .875rem; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
 .encontro__selo { position: absolute; border: 2px solid var(--cor-primaria-escura); border-radius: var(--raio-pilula); background: var(--cor-marca-ciano); color: var(--cor-texto); padding: 4px 12px; font-size: .75rem; font-weight: 800; letter-spacing: .025em; box-shadow: 0 0 18px rgb(0 212 232 / .25); }
 .encontro--animar .pessoa--aluno { animation: encontro-aluno 1s ease-out both; }
 .encontro--animar .pessoa--mentor { animation: encontro-mentor 1s ease-out both; }
@@ -46,10 +45,10 @@
   .apresentacao__apoio, .beneficios { display: none; }
   .encontro { min-height: 176px; margin-top: var(--espaco-3); }
   .pessoa { width: 160px; height: 160px; }
-  .pessoa--aluno { margin-right: -40px; padding-right: 40px; }
-  .pessoa--mentor { padding-left: 40px; }
-  .pessoa strong { font-size: 1.25rem; }
-  .pessoa small, .encontro__selo { font-size: .625rem; }
+  .pessoa--aluno { margin-right: -40px; padding-right: 34px; }
+  .pessoa--mentor { padding-left: 34px; }
+  .pessoa strong { margin-bottom: 49px; font-size: .8125rem; }
+  .encontro__selo { font-size: .625rem; }
   .encontro__selo { padding-inline: 10px; }
   .apresentacao h2 { margin: var(--espaco-3) 0 0; font-size: 1.25rem; text-align: center; }
 }
