@@ -5,8 +5,8 @@
   </a>
   <div class="apresentacao__conteudo flex flex-col justify-center">
     <button type="button" class="encontro" [class.encontro--animar]="animar()" (click)="repetirAnimacao()" (mouseenter)="repetirAnimacao()" aria-label="Quem pergunta encontra quem já passou pela matéria. Repetir animação.">
-      <span class="pessoa pessoa--aluno"><strong>Quem pergunta</strong><span class="pessoa__papel">Aluno</span></span>
-      <span class="pessoa pessoa--mentor"><strong>Quem já passou</strong><span class="pessoa__papel">Mentor</span></span>
+      <span class="pessoa pessoa--aluno"><span class="pessoa__contexto">Quem pergunta</span><strong class="pessoa__papel">Aluno</strong></span>
+      <span class="pessoa pessoa--mentor"><span class="pessoa__contexto">Quem já passou</span><strong class="pessoa__papel">Mentor</strong></span>
       <span class="encontro__selo">em comum</span>
     </button>
     <h2>Alguém do seu curso já passou por <span>isso.</span></h2>

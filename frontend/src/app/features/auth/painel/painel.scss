@@ -23,18 +23,21 @@
 .pessoa { display: flex; flex-direction: column; justify-content: center; width: 176px; height: 176px; border-radius: 50%; text-align: center; line-height: 1; }
 .pessoa--aluno { border: 3px solid var(--cor-marca-ciano); background: var(--cor-primaria); margin-right: -48px; }
 .pessoa--mentor { background: var(--cor-acao); }
-/* Duas frases por círculo, cada uma numa linha só (nowrap): o papel ("Quem pergunta") e, menor e mais
-   discreto, quem é ("Aluno"). Na altura do selo "em comum", que fica no meio, o par teria uns 68 px
-   livres; por isso ele sobe e fica logo acima dele (margin-bottom na segunda linha, com o círculo
-   centralizando o conjunto), onde o círculo ainda é largo. O recuo de 40 px do lado da sobreposição
-   centraliza o texto na parte do círculo que não fica embaixo do outro. Cor herdada do painel, igual
-   nas duas linhas: branco sobre o azul dá 7,84:1, sobre o laranja 5,19:1 — passam de 4,5:1 com folga,
-   por isso a segunda linha é discreta por tamanho e peso de fonte, não por opacidade (opacidade
-   estreitaria essa folga rápido: a 90% já cai a 4,49:1 no laranja, abaixo do mínimo). */
+/* Duas frases por círculo, cada uma numa linha só (nowrap): quem é ("Aluno"), em destaque, e acima
+   dela, menor e mais discreta, o papel ("Quem pergunta"). Na altura do selo "em comum", que fica no
+   meio, o par teria uns 68 px livres; por isso ele sobe e fica logo acima dele (margin-bottom na
+   segunda linha, com o círculo centralizando o conjunto), onde o círculo ainda é largo. O recuo de
+   40 px do lado da sobreposição centraliza o texto na parte do círculo que não fica embaixo do outro.
+   Cor herdada do painel, igual nas duas linhas: branco sobre o azul dá 7,84:1, sobre o laranja 5,19:1
+   — passam de 4,5:1 com folga (a linha principal, maior e em negrito, também passa no limiar mais
+   frouxo de texto grande, 3:1). A linha de apoio é discreta por tamanho e peso de fonte, não por
+   opacidade (opacidade estreitaria essa folga rápido: a 90% já cai a 4,49:1 no laranja, abaixo do
+   mínimo). Tag <strong> foi para a palavra principal (Aluno/Mentor): leitor de tela precisa ouvir a
+   mesma ênfase que a tela mostra. */
 .pessoa--aluno { padding-right: 40px; }
 .pessoa--mentor { padding-left: 40px; }
-.pessoa strong { margin-bottom: 4px; font-size: .875rem; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
-.pessoa__papel { margin-bottom: 55px; font-size: .6875rem; font-weight: 600; letter-spacing: -.01em; white-space: nowrap; }
+.pessoa__contexto { display: block; margin-bottom: 4px; font-size: .625rem; font-weight: 600; letter-spacing: -.01em; white-space: nowrap; }
+.pessoa__papel { display: block; margin-bottom: 55px; font-size: 1.125rem; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
 .encontro__selo { position: absolute; border: 2px solid var(--cor-primaria-escura); border-radius: var(--raio-pilula); background: var(--cor-marca-ciano); color: var(--cor-texto); padding: 4px 12px; font-size: .75rem; font-weight: 800; letter-spacing: .025em; box-shadow: 0 0 18px rgb(0 212 232 / .25); }
 .encontro--animar .pessoa--aluno { animation: encontro-aluno 1s ease-out both; }
 .encontro--animar .pessoa--mentor { animation: encontro-mentor 1s ease-out both; }
@@ -51,8 +54,8 @@
   .pessoa { width: 160px; height: 160px; }
   .pessoa--aluno { margin-right: -40px; padding-right: 34px; }
   .pessoa--mentor { padding-left: 34px; }
-  .pessoa strong { margin-bottom: 3px; font-size: .8125rem; }
-  .pessoa__papel { margin-bottom: 49px; font-size: .625rem; }
+  .pessoa__contexto { margin-bottom: 3px; font-size: .5625rem; }
+  .pessoa__papel { margin-bottom: 49px; font-size: 1rem; }
   .encontro__selo { font-size: .625rem; }
   .encontro__selo { padding-inline: 10px; }
   .apresentacao h2 { margin: var(--espaco-3) 0 0; font-size: 1.25rem; text-align: center; }
