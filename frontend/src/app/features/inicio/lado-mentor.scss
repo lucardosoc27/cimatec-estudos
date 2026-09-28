@@ -16,6 +16,8 @@
 /* Caixa do que foi pedido: fundo azul-claro dentro do cartão branco (texto suave nela: 6,46:1) */
 .detalhe { padding: var(--espaco-3); border-radius: var(--raio-pequeno); background: var(--cor-primaria-suave); }
 .detalhe__materia, .detalhe__quando { font-weight: 700; }
+.detalhe__materia { color: var(--cor-primaria); }  /* azul sobre a caixa: 6,73:1 */
+@media (min-width: 48rem) { .detalhe__quando { justify-content: flex-end; } }  /* a linha com ícone é flex: text-align não a move */
 @media (min-width: 48rem) { .detalhe__lado { text-align: right; } }  /* alinhamento é tipografia: classe, não utilitário (regra A) */
 
 .confirmacao-recusa { padding-top: var(--espaco-3); border-top: 1px solid var(--cor-borda-suave); }

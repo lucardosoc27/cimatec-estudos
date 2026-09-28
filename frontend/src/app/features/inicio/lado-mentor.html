@@ -1,5 +1,5 @@
 <section class="secao" aria-labelledby="titulo-recebidos">
-  <h2 id="titulo-recebidos" tabindex="-1" class="subtitulo secao-titulo">Pedidos que você recebeu</h2>
+  <h2 id="titulo-recebidos" tabindex="-1" class="subtitulo secao-titulo linha-icone"><app-icone nome="bandeja-entrada" />Pedidos que você recebeu</h2>
   <!-- Região sempre presente: o leitor de tela só anuncia mudança em região que já existia -->
   <p class="retorno" role="status">{{ aviso() }}</p>
 
@@ -28,11 +28,11 @@
 
               <div class="detalhe flex flex-col md:flex-row md:justify-between gap-2 md:gap-4 mt-4">
                 <div>
-                  <p class="detalhe__materia">{{ p.materiaNome }}</p>
+                  <p class="detalhe__materia linha-icone"><app-icone nome="escola" />{{ p.materiaNome }}</p>
                   @if (p.necessidade) { <p class="suave">O que {{ p.alunoNome }} precisa: {{ p.necessidade }}</p> }
                 </div>
                 <div class="detalhe__lado">
-                  <p class="detalhe__quando">{{ p.data | diaEData }} às {{ p.hora }}</p>
+                  <p class="detalhe__quando linha-icone"><app-icone nome="calendario" />{{ p.data | diaEData }} às {{ p.hora }}</p>
                   <p class="suave">{{ p.local ?? rotuloModalidade[p.modalidade] }}</p>
                 </div>
               </div>
@@ -71,7 +71,7 @@
 </section>
 
 <section class="secao" aria-labelledby="titulo-sessoes">
-  <h2 id="titulo-sessoes" class="subtitulo secao-titulo">Suas próximas sessões</h2>
+  <h2 id="titulo-sessoes" class="subtitulo secao-titulo linha-icone"><app-icone nome="calendario" />Suas próximas sessões</h2>
   @switch (estado()) {
     @case ('carregando') { <p class="aviso" role="status">Carregando suas sessões…</p> }
     @case ('erro') { <p class="apoio">As sessões aparecem aqui quando os pedidos carregarem.</p> }
@@ -81,14 +81,14 @@
       } @else {
         <ul class="lista">
           @for (s of sessoes(); track s.id) {
-            <li class="pedido flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+            <li class="pedido flex flex-wrap md:flex-nowrap items-start md:items-center gap-3 md:gap-4">
               @if (!recemAceitos().has(s.id)) { <app-avatar [nome]="s.alunoNome ?? ''" [foto]="s.alunoFoto" [tamanho]="48" /> }
               <div class="min-w-0 flex-1">
                 <h3 id="sessao-{{ s.id }}" tabindex="-1" class="pessoa"><span class="pessoa__nome">{{ s.alunoNome }}</span> · <span class="pessoa__curso">{{ s.alunoCurso }}</span></h3>
-                <p class="mt-1">{{ s.materiaNome }}@if (s.necessidade) { · {{ s.necessidade }} }</p>
-                <p class="suave">{{ s.data | diaEData }} às {{ s.hora }} · {{ s.local ?? rotuloModalidade[s.modalidade] }}</p>
+                <p class="mt-1 linha-icone"><app-icone nome="livro" />{{ s.materiaNome }}@if (s.necessidade) { · {{ s.necessidade }} }</p>
+                <p class="suave linha-icone"><app-icone nome="calendario" />{{ s.data | diaEData }} às {{ s.hora }} · {{ s.local ?? rotuloModalidade[s.modalidade] }}</p>
               </div>
-              <div class="flex flex-wrap items-center gap-3">
+              <div class="w-full md:w-auto flex flex-wrap items-center gap-3">
                 @if (recemAceitos().has(s.id)) {
                   <!-- Estado final do "encontro": os dois avatares encostados. Decorativos: o texto ao lado diz tudo. -->
                   <span class="par" aria-hidden="true">

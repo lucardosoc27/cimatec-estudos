@@ -15,5 +15,9 @@
 .pedido__nome { font-size: var(--texto-destaque); }
 .pedido__detalhe { margin-top: var(--espaco-2); }
 
+/* Vazio da mentora em "Pedidos que você fez": uma linha de cartão, texto à esquerda e saída à direita */
+.aviso--linha { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.icone-info { color: var(--cor-primaria); }
+
 /* Vazio do aluno: cartão centralizado, sem ilustração e sem números (especificação, Tela 1) */
 .aviso--centralizado { align-items: center; text-align: center; max-width: 600px; margin-inline: auto; }

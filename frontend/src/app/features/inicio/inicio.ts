@@ -11,10 +11,11 @@ import { DiaEDataPipe } from '../../shared/dia-e-data.pipe';
 import { EstadoTela } from '../../shared/estado-tela';
 import { LadoMentor } from './lado-mentor';
 import { Status } from '../../shared/status/status';
+import { Icone } from '../../shared/icone/icone';
 
 @Component({
   selector: 'app-inicio',
-  imports: [DatePipe, RouterLink, Avatar, DiaEDataPipe, LadoMentor, Status],
+  imports: [DatePipe, RouterLink, Avatar, DiaEDataPipe, LadoMentor, Status, Icone],
   templateUrl: './inicio.html',
   styleUrl: './inicio.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

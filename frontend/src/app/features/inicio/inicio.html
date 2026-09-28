@@ -12,7 +12,7 @@
 <section aria-labelledby="titulo-feitos">
   <!-- Aluno sem pedidos vê só o cartão de boas-vindas, sem título de seção vazia em cima (print bernardo-sem-pedidos) -->
   @if (ehMentor() || estado() !== 'vazio') {
-    <h2 id="titulo-feitos" class="subtitulo secao-titulo">Pedidos que você fez</h2>
+    <h2 id="titulo-feitos" class="subtitulo secao-titulo linha-icone"><app-icone nome="bandeja-saida" />Pedidos que você fez</h2>
   }
 
   @switch (estado()) {
@@ -31,7 +31,10 @@
 
     @case ('vazio') {
       @if (ehMentor()) {
-        <p class="apoio">Nenhum pedido em andamento. <a routerLink="/pedir-ajuda" class="link-acao">Pedir ajuda →</a></p>
+        <div class="aviso aviso--linha">
+          <p class="linha-icone"><app-icone nome="info" class="icone-info" />Nenhum pedido em andamento.</p>
+          <a routerLink="/pedir-ajuda" class="link-acao">Pedir ajuda →</a>
+        </div>
       } @else {
         <div class="aviso aviso--centralizado">
           <h2 id="titulo-feitos" class="subtitulo">Você ainda não pediu ajuda</h2>
@@ -44,12 +47,12 @@
     @case ('sucesso') {
       <ul class="lista">
         @for (pedido of pedidos(); track pedido.id) {
-          <li class="pedido flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+          <li class="pedido flex flex-wrap sm:flex-nowrap items-start gap-3 sm:gap-4">
             <app-avatar [nome]="pedido.mentorNome" [foto]="pedido.mentorFoto" [tamanho]="56" />
             <div class="min-w-0 flex-1">
               <h3 class="pedido__nome">{{ pedido.mentorNome }}</h3>
-              <p>{{ pedido.materiaNome }}</p>
-              <p class="apoio">{{ pedido.data | diaEData }} às {{ pedido.hora }} · {{ rotuloModalidade[pedido.modalidade] }}</p>
+              <p class="linha-icone"><app-icone nome="livro" />{{ pedido.materiaNome }}</p>
+              <p class="apoio linha-icone"><app-icone nome="calendario" />{{ pedido.data | diaEData }} às {{ pedido.hora }} · {{ rotuloModalidade[pedido.modalidade] }}</p>
 
               @switch (pedido.status) {
                 @case ('aguardando') {
@@ -76,7 +79,7 @@
               }
             </div>
             <!-- Status e ação à direita no computador; embaixo, lado a lado, no celular -->
-            <div class="flex sm:flex-col flex-wrap items-center sm:items-end gap-x-4 gap-y-1">
+            <div class="w-full sm:w-auto flex sm:flex-col flex-wrap items-center sm:items-end gap-x-4 gap-y-1">
               <app-status [status]="pedido.status" />
               <a [routerLink]="['/pedidos', pedido.id]" class="link-acao" [attr.aria-label]="'Ver pedido de ' + pedido.materiaNome + ' com ' + pedido.mentorNome">Ver pedido →</a>
             </div>

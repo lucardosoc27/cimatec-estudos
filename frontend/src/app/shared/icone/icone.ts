@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 /** Nomes dos ícones desenhados no projeto. */
 export type NomeIcone =
   | 'escola' | 'relogio' | 'busca' | 'estrela' | 'pausa' | 'continuar' | 'seta-esquerda' | 'seta-direita'
-  | 'mao-coracao' | 'livro' | 'aspas' | 'verificado'
+  | 'mao-coracao' | 'livro' | 'aspas' | 'verificado' | 'calendario' | 'info' | 'bandeja-entrada' | 'bandeja-saida'
   | 'codigo' | 'rede' | 'frasco' | 'bequer' | 'gota' | 'raio' | 'predio' | 'engrenagem' | 'video';
 
 /**
@@ -21,6 +21,10 @@ export type NomeIcone =
       @switch (nome()) {
         @case ('escola') { <path d="M2 9.5 12 5l10 4.5L12 14 2 9.5Z"/><path d="M6 11.5v4.5c3.5 2.3 8.5 2.3 12 0v-4.5M22 9.5V15"/> }
         @case ('relogio') { <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/> }
+        @case ('calendario') { <rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/> }
+        @case ('info') { <circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.01"/> }
+        @case ('bandeja-entrada') { <path d="M3.5 13.5V18a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-4.5M3.5 13.5h4.5l1.5 2.5h5l1.5-2.5h4.5M12 3.5v8M8.5 8l3.5 3.5L15.5 8"/> }
+        @case ('bandeja-saida') { <path d="M3.5 13.5V18a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-4.5M3.5 13.5h4.5l1.5 2.5h5l1.5-2.5h4.5M12 11.5v-8M8.5 7 12 3.5 15.5 7"/> }
         @case ('verificado') { <circle cx="12" cy="12" r="9"/><path d="m8.5 12.3 2.4 2.4 4.6-4.9"/> }
         @case ('busca') { <circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/> }
         @case ('estrela') { <circle cx="12" cy="12" r="9.5"/><path d="m12 7 1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5L12 7Z"/> }

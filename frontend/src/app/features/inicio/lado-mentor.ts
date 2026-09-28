@@ -19,6 +19,7 @@ import { Avatar } from '../../shared/avatar/avatar';
 import { DiaEDataPipe } from '../../shared/dia-e-data.pipe';
 import { EstadoTela } from '../../shared/estado-tela';
 import { Status } from '../../shared/status/status';
+import { Icone } from '../../shared/icone/icone';
 import { dataHora } from '../../shared/util/datas';
 
 /**
@@ -27,7 +28,7 @@ import { dataHora } from '../../shared/util/datas';
  */
 @Component({
   selector: 'app-lado-mentor',
-  imports: [DatePipe, Avatar, DiaEDataPipe, Status],
+  imports: [DatePipe, Avatar, DiaEDataPipe, Status, Icone],
   templateUrl: './lado-mentor.html',
   styleUrl: './lado-mentor.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

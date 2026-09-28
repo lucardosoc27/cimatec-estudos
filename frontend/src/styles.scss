@@ -244,6 +244,12 @@ a:not(.botao):hover { color: var(--cor-primaria-escura); }
   font-weight: 600;
 }
 
+/* Linha de texto com ícone na frente (matéria, data, título de seção), como na maquete. O ícone é
+   enfeite (aria-hidden no app-icone): o texto ao lado diz tudo. 1lh é a altura da linha do próprio
+   texto, então a margem centraliza o ícone na primeira linha, seja corpo ou título. */
+.linha-icone { display: flex; align-items: flex-start; gap: var(--espaco-2); }
+.linha-icone > app-icone { margin-top: calc((1lh - 1em) / 2); }
+
 /* Cartão: todo cartão do sistema tem o mesmo acabamento — caixa de estado, grupo de formulário,
    cartão de pedido, cartão de mentor (tela 3), perfil (tela 4) e confirmação de cancelamento
    (tela 5). Quem separa o cartão da página é o próprio fundo (branco contra --cor-fundo: 1,13:1); o fio
