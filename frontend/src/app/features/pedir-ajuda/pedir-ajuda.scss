@@ -19,5 +19,15 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 /* Tipografia e espaçamento que brigavam com classe do projeto ficam aqui (regra A do CLAUDE.md) */
 .formulario { gap: var(--espaco-5); }
 .campo-titulo .texto-suave { font-weight: 400; }
-.escolha--duas-linhas, .modalidades .escolha { text-align: left; }
+/* Modalidade como na maquete: o conteúdo começa no alto, à esquerda, e o local do Presencial vem
+   embaixo, menor. Em coluna flex porque o <button> centraliza o conteúdo na vertical; por isso o ✓ e
+   o nome ficam juntos num <span> no HTML, senão cada um viraria uma linha. */
+.modalidades .escolha { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; text-align: left; }
+.modalidade__local { margin-top: 2px; font-size: .875rem; font-weight: 400; }
+/* Dicas em 14 px, como os textos de apoio dos formulários de entrar e cadastro */
+.dica { font-size: .875rem; }
+/* "Ver mentores" maior, como na maquete: 52 px de altura no celular e 56 px, com texto de 18 px, no
+   computador. */
+.ver-mentores { min-height: 52px; }
+@media (min-width: 48rem) { .ver-mentores { min-height: 56px; padding-inline: 36px; font-size: var(--texto-destaque); } }
 .capitalizado { text-transform: capitalize; }

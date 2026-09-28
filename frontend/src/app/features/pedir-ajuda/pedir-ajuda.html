@@ -24,7 +24,7 @@
               <select id="curso-ajuda" (change)="trocarCurso($event)" class="campo-select w-full">
                 @for (curso of cursos; track curso.nome) { <option [value]="curso.nome" [selected]="curso.nome === f.curso">{{ curso.nome }}</option> }
               </select>
-              <p class="texto-suave linha-icone mt-2"><app-icone nome="info" class="icone-info" />Preenchido com o seu curso de cadastro. Você pode trocar para buscar outra matéria.</p>
+              <p class="texto-suave dica linha-icone mt-2"><app-icone nome="info" class="icone-info" />Preenchido com o seu curso de cadastro. Você pode trocar para buscar outra matéria.</p>
             </div>
             <fieldset class="w-full">
               <legend class="campo-titulo">Semestre</legend>
@@ -38,7 +38,7 @@
             </fieldset>
             <fieldset class="w-full" [attr.aria-describedby]="tentouEnviar() && faltaMateria() ? 'erro-materia' : null">
               <legend class="campo-titulo">Matéria</legend>
-              <p class="texto-suave mb-3">Selecione a matéria em que você precisa de apoio</p>
+              <p class="texto-suave dica mb-3">Selecione a matéria em que você precisa de apoio</p>
               <div class="flex flex-wrap gap-2">
                 @for (materia of materiasFiltradas(); track materia.id) {
                   <button class="escolha escolha--chip" type="button" [attr.aria-pressed]="f.materiaId === materia.id" (click)="atualizar({ materiaId: materia.id })">
@@ -63,7 +63,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-7 w-full">
               <fieldset [attr.aria-describedby]="tentouEnviar() && faltaTurno() ? 'erro-turno' : null">
                 <legend class="campo-titulo">Turnos disponíveis <span class="texto-suave">(marque um ou mais)</span></legend>
-                <div class="flex flex-wrap gap-2">
+                <!-- No celular, os três turnos dividem a linha em partes iguais, como na maquete -->
+                <div class="grid grid-cols-3 md:flex md:flex-wrap gap-2">
                   @for (turno of opcoesTurno; track turno) {
                     <button type="button" class="escolha capitalizado" [attr.aria-pressed]="f.turnos.includes(turno)" (click)="alternarTurno(turno)">
                       @if (f.turnos.includes(turno)) { <span aria-hidden="true">✓ </span> }{{ rotuloTurno[turno] }}
@@ -75,15 +76,15 @@
               <fieldset>
                 <legend class="campo-titulo">Modalidade de encontro</legend>
                 <div class="modalidades grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <button type="button" class="escolha escolha--duas-linhas" [attr.aria-pressed]="f.modalidade === 'presencial'" (click)="atualizar({ modalidade: 'presencial' })">
-                    @if (f.modalidade === 'presencial') { <span aria-hidden="true">✓ </span> }Presencial <span class="block texto-suave">CIMATEC - Orlando Gomes</span>
+                  <button type="button" class="escolha" [attr.aria-pressed]="f.modalidade === 'presencial'" (click)="atualizar({ modalidade: 'presencial' })">
+                    <span>@if (f.modalidade === 'presencial') { <span aria-hidden="true">✓ </span> }Presencial</span> <span class="texto-suave modalidade__local">CIMATEC - Orlando Gomes</span>
                   </button>
-                  <button type="button" class="escolha" [attr.aria-pressed]="f.modalidade === 'online'" (click)="atualizar({ modalidade: 'online' })">@if (f.modalidade === 'online') { <span aria-hidden="true">✓ </span> }Online</button>
-                  <button type="button" class="escolha sm:col-span-2" [attr.aria-pressed]="f.modalidade === 'ambos'" (click)="atualizar({ modalidade: 'ambos' })">@if (f.modalidade === 'ambos') { <span aria-hidden="true">✓ </span> }Ambos</button>
+                  <button type="button" class="escolha" [attr.aria-pressed]="f.modalidade === 'online'" (click)="atualizar({ modalidade: 'online' })"><span>@if (f.modalidade === 'online') { <span aria-hidden="true">✓ </span> }Online</span></button>
+                  <button type="button" class="escolha sm:col-span-2" [attr.aria-pressed]="f.modalidade === 'ambos'" (click)="atualizar({ modalidade: 'ambos' })"><span>@if (f.modalidade === 'ambos') { <span aria-hidden="true">✓ </span> }Ambos</span></button>
                 </div>
               </fieldset>
             </div>
-            <div class="w-full flex justify-end pt-2"><button type="submit" class="botao w-full sm:w-auto">Ver mentores →</button></div>
+            <div class="w-full flex justify-end pt-2"><button type="submit" class="botao ver-mentores w-full sm:w-auto">Ver mentores →</button></div>
           </form>
         }
       }
