@@ -7,12 +7,12 @@ import { finalize } from 'rxjs';
 
 import { CURSOS } from '../../models/curso';
 import { AuthService } from '../../services/auth.service';
-import { Icone } from '../../shared/icone/icone';
 import { mensagemDoErro } from '../../shared/util/erros-http';
+import { PainelAcesso } from './painel/painel';
 
 @Component({
   selector: 'app-auth',
-  imports: [FormsModule, RouterLink, Icone],
+  imports: [FormsModule, RouterLink, PainelAcesso],
   templateUrl: './auth.html',
   styleUrl: './auth.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +39,6 @@ export class Auth {
   protected readonly erro = signal(this.route.snapshot.queryParamMap.get('falha') === 'sessao'
     ? 'Não foi possível conferir sua sessão. Verifique a conexão e tente entrar novamente.' : '');
   protected readonly recuperacao = signal(false);
-  protected readonly animar = signal(true);
   protected readonly bloqueadoAte = signal(0);
   protected readonly segundos = signal(0);
   protected readonly tentativas = signal(0);
@@ -121,11 +120,6 @@ export class Auth {
         this.focarErro();
       },
     });
-  }
-
-  protected repetirAnimacao(): void {
-    this.animar.set(false);
-    setTimeout(() => this.animar.set(true), 30);
   }
 
   private focarErro(): void {

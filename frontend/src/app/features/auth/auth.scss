@@ -1,42 +1,8 @@
 /* O componente estica até o rodapé, e o painel azul junto (na maquete ele encosta no rodapé). No
-   celular, a sobra de altura vai para a área do formulário, não para a faixa da marca. */
+   celular, a sobra de altura vai para a área do formulário, não para a faixa da marca. O painel
+   (marca, encontro, título e destaques) é o componente painel/, com o CSS dele. */
 :host { display: flex; flex-direction: column; flex: 1; width: 100%; }
 .acesso { flex: 1; min-height: 78vh; grid-template-rows: auto 1fr; }
-/* Duas luzes no painel, como na maquete: azul no canto de cima (30% do azul da marca sobre o escuro dá
-   o mesmo tom do print) e ciano no canto de baixo. */
-.apresentacao { padding: var(--espaco-5); color: var(--cor-superficie); background: radial-gradient(circle at 100% 0, color-mix(in srgb, var(--cor-primaria) 30%, transparent), transparent 22rem), radial-gradient(ellipse at bottom left, rgb(0 212 232 / .13), transparent 65%), var(--cor-primaria-escura); }
-.marca { width: fit-content; margin-inline: auto; color: var(--cor-superficie); text-decoration: none; }
-.marca:not(.botao):hover { color: var(--cor-superficie); }
-.marca strong { display: block; font-size: 1.25rem; font-weight: 800; letter-spacing: -.04em; }
-.marca small { display: block; margin-top: var(--espaco-1); font-size: .75rem; font-weight: 600; color: var(--cor-marca-ciano); letter-spacing: .05em; }
-.marca__icone { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid color-mix(in srgb, var(--cor-superficie) 20%, transparent); border-radius: var(--raio-medio); background: color-mix(in srgb, var(--cor-superficie) 10%, transparent); color: var(--cor-marca-ciano); }
-.marca svg { width: 24px; height: 24px; }
-.ponto { color: var(--cor-marca-laranja); }
-.apresentacao__conteudo { flex: 1; max-width: 520px; margin: 0 auto; }
-.apresentacao h2 { margin: 20px 0 var(--espaco-2); font-size: 1.875rem; font-weight: 800; line-height: 1.25; }
-.apresentacao h2 > span { color: var(--cor-marca-laranja); }
-.apresentacao p { color: var(--cor-borda-suave); }
-.beneficios { margin-top: 20px; padding-top: var(--espaco-3); border-top: 1px solid color-mix(in srgb, var(--cor-superficie) 15%, transparent); line-height: 1.375; }
-/* Ciano sobre o azul do painel: 5,48:1, e 4,3:1 onde o degradê clareia; ícone pede 3:1. */
-.beneficio__icone { margin-top: 3px; font-size: 1.2rem; color: var(--cor-marca-ciano); }
-/* Tamanhos da maquete: círculos de 176 px que se cruzam em 48 px (160 e 40 no celular, abaixo). */
-.encontro { display: flex; position: relative; align-items: center; justify-content: center; min-height: 192px; width: 100%; border: 0; background: none; color: inherit; cursor: pointer; }
-.pessoa { display: flex; flex-direction: column; justify-content: center; width: 176px; height: 176px; border-radius: 50%; text-align: center; line-height: 1; }
-.pessoa--aluno { border: 3px solid var(--cor-marca-ciano); background: var(--cor-primaria); margin-right: -48px; }
-.pessoa--mentor { background: var(--cor-acao); }
-/* O texto de cada círculo se afasta da sobreposição, como na maquete: o selo "em comum" fica no
-   meio sem cobrir o fim de "você" nem o começo de "mentor" ("mentor" é mais larga, pede mais). */
-.pessoa--aluno { padding-right: 48px; }
-.pessoa--mentor { padding-left: 48px; }
-/* "ESTUDANTE" e "COLEGA" ficam brancos, e não ciano e cinza como na maquete: ciano sobre o círculo
-   azul dá 4,24:1 e o cinza sobre o laranja 4,47:1, os dois abaixo de 4,5:1 para texto pequeno. */
-.pessoa small { margin-bottom: 6px; font-size: .75rem; letter-spacing: .1em; font-weight: 700; }
-.pessoa strong { margin-bottom: 6px; font-size: 1.5rem; font-weight: 800; letter-spacing: -.025em; }
-.pessoa > span { font-size: .75rem; font-weight: 500; }
-.encontro__selo { position: absolute; border: 2px solid var(--cor-primaria-escura); border-radius: var(--raio-pilula); background: var(--cor-marca-ciano); color: var(--cor-texto); padding: 4px 12px; font-size: .75rem; font-weight: 800; letter-spacing: .025em; box-shadow: 0 0 18px rgb(0 212 232 / .25); }
-.encontro--animar .pessoa--aluno { animation: encontro-aluno 1s ease-out both; }
-.encontro--animar .pessoa--mentor { animation: encontro-mentor 1s ease-out both; }
-.encontro--animar .encontro__selo { animation: encontro-selo 1.1s ease-out both; }
 .formulario-area { padding: var(--espaco-4) var(--espaco-3); }
 .cartao-acesso { max-width: 512px; padding: var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); background: var(--cor-superficie); box-shadow: var(--sombra-cartao); }
 .abas { border-radius: var(--raio-pilula); padding: 5px; margin-bottom: var(--espaco-5); background: var(--cor-neutro-fundo); }
@@ -47,15 +13,13 @@ h1 { font-size: 1.5rem; letter-spacing: -.025em; }
 form { gap: 20px; }
 /* Botão de envio com 48 px de altura, como na maquete (o .botao global tem 44). */
 form > .botao { min-height: 48px; }
-.campo { display: flex; flex-direction: column; gap: 6px; }
-/* Rótulo em 16 px, e não 14 como na maquete: corpo de texto começa em 16 px (CLAUDE.md). */
+/* .campo, .erro-campo e .mensagem são globais (styles.scss); aqui só o que esta tela tem de diferente.
+   Rótulo em 16 px, e não 14 como na maquete: corpo de texto começa em 16 px (CLAUDE.md). Peso 600,
+   como na maquete, no lugar do 700 global. */
 .campo label { font-weight: 600; }
 .consentimentos legend { font-weight: 700; }
 .campo label > span { color: var(--cor-erro); }
-/* Altura, borda, raio, fundo e fonte vêm da regra global de campo (styles.scss). */
-.campo input, .campo select { width: 100%; }
 .campo input::placeholder { color: var(--cor-texto-suave); }
-.campo small { color: var(--cor-texto-suave); font-size: .875rem; }
 .senha { border: 1px solid var(--cor-borda); border-radius: var(--raio-pequeno); }
 .senha input { border: 0; }
 .mostrar-senha { padding: 0 10px; color: var(--cor-primaria); font-weight: 700; font-size: .875rem; cursor: pointer; border-radius: var(--raio-pequeno); }
@@ -74,29 +38,6 @@ form > .botao { min-height: 48px; }
 .consentimento input { flex-shrink: 0; width: 22px; height: 22px; margin-top: 2px; accent-color: var(--cor-primaria); }
 .consentimentos p, .tentativas { color: var(--cor-texto-suave); font-size: .875rem; }
 .link-texto { color: var(--cor-primaria); text-decoration: underline; cursor: pointer; min-height: 44px; font-size: .875rem; font-weight: 600; }
-.mensagem { border-radius: var(--raio-pequeno); padding: 12px; background: var(--cor-primaria-suave); }
-.mensagem--erro { background: var(--cor-erro-fundo); color: var(--cor-erro); border: 1px solid var(--cor-erro); }
-.erro-campo { color: var(--cor-erro); font-size: .875rem; }
-.erro-campo:empty { display: none; }
-.campo [aria-invalid='true'] { border-color: var(--cor-erro); }
-@keyframes encontro-aluno { from { transform: translateX(-25px); opacity: .3; } to { transform: translateX(0); opacity: 1; } }
-@keyframes encontro-mentor { from { transform: translateX(25px); opacity: .3; } to { transform: translateX(0); opacity: 1; } }
-@keyframes encontro-selo { 0%, 55% { opacity: 0; transform: scale(.9); } 100% { opacity: 1; transform: scale(1); } }
-/* Celular e tablet: o painel azul fica em cima, reduzido (a marca, o encontro em 160 px e o título),
-   e o formulário embaixo. A frase de apoio e os dois destaques saem para o formulário subir. */
-@media (max-width: 63.99rem) {
-  .apresentacao { padding: var(--espaco-4) var(--espaco-3); }
-  .apresentacao__apoio, .beneficios { display: none; }
-  .encontro { min-height: 176px; margin-top: var(--espaco-3); }
-  .pessoa { width: 160px; height: 160px; }
-  .pessoa--aluno { margin-right: -40px; padding-right: 40px; }
-  .pessoa--mentor { padding-left: 40px; }
-  .pessoa strong { font-size: 1.25rem; }
-  .pessoa small, .encontro__selo { font-size: .625rem; }
-  .encontro__selo { padding-inline: 10px; }
-  .apresentacao h2 { margin: var(--espaco-3) 0 0; font-size: 1.25rem; text-align: center; }
-}
 /* Tela larga: 5 para 7 até 1280 px e metade a metade daí em diante, como na maquete. */
-@media (min-width: 64rem) { .acesso { grid-template-columns: 5fr 7fr; grid-template-rows: none; } .apresentacao { padding: var(--espaco-4) 40px; } .formulario-area { padding: var(--espaco-5); } .cartao-acesso { padding: 32px; } }
+@media (min-width: 64rem) { .acesso { grid-template-columns: 5fr 7fr; grid-template-rows: none; } .formulario-area { padding: var(--espaco-5); } .cartao-acesso { padding: 32px; } }
 @media (min-width: 80rem) { .acesso { grid-template-columns: 1fr 1fr; } }
-@media (prefers-reduced-motion: reduce) { .encontro--animar .pessoa, .encontro--animar .encontro__selo { animation: none; } }

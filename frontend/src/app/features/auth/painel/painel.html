@@ -1,0 +1,19 @@
+<aside class="apresentacao flex flex-col">
+  <a routerLink="/" class="marca flex items-center gap-3" aria-label="Cimatec Estudos — página inicial">
+    <span class="marca__icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5C9 3 5 3 2 4v15c3-1 7-1 10 1m0-15c3-2 7-2 10-1v15c-3-1-7-1-10 1V5Z"/></svg></span>
+    <span><strong>Cimatec Estudos<span class="ponto">.</span></strong><small>MENTORIA ENTRE ALUNOS</small></span>
+  </a>
+  <div class="apresentacao__conteudo flex flex-col justify-center">
+    <button type="button" class="encontro" [class.encontro--animar]="animar()" (click)="repetirAnimacao()" (mouseenter)="repetirAnimacao()" aria-label="Você com dúvidas encontra um mentor que quer ensinar. Repetir animação.">
+      <span class="pessoa pessoa--aluno"><small>ESTUDANTE</small><strong>você</strong><span>com dúvidas</span></span>
+      <span class="pessoa pessoa--mentor"><small>COLEGA</small><strong>mentor</strong><span>quer ensinar</span></span>
+      <span class="encontro__selo">em comum</span>
+    </button>
+    <h2>Alguém do seu curso já passou por <span>isso.</span></h2>
+    <p class="apresentacao__apoio">Encontre um colega do SENAI CIMATEC que já aprendeu o caminho.</p>
+    <div class="beneficios grid sm:grid-cols-2 gap-4">
+      <div class="flex gap-3"><app-icone nome="verificado" class="beneficio__icone" /><div><strong>Exclusivo CIMATEC</strong><p>Acesso restrito ao e-mail institucional</p></div></div>
+      <div class="flex gap-3"><app-icone nome="relogio" class="beneficio__icone" /><div><strong>No seu ritmo</strong><p>Vocês escolhem: no campus ou online</p></div></div>
+    </div>
+  </div>
+</aside>

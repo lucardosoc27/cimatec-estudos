@@ -7,17 +7,14 @@
 .cartao { display: flex; flex-direction: column; gap: var(--espaco-3); align-items: flex-start; padding: var(--espaco-3); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); background: var(--cor-superficie); box-shadow: var(--sombra-cartao); }
 .cartao form { width: 100%; gap: var(--espaco-3); }
 
-.campo { display: flex; flex-direction: column; gap: 6px; width: 100%; }
-.campo label { font-weight: 700; }
-.campo input, .campo select { width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid var(--cor-borda); border-radius: var(--raio-pequeno); background: var(--cor-superficie); color: var(--cor-texto); }
+/* .campo, .erro-campo e .mensagem são globais (styles.scss); aqui só o que esta tela tem de diferente:
+   o campo ocupa a largura do cartão, o e-mail (só leitura) fica com fundo azul-claro, e o aviso é verde
+   ("Alterações salvas"). O .mensagem--erro se repete aqui porque o .mensagem desta tela pesa mais que
+   o global e deixaria o erro verde. */
+.campo { width: 100%; }
 .campo input[readonly] { background: var(--cor-primaria-suave); color: var(--cor-texto-suave); }
-.campo small { color: var(--cor-texto-suave); font-size: .875rem; }
-.campo [aria-invalid='true'] { border-color: var(--cor-erro); }
-.erro-campo { color: var(--cor-erro); font-size: .875rem; }
-.erro-campo:empty { display: none; }
-
-.mensagem { width: 100%; border-radius: var(--raio-pequeno); padding: 12px; background: var(--cor-sucesso-fundo); color: var(--cor-sucesso); }
-.mensagem--erro { background: var(--cor-erro-fundo); color: var(--cor-erro); border: 1px solid var(--cor-erro); }
+.mensagem { width: 100%; background: var(--cor-sucesso-fundo); color: var(--cor-sucesso); }
+.mensagem--erro { background: var(--cor-erro-fundo); color: var(--cor-erro); }
 
 .suave { color: var(--cor-texto-suave); }
 .pequeno { font-size: .875rem; }

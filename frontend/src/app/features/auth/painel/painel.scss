@@ -1,0 +1,59 @@
+/* Painel azul das telas de entrar e cadastro (maquete docs/telas/01-entrar-cadastro). É uma coluna
+   da grade .acesso do auth.scss: o elemento do componente estica na grade, e o <aside> ocupa ele todo. */
+:host { display: flex; flex-direction: column; }
+/* Duas luzes no painel, como na maquete: azul no canto de cima (30% do azul da marca sobre o escuro dá
+   o mesmo tom do print) e ciano no canto de baixo. */
+.apresentacao { flex: 1; padding: var(--espaco-5); color: var(--cor-superficie); background: radial-gradient(circle at 100% 0, color-mix(in srgb, var(--cor-primaria) 30%, transparent), transparent 22rem), radial-gradient(ellipse at bottom left, rgb(0 212 232 / .13), transparent 65%), var(--cor-primaria-escura); }
+.marca { width: fit-content; margin-inline: auto; color: var(--cor-superficie); text-decoration: none; }
+.marca:not(.botao):hover { color: var(--cor-superficie); }
+.marca strong { display: block; font-size: 1.25rem; font-weight: 800; letter-spacing: -.04em; }
+.marca small { display: block; margin-top: var(--espaco-1); font-size: .75rem; font-weight: 600; color: var(--cor-marca-ciano); letter-spacing: .05em; }
+.marca__icone { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid color-mix(in srgb, var(--cor-superficie) 20%, transparent); border-radius: var(--raio-medio); background: color-mix(in srgb, var(--cor-superficie) 10%, transparent); color: var(--cor-marca-ciano); }
+.marca svg { width: 24px; height: 24px; }
+.ponto { color: var(--cor-marca-laranja); }
+.apresentacao__conteudo { flex: 1; max-width: 520px; margin: 0 auto; }
+.apresentacao h2 { margin: 20px 0 var(--espaco-2); font-size: 1.875rem; font-weight: 800; line-height: 1.25; }
+.apresentacao h2 > span { color: var(--cor-marca-laranja); }
+.apresentacao p { color: var(--cor-borda-suave); }
+.beneficios { margin-top: 20px; padding-top: var(--espaco-3); border-top: 1px solid color-mix(in srgb, var(--cor-superficie) 15%, transparent); line-height: 1.375; }
+/* Ciano sobre o azul do painel: 5,48:1, e 4,3:1 onde o degradê clareia; ícone pede 3:1. */
+.beneficio__icone { margin-top: 3px; font-size: 1.2rem; color: var(--cor-marca-ciano); }
+/* Tamanhos da maquete: círculos de 176 px que se cruzam em 48 px (160 e 40 no celular, abaixo). */
+.encontro { display: flex; position: relative; align-items: center; justify-content: center; min-height: 192px; width: 100%; border: 0; background: none; color: inherit; cursor: pointer; }
+.pessoa { display: flex; flex-direction: column; justify-content: center; width: 176px; height: 176px; border-radius: 50%; text-align: center; line-height: 1; }
+.pessoa--aluno { border: 3px solid var(--cor-marca-ciano); background: var(--cor-primaria); margin-right: -48px; }
+.pessoa--mentor { background: var(--cor-acao); }
+/* O texto de cada círculo se afasta da sobreposição, como na maquete: o selo "em comum" fica no
+   meio sem cobrir o fim de "você" nem o começo de "mentor" ("mentor" é mais larga, pede mais). */
+.pessoa--aluno { padding-right: 48px; }
+.pessoa--mentor { padding-left: 48px; }
+/* "ESTUDANTE" e "COLEGA" ficam brancos, e não ciano e cinza como na maquete: ciano sobre o círculo
+   azul dá 4,24:1 e o cinza sobre o laranja 4,47:1, os dois abaixo de 4,5:1 para texto pequeno. */
+.pessoa small { margin-bottom: 6px; font-size: .75rem; letter-spacing: .1em; font-weight: 700; }
+.pessoa strong { margin-bottom: 6px; font-size: 1.5rem; font-weight: 800; letter-spacing: -.025em; }
+.pessoa > span { font-size: .75rem; font-weight: 500; }
+.encontro__selo { position: absolute; border: 2px solid var(--cor-primaria-escura); border-radius: var(--raio-pilula); background: var(--cor-marca-ciano); color: var(--cor-texto); padding: 4px 12px; font-size: .75rem; font-weight: 800; letter-spacing: .025em; box-shadow: 0 0 18px rgb(0 212 232 / .25); }
+.encontro--animar .pessoa--aluno { animation: encontro-aluno 1s ease-out both; }
+.encontro--animar .pessoa--mentor { animation: encontro-mentor 1s ease-out both; }
+.encontro--animar .encontro__selo { animation: encontro-selo 1.1s ease-out both; }
+@keyframes encontro-aluno { from { transform: translateX(-25px); opacity: .3; } to { transform: translateX(0); opacity: 1; } }
+@keyframes encontro-mentor { from { transform: translateX(25px); opacity: .3; } to { transform: translateX(0); opacity: 1; } }
+@keyframes encontro-selo { 0%, 55% { opacity: 0; transform: scale(.9); } 100% { opacity: 1; transform: scale(1); } }
+/* Celular e tablet: o painel azul fica em cima, reduzido (a marca, o encontro em 160 px e o título),
+   e o formulário embaixo. A frase de apoio e os dois destaques saem para o formulário subir. */
+@media (max-width: 63.99rem) {
+  .apresentacao { padding: var(--espaco-4) var(--espaco-3); }
+  .apresentacao__apoio, .beneficios { display: none; }
+  .encontro { min-height: 176px; margin-top: var(--espaco-3); }
+  .pessoa { width: 160px; height: 160px; }
+  .pessoa--aluno { margin-right: -40px; padding-right: 40px; }
+  .pessoa--mentor { padding-left: 40px; }
+  .pessoa strong { font-size: 1.25rem; }
+  .pessoa small, .encontro__selo { font-size: .625rem; }
+  .encontro__selo { padding-inline: 10px; }
+  .apresentacao h2 { margin: var(--espaco-3) 0 0; font-size: 1.25rem; text-align: center; }
+}
+
+/* Tela larga: mais respiro dos lados */
+@media (min-width: 64rem) { .apresentacao { padding: var(--espaco-4) 40px; } }
+@media (prefers-reduced-motion: reduce) { .encontro--animar .pessoa, .encontro--animar .encontro__selo { animation: none; } }

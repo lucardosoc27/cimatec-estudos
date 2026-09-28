@@ -11,11 +11,15 @@ p strong { color: var(--cor-texto); }
 .separador { padding-top: var(--espaco-4); margin-top: var(--espaco-4); border-top: 1px solid var(--cor-borda-suave); }
 .reenviar { color: var(--cor-primaria); text-decoration: underline; cursor: pointer; }
 .voltar { margin-top: var(--espaco-5); justify-content: center; }
-.campo { display: flex; flex-direction: column; gap: 8px; text-align: left; }
-.campo label { font-weight: 700; }
-.campo input { min-width: 0; width: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid var(--cor-borda); border-radius: var(--raio-pequeno); color: var(--cor-texto); background: var(--cor-superficie); }
+/* .campo, .erro-campo e .mensagem são globais (styles.scss). Esta tela tinha regras próprias diferentes
+   das outras, e elas ficam aqui para ela não mudar: 8 px entre as partes do campo, borda do campo sem
+   vermelho no erro, erro em 16 px e ocupando o espaço mesmo vazio, e aviso com 16 px de respiro, sem
+   borda no erro. O .mensagem--erro se repete porque o .mensagem desta tela pesa mais que o global. */
+.campo { gap: 8px; text-align: left; }
+.campo input { padding: 10px 12px; border: 1px solid var(--cor-borda); }
 form { gap: 0; }
-.erro-campo { color: var(--cor-erro); }
-.mensagem { margin-top: var(--espaco-4); padding: var(--espaco-3); border-radius: var(--raio-pequeno); background: var(--cor-primaria-suave); color: var(--cor-texto); }
-.mensagem--erro { background: var(--cor-erro-fundo); color: var(--cor-erro); }
+.erro-campo { font-size: 1rem; }
+.erro-campo:empty { display: inline; }
+.mensagem { margin-top: var(--espaco-4); padding: var(--espaco-3); color: var(--cor-texto); }
+.mensagem--erro { background: var(--cor-erro-fundo); color: var(--cor-erro); border: 0; }
 @media (min-width: 48rem) { :host { padding-top: var(--espaco-6); } .verificacao { padding: var(--espaco-6) var(--espaco-5); } }

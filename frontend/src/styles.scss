@@ -383,6 +383,24 @@ input:not([type=checkbox]):not([type=radio]), select, textarea {
   background: var(--cor-superficie); color: var(--cor-texto);
 }
 input[type=checkbox], input[type=radio] { accent-color: var(--cor-primaria); }
+
+/* Campo e aviso dos formulários de conta: entrar, cadastro, verificar e-mail e Minha conta. Antes
+   cada tela tinha a sua cópia; aqui fica o que as três têm em comum, e o que é de uma tela só fica nela.
+   Rótulo em cima, campo, dica (small) e erro embaixo. O erro vazio some, para não sobrar espaço. */
+.campo { display: flex; flex-direction: column; gap: 6px; }
+.campo label { font-weight: 700; }
+.campo input, .campo select { width: 100%; }
+.campo small { color: var(--cor-texto-suave); font-size: .875rem; }
+/* Borda vermelha no campo com erro. Tem a mesma especificidade (0-2-1) da regra de campo logo acima e
+   vem depois dela: é a ordem que faz a borda de erro vencer. Escrito como ".campo [aria-invalid]", ficaria
+   em 0-2-0 e perderia; dentro de cada tela vencia porque o Angular acrescenta um atributo ao seletor. */
+.campo [aria-invalid='true']:is(input, select) { border-color: var(--cor-erro); }
+.erro-campo { color: var(--cor-erro); font-size: .875rem; }
+.erro-campo:empty { display: none; }
+/* Aviso dentro do formulário (azul) e aviso de erro. Quem muda a cor do .mensagem na tela precisa
+   repetir o .mensagem--erro lá também: a regra da tela pesa mais que esta e pintaria o erro por cima. */
+.mensagem { padding: 12px; border-radius: var(--raio-pequeno); background: var(--cor-primaria-suave); }
+.mensagem--erro { background: var(--cor-erro-fundo); color: var(--cor-erro); border: 1px solid var(--cor-erro); }
 button { touch-action: manipulation; }
 button:disabled { cursor: wait; }
 img { max-width: 100%; }
