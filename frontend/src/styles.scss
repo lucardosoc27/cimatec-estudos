@@ -82,7 +82,8 @@
   --espaco-7: 64px;
 
   /* Forma */
-  --raio: 20px;          /* cartões, avisos, grupos de formulário */
+  --raio: 16px;          /* cartões, avisos, grupos de formulário (maquete do Stitch, 2026-09-28; antes 20px) */
+  --raio-medio: 12px;    /* chips de matéria e itens de pergunta frequente (maquete da landing) */
   --raio-pequeno: 8px;   /* linha de opção marcada (tela 2, commit seguinte) */
   --raio-pilula: 999px;  /* botões e pílula de status */
   /* Sombras tingidas do azul escuro da marca (#1B3E8C), e não de cinza: sombra neutra sobre fundo
