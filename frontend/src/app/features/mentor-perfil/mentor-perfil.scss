@@ -21,6 +21,13 @@ fieldset { min-width: 0; padding: 0; border: 0; }
 /* Tipografia e espaçamento que brigavam com classe do projeto ficam aqui (regra A do CLAUDE.md) */
 .identificacao { text-align: center; }
 .identificacao .linha-icone { justify-content: center; }
-.materia-resumo, .dia-legenda { font-weight: 700; }
+.dia-legenda { font-weight: 700; }
+/* Resumo do pedido como na maquete perfil-v1: título em rótulo de caixa alta com um fio embaixo, e
+   cada dado com o rótulo pequeno em cima (o mesmo rótulo de caixa alta da busca da landing). */
+.resumo__topo { padding-bottom: var(--espaco-3); margin-bottom: var(--espaco-3); border-bottom: 1px solid var(--cor-borda-suave); }
+.resumo__titulo { font-size: .8125rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--cor-texto-suave); }
+.resumo__rotulo { font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--cor-texto-suave); }
+.resumo__valor { margin: 2px 0 0; }
+.resumo__valor--forte { font-weight: 600; }
 .capitalizado { text-transform: capitalize; }
 @media (min-width: 48rem) { .perfil--principal { padding: var(--espaco-5); } }

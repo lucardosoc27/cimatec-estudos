@@ -28,9 +28,14 @@
           </article>
           <div class="grid gap-5">
             <section class="perfil" aria-labelledby="resumo-pedido">
-              <div class="flex justify-between items-center gap-3"><h2 id="resumo-pedido" class="subtitulo linha-icone"><app-icone nome="prancheta" />Resumo do seu pedido</h2><a routerLink="/pedir-ajuda" class="link-acao">Alterar</a></div>
-              <p class="materia-resumo mt-3">{{ materia()?.nome }}</p>
-              <div class="flex flex-wrap gap-2 mt-3">@if (formulario()?.necessidade) { <span class="materia-chip">{{ formulario()?.necessidade }}</span> }<span class="materia-chip capitalizado">{{ formulario()?.modalidade === 'ambos' ? 'Ambos' : formulario()?.modalidade }}</span></div>
+              <div class="resumo__topo flex justify-between items-center gap-3"><h2 id="resumo-pedido" class="resumo__titulo">Resumo do seu pedido</h2><a routerLink="/pedir-ajuda" class="link-acao">Alterar</a></div>
+              <!-- Três quadrinhos, como na maquete perfil-v1: um embaixo do outro no celular e lado a lado a
+                   partir de 640 px. "O que você precisa" é opcional; sem escolha, o quadrinho não aparece. -->
+              <dl class="grid sm:grid-cols-3 gap-3">
+                <div><dt class="resumo__rotulo">Matéria</dt><dd class="resumo__valor resumo__valor--forte">{{ materia()?.nome }}</dd></div>
+                @if (formulario()?.necessidade) { <div><dt class="resumo__rotulo">O que você precisa</dt><dd class="resumo__valor">{{ formulario()?.necessidade }}</dd></div> }
+                <div><dt class="resumo__rotulo">Modalidade</dt><dd class="resumo__valor capitalizado">{{ formulario()?.modalidade === 'ambos' ? 'Ambos' : formulario()?.modalidade }}</dd></div>
+              </dl>
             </section>
             @if (pedidoEmAberto(); as existente) {
               <div class="aviso" role="status"><h2 class="subtitulo">Você já pediu ajuda a {{ m.nome }} nesta matéria.</h2><p>O pedido ainda aguarda uma resposta.</p><a [routerLink]="['/pedidos', existente.id]" class="botao">Ver pedido →</a></div>
