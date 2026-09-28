@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { forkJoin, map, switchMap } from 'rxjs';
 
-import { HorarioLivre } from '../../models/disponibilidade';
+import { HorarioLivre, ROTULO_TURNO } from '../../models/disponibilidade';
 import { Materia } from '../../models/materia';
 import { Mentor, MentorRecomendado } from '../../models/mentor';
 import { Pedido } from '../../models/pedido';
@@ -53,6 +53,12 @@ export class MentorPerfil {
     const criterios = this.rascunhos.criterios();
     if (!mentor || !criterios) return [];
     return separarHorarios(mentor.horariosLivres, criterios).compativeis.map(horario => ({ horario, data: proximaData(horario.dia, horario.hora) })).sort((a, b) => a.data.localeCompare(b.data) || a.horario.hora.localeCompare(b.horario.hora));
+  });
+  /** "no turno da tarde" ou "nos turnos da manhã e da tarde": a linha de apoio de "Escolha um horário". */
+  protected readonly turnosDoPedido = computed(() => {
+    const turnos = (this.rascunhos.criterios()?.turnos ?? []).map(t => `da ${ROTULO_TURNO[t]}`);
+    if (turnos.length < 2) return `no turno ${turnos[0] ?? ''}`.trim();
+    return `nos turnos ${turnos.slice(0, -1).join(', ')} e ${turnos[turnos.length - 1]}`;
   });
   protected readonly dias = computed(() => [...new Set(this.horarios().map(h => h.data))].map(data => ({ data, horarios: this.horarios().filter(h => h.data === data) })));
   protected readonly etiquetas = computed(() => {

@@ -218,7 +218,7 @@ Não existe nesta tela: "SENAI CIMATEC • Salvador", "Disponível esta semana",
 - Retrato com o **ícone de chapéu de formando** embaixo da foto.
 - Nome, curso ("Técnico em Redes de Computadores") e "SENAI CIMATEC - Orlando Gomes".
 - **Sem semestre.**
-- "N sessões concluídas" e a caixa **"Em comum com o seu pedido"** com as etiquetas, para qualquer mentor compatível com o pedido.
+- "N sessões concluídas" e, logo abaixo, **"Em comum com o seu pedido"** com as etiquetas centralizadas, para qualquer mentor compatível com o pedido. O cartão segue sempre o desenho de `perfil-v1` (retrato grande no centro), também no estado de horário ocupado.
 - **"Ensina"**: chips de matérias (só as matérias reais do curso).
 - **"Um pouco sobre mim"**: texto curto escrito pelo mentor. Texto da Ana: "Faço o Técnico em Redes de Computadores no CIMATEC. Configuração de Servidores foi a matéria em que eu mais travei, e hoje é a que mais gosto de explicar, sempre com a prática junto."
 

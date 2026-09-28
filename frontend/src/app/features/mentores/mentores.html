@@ -28,7 +28,8 @@
       @if (resultado(); as resultado) {
         @if (exibicao() === 'pilha') {
           @if (atual(); as item) {
-            <div class="mx-auto max-w-lg px-2 sm:px-4">
+            <!-- Largura da maquete mentores-pilha-v1: o cartão tem cerca de 430 px -->
+            <div class="mx-auto max-w-md px-2">
               <p class="centralizado mb-5" aria-live="polite"><span class="contador">{{ indice() + 1 }} de {{ resultado.recomendados.length }}</span></p>
               <div class="pilha relative" (touchstart)="iniciarToque($event)" (touchend)="terminarToque($event)">
                 @if (resultado.recomendados.length > 1) { <div class="pilha__fundo pilha__fundo--um" inert aria-hidden="true"></div> }
@@ -50,9 +51,11 @@
                   </div>
                 </article>
               </div>
+              <!-- A ação principal vem primeiro no HTML: é a ordem do celular (e do Tab), como na maquete
+                   mentores-pilha-mobile-v1. No computador o "Pular" vai para a esquerda (sm:order-first). -->
               <div class="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-3 mt-7">
-                <button type="button" class="botao botao--secundario" [disabled]="indice() === resultado.recomendados.length - 1" (click)="mover(1)">Pular</button>
                 <button type="button" class="botao" (click)="verPerfil(item.mentor.id)" [attr.aria-label]="'Ver perfil e horários de ' + item.mentor.nome">Ver perfil e horários →</button>
+                <button type="button" class="botao botao--secundario sm:order-first" [disabled]="indice() === resultado.recomendados.length - 1" (click)="mover(1)">Pular</button>
               </div>
               <div class="centralizado mt-3"><button type="button" class="link-botao" [disabled]="indice() === 0" (click)="mover(-1)">↺ Voltar ao anterior</button></div>
               <p class="centralizado texto-suave mt-2">Pular não avisa ninguém e não fica registrado.</p>

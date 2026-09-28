@@ -2,25 +2,35 @@
 .texto-suave { color: var(--cor-texto-suave); }
 .chapeu { display: grid; place-items: center; position: absolute; right: -3px; bottom: 0; width: 36px; height: 36px; border: 3px solid var(--cor-superficie); border-radius: 50%; color: var(--cor-superficie); background: var(--cor-primaria); }
 .chapeu svg { width: 24px; height: 24px; }
-.bloco-suave { background: var(--cor-primaria-suave); padding: 18px; border-radius: var(--raio-medio); }
-.combina { color: var(--cor-primaria); font-weight: 700; }
-.etiqueta,.materia-chip,.sessoes { display: inline-block; padding: 5px 10px; border-radius: var(--raio-pequeno); }
-.sessoes { display: inline-flex; }  /* linha com ícone dentro da pílula */
-.etiqueta { background: var(--cor-superficie); color: var(--cor-primaria); }
+/* Cartão do mentor como em perfil-v1: nome em 24 px, curso em destaque suave, local em 14 px */
+.nome-mentor { font-size: 1.5rem; }
+.curso-mentor { margin-top: var(--espaco-1); font-size: var(--texto-destaque); color: var(--cor-texto-suave); }
+.local-mentor { margin-top: 2px; font-size: .875rem; color: var(--cor-texto-suave); }
+.em-comum__titulo { font-size: .875rem; font-weight: 700; color: var(--cor-primaria); }
+/* Etiqueta em pílula com fio, sobre o azul-claro (texto 16,27:1 no azul-claro) */
+.etiqueta { padding: 4px 12px; border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-pilula); background: var(--cor-primaria-suave); }
+/* "Ensina" começa depois de um fio, e as matérias ficam uma por linha, em caixa com fio */
+.secao-perfil { margin-top: var(--espaco-5); padding-top: var(--espaco-4); border-top: 1px solid var(--cor-borda-suave); }
+.secao-perfil__titulo { margin-bottom: var(--espaco-2); font-size: var(--texto-destaque); font-weight: 600; }
+.materia-chip { padding: 8px 12px; border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-pequeno); background: var(--cor-superficie); }
 .icone-info { color: var(--cor-primaria); }
-.materia-chip,.sessoes { background: var(--cor-primaria-suave); }
 fieldset { min-width: 0; padding: 0; border: 0; }
 .horario { text-align: left; min-height: 78px; padding: 12px 16px; border: 1px solid var(--cor-borda); border-radius: var(--raio-medio); background: var(--cor-superficie); cursor: pointer; }
 .horario[aria-pressed='true'] { background: var(--cor-primaria-suave); border: 2px solid var(--cor-primaria); padding: 11px 15px; color: var(--cor-primaria); }
-.marcador { display: grid; place-items: center; width: 27px; height: 27px; flex-shrink: 0; border: 1px solid var(--cor-borda); border-radius: 50%; }
+.marcador { display: grid; place-items: center; width: 24px; height: 24px; font-size: .875rem; flex-shrink: 0; border: 1px solid var(--cor-borda); border-radius: 50%; }
 [aria-pressed='true'] .marcador { background: var(--cor-primaria); border-color: var(--cor-primaria); color: var(--cor-superficie); }
 .horario--ocupado { cursor: default; color: var(--cor-texto-suave); background: var(--cor-neutro-fundo); }
 .horario--ocupado strong { text-decoration: line-through; }
 .erro { color: var(--cor-erro); }
+/* Aviso do horário ocupado em laranja (tokens de alerta: 5,95:1), dentro do cartão dos horários */
+.aviso-ocupado { gap: var(--espaco-3); padding: var(--espaco-3); border: 1px solid color-mix(in srgb, var(--cor-alerta) 30%, transparent); border-radius: var(--raio-medio); background: var(--cor-alerta-fundo); color: var(--cor-alerta); font-weight: 600; }
+.selo-ocupado { padding: 2px 10px; border-radius: var(--raio-pilula); background: var(--cor-neutro-fundo); color: var(--cor-neutro); font-size: .875rem; font-weight: 600; }
+/* Aviso do contato: caixa azul-clara no pé do cartão (texto suave nela: 6,46:1) */
+.aviso-contato { gap: var(--espaco-3); padding: var(--espaco-3); border-radius: var(--raio-medio); background: var(--cor-primaria-suave); }
+.enviar { min-height: 52px; }
 
 /* Tipografia e espaçamento que brigavam com classe do projeto ficam aqui (regra A do CLAUDE.md) */
 .identificacao { text-align: center; }
-.identificacao .linha-icone { justify-content: center; }
 .dia-legenda { font-weight: 700; }
 /* Resumo do pedido como na maquete perfil-v1: título em rótulo de caixa alta com um fio embaixo, e
    cada dado com o rótulo pequeno em cima (o mesmo rótulo de caixa alta da busca da landing). */

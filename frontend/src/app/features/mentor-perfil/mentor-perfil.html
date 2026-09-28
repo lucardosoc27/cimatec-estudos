@@ -9,22 +9,26 @@
     @case ('vazio') { <div class="aviso"><h1 class="subtitulo">Este mentor não está disponível para a matéria.</h1><a routerLink="/mentores" class="link-acao">Ver outros mentores →</a></div> }
     @case ('sucesso') {
       @if (mentor(); as m) {
-        <div class="grid lg:grid-cols-[0.95fr_1.05fr] gap-6 items-start">
+        <!-- Colunas de 5 para 7, como em perfil-v1: o cartão do mentor mais estreito que o dos horários -->
+        <div class="grid lg:grid-cols-[5fr_7fr] gap-6 items-start">
           <article class="perfil perfil--principal">
+            <!-- Desenho de perfil-v1 (docs/telas/13-mentor-horarios) em qualquer estado da tela: retrato grande no
+                 centro, nome, curso e sessões embaixo, as etiquetas centralizadas, e só então "Ensina" e "Um
+                 pouco sobre mim" alinhados à esquerda. -->
             <div class="identificacao flex flex-col items-center">
               <div class="relative mb-4"><app-avatar [nome]="m.nome" [foto]="m.foto" [tamanho]="112" /><span class="chapeu" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m2 9 10-5 10 5-10 5L2 9Z"/><path d="M6 11v6c4 3 8 3 12 0v-6M22 9v7"/></svg></span></div>
-              <h1 class="titulo titulo--compacto">{{ m.nome }}</h1>
-              <p class="texto-suave">Técnico em {{ m.curso }}</p>
-              <p class="texto-suave linha-icone mt-3"><app-icone nome="local" />SENAI CIMATEC - Orlando Gomes</p>
-              <p class="sessoes linha-icone mt-3"><app-icone nome="escola" />{{ m.sessoesConcluidas }} sessões concluídas</p>
+              <h1 class="nome-mentor">{{ m.nome }}</h1>
+              <p class="curso-mentor">Técnico em {{ m.curso }}</p>
+              <p class="local-mentor">SENAI CIMATEC - Orlando Gomes</p>
+              <p class="texto-suave mt-2">{{ m.sessoesConcluidas }} sessões concluídas</p>
+              <!-- O motivo objetivo, para qualquer mentor compatível; antes era o selo "Combina bem com você",
+                   só para o primeiro da lista (DECISOES.md, 2026-09-28). -->
+              @if (etiquetas().length) {
+                <section class="em-comum mt-4" aria-labelledby="em-comum"><h2 id="em-comum" class="em-comum__titulo">Em comum com o seu pedido</h2><ul class="flex flex-wrap justify-center gap-2 mt-2">@for (etiqueta of etiquetas(); track etiqueta) { <li class="etiqueta">{{ etiqueta }}</li> }</ul></section>
+              }
             </div>
-            <!-- O motivo objetivo, para qualquer mentor compatível; antes era o selo "Combina bem com você",
-                 só para o primeiro da lista (DECISOES.md, 2026-09-28). -->
-            @if (etiquetas().length) {
-              <section class="bloco-suave mt-6" aria-labelledby="em-comum"><h2 id="em-comum" class="combina linha-icone"><app-icone nome="lista" />Em comum com o seu pedido</h2><ul class="flex flex-wrap gap-2 mt-3">@for (etiqueta of etiquetas(); track etiqueta) { <li class="etiqueta">{{ etiqueta }}</li> }</ul></section>
-            }
-            <section class="mt-6"><h2 class="subtitulo mb-3">Ensina</h2><ul class="flex flex-wrap gap-2">@for (materia of materiasEnsinadas(); track materia.id) { <li class="materia-chip">{{ materia.nome }}</li> }</ul></section>
-            <section class="bloco-suave mt-6"><h2 class="subtitulo mb-3">Um pouco sobre mim</h2><p class="texto-suave">{{ m.descricao || 'Este mentor ainda não adicionou uma apresentação.' }}</p></section>
+            <section class="secao-perfil"><h2 class="secao-perfil__titulo">Ensina</h2><ul class="flex flex-col gap-2">@for (materia of materiasEnsinadas(); track materia.id) { <li class="materia-chip">{{ materia.nome }}</li> }</ul></section>
+            <section class="mt-5"><h2 class="secao-perfil__titulo">Um pouco sobre mim</h2><p class="texto-suave">{{ m.descricao || 'Este mentor ainda não adicionou uma apresentação.' }}</p></section>
           </article>
           <div class="grid gap-5">
             <section class="perfil" aria-labelledby="resumo-pedido">
@@ -41,29 +45,34 @@
               <div class="aviso" role="status"><h2 class="subtitulo">Você já pediu ajuda a {{ m.nome }} nesta matéria.</h2><p>O pedido ainda aguarda uma resposta.</p><a [routerLink]="['/pedidos', existente.id]" class="botao">Ver pedido →</a></div>
             } @else {
               <form (submit)="enviar($event)" class="w-full">
+                <!-- Um cartão só, como na maquete: título, aviso (se houver), horários por dia, o aviso do contato
+                     e o botão. No estado de horário ocupado, o que muda é o aviso laranja e o horário riscado. -->
                 <section class="perfil w-full" aria-labelledby="escolher-horario">
-                  <h2 id="escolher-horario" class="subtitulo linha-icone mb-5"><app-icone nome="calendario" />Escolha um horário</h2>
+                  <h2 id="escolher-horario" class="subtitulo">Escolha um horário</h2>
+                  <p class="texto-suave mt-1">Horários livres {{ turnosDoPedido() }}.</p>
+                  @switch (erroEnvio()) {
+                    @case ('horario-indisponivel') { <p class="aviso-ocupado linha-icone mt-4" role="alert"><app-icone nome="calendario" /><span>Esse horário acabou de ser ocupado. Escolha outro, o resto do seu pedido foi mantido.</span></p> }
+                    @case ('conexao') { <p class="aviso aviso--erro mt-4" role="alert">Não foi possível enviar o pedido. Tente de novo: seu preenchimento foi mantido.</p> }
+                  }
                   @for (dia of dias(); track dia.data) {
-                    <fieldset class="mb-5 last:mb-0"><legend class="dia-legenda mb-3">{{ dia.data | diaEData }}</legend>
+                    <fieldset class="mt-5"><legend class="dia-legenda linha-icone mb-3"><app-icone nome="calendario" />{{ dia.data | diaEData }}</legend>
                       <div class="grid gap-3">
                         @for (opcao of dia.horarios; track opcao.horario.id) {
-                          <button type="button" class="horario flex items-center justify-between gap-3" [class.horario--ocupado]="ocupados().includes(opcao.horario.id)" [disabled]="ocupados().includes(opcao.horario.id) || enviando()" [attr.aria-pressed]="horarioId() === opcao.horario.id" (click)="escolherHorario(opcao.horario.id)">
-                            <span><strong class="block">{{ intervalo(opcao.horario.hora) }}</strong><span class="texto-suave">{{ opcao.horario.modalidade === 'online' ? 'Online' : 'CIMATEC - Orlando Gomes' }}</span></span>
-                            @if (ocupados().includes(opcao.horario.id)) { <span>Ocupado</span> } @else { <span class="marcador" aria-hidden="true">{{ horarioId() === opcao.horario.id ? '✓' : '' }}</span> }
+                          <button type="button" class="horario flex items-center gap-3" [class.horario--ocupado]="ocupados().includes(opcao.horario.id)" [disabled]="ocupados().includes(opcao.horario.id) || enviando()" [attr.aria-pressed]="horarioId() === opcao.horario.id" (click)="escolherHorario(opcao.horario.id)">
+                            @if (!ocupados().includes(opcao.horario.id)) { <span class="marcador" aria-hidden="true">{{ horarioId() === opcao.horario.id ? '✓' : '' }}</span> }
+                            <span class="flex-1"><strong class="block">{{ intervalo(opcao.horario.hora) }}</strong><span class="texto-suave linha-icone"><app-icone [nome]="opcao.horario.modalidade === 'online' ? 'video' : 'local'" />{{ opcao.horario.modalidade === 'online' ? 'Online' : 'CIMATEC - Orlando Gomes' }}</span></span>
+                            @if (ocupados().includes(opcao.horario.id)) { <span class="selo-ocupado">Ocupado</span> }
                           </button>
                         }
                       </div>
                     </fieldset>
                   } @empty {
-                    <p class="texto-suave">Nenhum horário livre nos turnos escolhidos.</p><a routerLink="/pedir-ajuda" class="link-acao mt-2">← Alterar pedido</a>
+                    <p class="texto-suave mt-4">Nenhum horário livre nos turnos escolhidos.</p><a routerLink="/pedir-ajuda" class="link-acao mt-2">← Alterar pedido</a>
                   }
                   @if (tentouEnviar() && !horarioId()) { <p class="erro mt-4" role="alert">Escolha um horário para enviar o pedido.</p> }
+                  <p class="aviso-contato texto-suave linha-icone mt-5"><app-icone nome="info" class="icone-info" />O contato de {{ m.nome }} aparece depois que o pedido for aceito. O prazo de resposta é de até 48h.</p>
+                  @if (horarios().length) { <button type="submit" class="botao enviar w-full mt-4" [disabled]="enviando()">{{ enviando() ? 'Enviando…' : 'Enviar pedido →' }}</button> }
                 </section>
-                @if (erroEnvio()) {
-                  <p class="aviso aviso--erro w-full" role="alert">{{ erroEnvio() === 'horario-indisponivel' ? 'Esse horário acabou de ser ocupado. Escolha outro, o resto do seu pedido foi mantido.' : 'Não foi possível enviar o pedido. Tente de novo: seu preenchimento foi mantido.' }}</p>
-                }
-                <p class="perfil w-full texto-suave linha-icone"><app-icone nome="info" class="icone-info" />O contato de {{ m.nome }} aparece depois que o pedido for aceito. O prazo de resposta é de até 48h.</p>
-                @if (horarios().length) { <button type="submit" class="botao w-full" [disabled]="enviando()">{{ enviando() ? 'Enviando…' : 'Enviar pedido →' }}</button> }
               </form>
             }
           </div>
