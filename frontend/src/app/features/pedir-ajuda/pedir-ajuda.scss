@@ -3,16 +3,21 @@
 .cabecalho-formulario { border-bottom: 1px solid var(--cor-borda-suave); }
 .texto-suave { color: var(--cor-texto-suave); }
 .campo-titulo { display: block; margin-bottom: 10px; font-weight: 700; }
-.campo-select { min-height: 48px; padding: 10px 12px; border: 1px solid var(--cor-borda); border-radius: 10px; background: white; font: inherit; }
+.campo-select { min-height: 48px; padding: 10px 12px; border: 1px solid var(--cor-borda); border-radius: var(--raio-pequeno); background: var(--cor-superficie); font: inherit; }
 fieldset { border: 0; padding: 0; min-width: 0; }
-.escolha { min-height: 46px; padding: 10px 14px; border: 1px solid var(--cor-borda); border-radius: 12px; background: white; color: var(--cor-texto-suave); cursor: pointer; }
-.escolha--chip { border-radius: var(--raio-pilula); }
+.escolha { min-height: 46px; padding: 10px 14px; border: 1px solid var(--cor-borda); border-radius: var(--raio-medio); background: var(--cor-superficie); color: var(--cor-texto-suave); cursor: pointer; }
+/* Pílula com texto à esquerda: quando o nome da matéria quebra no celular, lê-se como frase (maquete) */
+.escolha--chip { border-radius: var(--raio-pilula); text-align: left; }
+.icone-info { color: var(--cor-primaria); }
 .escolha:hover { background: var(--cor-primaria-suave); }
 .escolha[aria-pressed='true'] { border: 2px solid var(--cor-primaria); padding: 9px 13px; background: var(--cor-primaria-suave); color: var(--cor-primaria); font-weight: 600; }
 .erro-campo { color: var(--cor-erro); }
+/* Semestres em três colunas: no celular cada botão tem ~90px, e "semestre" só cabe com pouco respiro
+   lateral. Vem depois do [aria-pressed] para vencer o padding dele (mesma especificidade). */
+.escolha--compacta, .escolha--compacta[aria-pressed='true'] { padding-inline: 4px; }
 
 /* Tipografia e espaçamento que brigavam com classe do projeto ficam aqui (regra A do CLAUDE.md) */
 .formulario { gap: var(--espaco-5); }
 .campo-titulo .texto-suave { font-weight: 400; }
-.escolha--duas-linhas { text-align: left; }
+.escolha--duas-linhas, .modalidades .escolha { text-align: left; }
 .capitalizado { text-transform: capitalize; }

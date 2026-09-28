@@ -24,13 +24,13 @@
               <select id="curso-ajuda" (change)="trocarCurso($event)" class="campo-select w-full">
                 @for (curso of cursos; track curso.nome) { <option [value]="curso.nome" [selected]="curso.nome === f.curso">{{ curso.nome }}</option> }
               </select>
-              <p class="texto-suave mt-2">Preenchido com o seu curso de cadastro. Você pode trocar para buscar outra matéria.</p>
+              <p class="texto-suave linha-icone mt-2"><app-icone nome="info" class="icone-info" />Preenchido com o seu curso de cadastro. Você pode trocar para buscar outra matéria.</p>
             </div>
             <fieldset class="w-full">
               <legend class="campo-titulo">Semestre</legend>
-              <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
+              <div class="grid grid-cols-3 gap-2">
                 @for (semestre of semestres(); track semestre) {
-                  <button type="button" class="escolha flex-1" [attr.aria-pressed]="f.semestre === semestre" (click)="atualizar({ semestre, materiaId: null })">
+                  <button type="button" class="escolha escolha--compacta" [attr.aria-pressed]="f.semestre === semestre" (click)="atualizar({ semestre, materiaId: null })">
                     @if (f.semestre === semestre) { <span aria-hidden="true">✓ </span> }{{ semestre }}º semestre
                   </button>
                 }
@@ -74,12 +74,12 @@
               </fieldset>
               <fieldset>
                 <legend class="campo-titulo">Modalidade de encontro</legend>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="modalidades grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <button type="button" class="escolha escolha--duas-linhas" [attr.aria-pressed]="f.modalidade === 'presencial'" (click)="atualizar({ modalidade: 'presencial' })">
                     @if (f.modalidade === 'presencial') { <span aria-hidden="true">✓ </span> }Presencial <span class="block texto-suave">CIMATEC - Orlando Gomes</span>
                   </button>
                   <button type="button" class="escolha" [attr.aria-pressed]="f.modalidade === 'online'" (click)="atualizar({ modalidade: 'online' })">@if (f.modalidade === 'online') { <span aria-hidden="true">✓ </span> }Online</button>
-                  <button type="button" class="escolha col-span-2" [attr.aria-pressed]="f.modalidade === 'ambos'" (click)="atualizar({ modalidade: 'ambos' })">@if (f.modalidade === 'ambos') { <span aria-hidden="true">✓ </span> }Ambos</button>
+                  <button type="button" class="escolha sm:col-span-2" [attr.aria-pressed]="f.modalidade === 'ambos'" (click)="atualizar({ modalidade: 'ambos' })">@if (f.modalidade === 'ambos') { <span aria-hidden="true">✓ </span> }Ambos</button>
                 </div>
               </fieldset>
             </div>

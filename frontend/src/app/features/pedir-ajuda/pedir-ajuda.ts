@@ -9,10 +9,11 @@ import { AuthService } from '../../services/auth.service';
 import { MateriasService } from '../../services/materias.service';
 import { PedidoRascunhoService, PedidoRascunho } from '../../services/pedido-rascunho.service';
 import { EstadoTela } from '../../shared/estado-tela';
+import { Icone } from '../../shared/icone/icone';
 
 @Component({
   selector: 'app-pedir-ajuda',
-  imports: [RouterLink],
+  imports: [RouterLink, Icone],
   templateUrl: './pedir-ajuda.html',
   styleUrl: './pedir-ajuda.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
