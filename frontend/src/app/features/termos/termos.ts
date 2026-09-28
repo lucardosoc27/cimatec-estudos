@@ -52,7 +52,8 @@ export class Termos {
         ] },
         { id: 'cancelamento', titulo: 'Cancelamento e exclusão da conta', blocos: [
           { p: 'Para parar de receber pedidos, desligue "Quero receber pedidos de ajuda" em Minha conta.' },
-          { p: 'Para excluir a conta, use "Excluir minha conta" em Minha conta. A tela pede a sua senha para confirmar. Seus dados e pedidos são apagados. Sessões já aceitas são canceladas e o mentor é avisado. Essa ação não pode ser desfeita.' },
+          { p: 'Para excluir a conta, use "Excluir minha conta" em Minha conta: a tela pede a sua senha para confirmar.' },
+          { p: 'Nesta versão, a exclusão ainda não chega ao servidor: você sai da conta, mas ela e os seus dados continuam guardados. Apagar no servidor os seus dados e pedidos, e cancelar as sessões já aceitas, é a próxima etapa do projeto.' },
           { p: 'A conta criada e nunca confirmada é apagada sozinha 7 dias depois que o link de confirmação vence.' },
         ] },
       ],
@@ -119,6 +120,7 @@ export class Termos {
             'Parar de receber pedidos de ajuda.',
             'Excluir a conta.',
           ] },
+          { p: 'Nesta versão, a correção do nome e do curso, a troca dos consentimentos e a exclusão ainda não chegam ao servidor: valem só até você sair da conta ou recarregar a página. A escolha de receber ou não pedidos de ajuda já fica guardada. Levar o resto para o servidor é a próxima etapa do projeto.' },
           { p: 'O aceite destes termos e da política é obrigatório para usar o Cimatec Estudos. Se você não concordar mais com eles, o caminho é excluir a conta.' },
         ] },
         { id: 'menores-de-idade', titulo: 'Estudantes menores de idade', blocos: [
@@ -143,7 +145,7 @@ export class Termos {
           ] },
         ] },
         { id: 'contato', titulo: 'Fale com a gente', blocos: [
-          { p: 'Esta é uma versão acadêmica, e ainda não há um canal próprio de atendimento. Tudo o que você pode fazer com os seus dados está em Minha conta (veja "Seus direitos").' },
+          { p: 'O Cimatec Estudos é um projeto acadêmico de estudantes do SENAI CIMATEC, e o canal de contato ainda será definido.' },
         ] },
       ],
     },

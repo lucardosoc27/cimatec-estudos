@@ -28,6 +28,9 @@
           @case ('erro') { <p class="mensagem mensagem--erro" role="alert">Não foi possível salvar agora. O que você digitou foi mantido; tente de novo.</p> }
         }
         <button type="submit" class="botao w-full sm:w-auto" [disabled]="salvando()">{{ salvando() ? 'Salvando…' : 'Salvar alterações' }}</button>
+        <!-- O que esta versão faz de verdade: nome e curso são respondidos pelo mock, e não pelo Spring
+             (a gravação no servidor é o commit 7 do plano). -->
+        <p class="suave pequeno">Nesta versão, as alterações ainda não chegam ao servidor: valem só até você sair da conta ou recarregar a página.</p>
       </form>
     </section>
 
@@ -85,6 +88,8 @@
     <section class="cartao" aria-labelledby="titulo-excluir">
       <h2 id="titulo-excluir" class="subtitulo">Excluir conta</h2>
       <p class="suave">Seus dados e pedidos são apagados. Sessões já aceitas são canceladas e o mentor é avisado.</p>
+      <!-- Hoje o mock só faz o logout de verdade; apagar no servidor é o commit 7 do plano. -->
+      <p class="suave pequeno">Nesta versão, a exclusão ainda não chega ao servidor: você só sai da conta, e ela continua existindo.</p>
       <button #botaoExcluir type="button" class="botao botao--contorno-perigo w-full sm:w-auto" (click)="abrirExclusao()">Excluir minha conta</button>
     </section>
 
