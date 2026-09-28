@@ -85,7 +85,7 @@ abaixo).
 de cima e leva direto ao conteúdo, sem passar pelo menu de novo. Está no começo de `app.html`.
 
 **O foco sempre aparece.** Todo elemento que recebe o foco ganha um contorno azul de 3 pixels
-(`:focus-visible` em `styles.scss`), com 6,78:1 de contraste contra o fundo da página.
+(`:focus-visible` em `styles.scss`), com 6,97:1 de contraste contra o fundo da página.
 
 **O foco não se perde.**
 - Ao trocar de tela, se o botão usado sumiu, o foco vai para o começo do conteúdo, e não volta
@@ -106,13 +106,13 @@ anda com as setas do teclado, além dos botões "Anterior" e "Próximo".
 ## Quem enxerga com dificuldade, ou não distingue cores
 
 **Contraste medido.** A WCAG pede no mínimo 4,5:1 para texto e 3:1 para borda de campo e ícone.
-Os valores abaixo foram recalculados em 2026-09-27 a partir das cores de `styles.scss`:
+Os valores abaixo foram recalculados em 2026-09-28, depois da unificação de fundo, borda e sombra, a partir das cores de `styles.scss`:
 
-- texto principal sobre o branco: 16,27:1; sobre o fundo da página: 14,08:1;
-- texto suave sobre o branco: 7,53:1; sobre o fundo da página: 6,51:1;
-- azul dos links e botões secundários sobre o branco: 7,84:1; sobre o fundo: 6,78:1;
+- texto principal sobre o branco: 16,27:1; sobre o fundo da página: 14,46:1;
+- texto suave sobre o branco: 7,53:1; sobre o fundo da página: 6,69:1;
+- azul dos links e botões secundários sobre o branco: 7,84:1; sobre o fundo: 6,97:1;
 - texto branco no botão laranja "Pedir ajuda": 5,19:1; no mesmo botão com o mouse em cima: 6,42:1;
-- borda de campo de texto sobre o branco: 3,66:1; sobre o fundo da página: 3,17:1;
+- borda de campo de texto sobre o branco: 3,66:1; sobre o fundo da página: 3,26:1;
 - status "Aguardando resposta": 5,95:1; "Aceito": 5,75:1; "Recusado", "Expirado" e os
   outros: 6,58:1;
 - mensagem de erro sobre o fundo rosado: 5,75:1; texto branco no botão vermelho de cancelar:
@@ -122,9 +122,7 @@ Os valores abaixo foram recalculados em 2026-09-27 a partir das cores de `styles
 - laranja exato da marca: 3,15:1 sobre o branco. Não serve para texto; por isso o botão usa um
   laranja mais escuro.
 
-Observação: alguns comentários em `styles.scss` ainda mostram os números do fundo antigo da página
-(por exemplo, "5,80:1 sobre o fundo" para o texto suave). Os valores atuais são os desta lista, e
-todos são iguais ou melhores que os antigos.
+Os comentários de `styles.scss` foram atualizados com estes mesmos valores em 2026-09-28.
 
 **Link dentro de frase é sublinhado.** Só a cor não bastaria: o azul do link tem 2,07:1 contra o
 texto preto em volta, abaixo dos 3:1 exigidos. O sublinhado foi declarado de propósito
@@ -213,6 +211,4 @@ institucional.
 - **Os horários do perfil** são botões de marcar, e não um grupo de opções em que só uma vale
   (grupo de rádio). Funcionam e dizem se estão marcados, mas o leitor não avisa que marcar um
   desmarca o outro.
-- **Os comentários de contraste antigos** em `styles.scss` (ver a observação na seção de
-  contraste).
 - **O campo para dizer como a pessoa prefere se comunicar**, na seção anterior.

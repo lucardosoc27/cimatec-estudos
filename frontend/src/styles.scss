@@ -25,17 +25,22 @@
   --cor-marca-ciano: #00D4E8;       /* ciano institucional: só sobre azul escuro (5,48:1); sobre branco dá 1,81:1 */
 
   --cor-texto: #172033;             /* 16,27:1 sobre branco */
-  --cor-texto-suave: #4A5568;       /* 7,53:1 sobre branco, 5,80:1 sobre o fundo */
-  /* Borda de campo de texto, primeiro uso no login (tela 6): 3,66:1 sobre o cartão branco, que é
-     onde o campo tem de morar. Sobre o fundo da página dá 2,82:1, abaixo do mínimo de 3:1 — campo
-     direto sobre a página exige trocar este token por #6B7684 (3,56:1). Ver DECISOES.md. */
+  --cor-texto-suave: #4A5568;       /* 7,53:1 sobre branco, 6,69:1 sobre o fundo */
+  /* Borda de campo de texto: 3,66:1 sobre o cartão branco e 3,26:1 sobre o fundo da página, as
+     duas acima do mínimo de 3:1 da WCAG para borda de campo. */
   --cor-borda: #7B8794;
-  --cor-borda-suave: #CBD1DE;       /* fio de cartão: 1,53:1 contra o branco, 1,18:1 contra o fundo — nitidez de borda, não separação */
-  --cor-fundo: #E8EFFB;
-  --cor-cabecalho: #E8F0FB;
-  --cor-cabecalho-borda: #DFEBFC;
-  --cor-luz-azul: #D5E6FC;
-  --cor-luz-ciano: #DCF3FB;
+  /* Superfície, fundo, fio e sombra são uma família só (DECISOES.md, 2026-09-28): o fundo é um azul
+     muito claro e pouco saturado, o fio do cartão e a sombra são do mesmo azul. Antes o cartão era
+     branco com fio cinza neutro sobre um fundo azul-lilás mais forte, e parecia recortado e colado.
+     Cartão contra fundo: 1,13:1 (separa pela luz); o fio (1,38:1 contra o branco, 1,23:1 contra o
+     fundo) e a sombra azulada dão a borda. */
+  --cor-borda-suave: #D2DCEB;
+  --cor-fundo: #EDF2F9;
+  --cor-cabecalho: #EDF3FA;
+  --cor-cabecalho-borda: #DCE5F2;
+  /* As duas luzes do fundo (canto de cima e de baixo), mais suaves que antes, na mesma família. */
+  --cor-luz-azul: #E0EAF9;
+  --cor-luz-ciano: #E1F1F7;
   --cor-superficie: #FFFFFF;
 
   /* Semânticas: cada status do pedido usa um par texto/fundo daqui, sempre com o rótulo escrito */
@@ -47,7 +52,7 @@
   /* Apelido de --cor-primaria: o anel de foco segue a marca. Tem nome próprio porque responde
      a outra pergunta e carrega restrição própria — a WCAG cobra 3:1 do anel contra o que estiver
      em volta. Se um dia as duas restrições divergirem, volta a ser hex, com registro. */
-  --cor-foco: var(--cor-primaria);                         /* 6,04:1 sobre o fundo, onde o anel encosta */
+  --cor-foco: var(--cor-primaria);                         /* 6,97:1 sobre o fundo, onde o anel encosta */
 
   /* Tipografia */
   --fonte: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -72,8 +77,10 @@
   --raio: 20px;          /* cartões, avisos, grupos de formulário */
   --raio-pequeno: 8px;   /* linha de opção marcada (tela 2, commit seguinte) */
   --raio-pilula: 999px;  /* botões e pílula de status */
-  --sombra-cartao: 0 1px 2px rgb(23 32 51 / 0.05), 0 4px 12px rgb(23 32 51 / 0.06);
-  --sombra-flutuante: 0 8px 24px rgb(23 32 51 / 0.12);  /* hover de botão */
+  /* Sombras tingidas do azul escuro da marca (#1B3E8C), e não de cinza: sombra neutra sobre fundo
+     azulado é o que dava o ar de recorte. */
+  --sombra-cartao: 0 1px 2px rgb(27 62 140 / 0.05), 0 6px 18px rgb(27 62 140 / 0.07);
+  --sombra-flutuante: 0 10px 26px rgb(27 62 140 / 0.14);  /* hover de botão */
 
   --alvo-toque: 44px;
   --largura-conteudo: 1200px;  /* largura de leitura confortável, centralizada */
@@ -230,7 +237,7 @@ a:not(.botao):hover { color: var(--cor-primaria-escura); }
 
 /* Cartão: todo cartão do sistema tem o mesmo acabamento — caixa de estado, grupo de formulário,
    cartão de pedido, cartão de mentor (tela 3), perfil (tela 4) e confirmação de cancelamento
-   (tela 5). Quem separa o cartão da página é o próprio fundo (branco contra #DEE2EB: 1,30:1); o fio
+   (tela 5). Quem separa o cartão da página é o próprio fundo (branco contra --cor-fundo: 1,13:1); o fio
    dá nitidez à borda e a sombra reforça. Em tela grande o cartão ganha mais respiro interno. */
 .aviso,
 .grupo,
