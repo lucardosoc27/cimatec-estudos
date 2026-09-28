@@ -139,6 +139,7 @@ export class Termos {
             'O link de confirmação do e-mail só funciona uma vez, e o servidor guarda só um código embaralhado dele.',
             'As telas privadas só abrem para quem entrou na conta, e o servidor recusa pedidos sem sessão válida.',
             'A página não carrega fontes, ícones nem scripts de outros sites.',
+            'No seu navegador, o site guarda só a escolha de tema (do sistema, claro ou escuro). Ela fica no aparelho e não vai para o servidor.',
           ] },
         ] },
         { id: 'contato', titulo: 'Fale com a gente', blocos: [
