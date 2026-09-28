@@ -382,13 +382,13 @@ Eduarda e Felipe ficam como **não verificados**: não aparecem nas buscas.
 
 **Decidido em 2026-09-27, revisto em 2026-09-28:** a vitrine pública mostra a foto só de quem deu
 os dois consentimentos (foto e vitrine); os outros aparecem com a inicial (DECISOES.md, entrada
-de 2026-09-28, que revê a de 2026-09-22). Hoje, 10 dos 18
-mentores verificados têm `vitrinePublicaEm`; os outros 8 não aparecem no carrossel, e isso é
-esperado, não pendência.
+de 2026-09-28, que revê a de 2026-09-22). Hoje, 14 dos 18
+mentores verificados têm `vitrinePublicaEm`; Diego, Carla, Henrique e Júlia não aparecem no
+carrossel, e isso é esperado, não pendência.
 
-**Ainda a decidir com o Luã:** quais mentores ficam sem consentimento de `fotoParaLogadosEm`
-(a foto para quem está logado, em `/mentores`) — é preciso ter alguns, para o avatar padrão
-aparecer ali também.
+**Decidido em 2026-09-28 (o Luã pediu a escolha):** ficam sem `fotoParaLogadosEm` o Diego, o Bruno
+e a Beatriz, que têm retrato mas não consentiram mostrá-lo, e a Júlia, que não tem retrato. Assim
+o avatar com a inicial aparece em `/mentores` e, com Bruno e Beatriz, também na vitrine.
 
 ### Cursos e matérias
 Arquivo `materias-cursos-senai-ba.md`: grades reais do SENAI Bahia, com a fonte e o grau de confiança de cada uma. Química, Mecânica, Multimídia e Eletromecânica estão **a confirmar com a coordenação**.
