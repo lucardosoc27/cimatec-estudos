@@ -61,7 +61,13 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -
 /* Depoimentos */
 .depoimentos { background: var(--cor-superficie); border-block: 1px solid var(--cor-borda-suave); }
 .depoimentos__grade { margin-top: var(--espaco-6); }
-.depoimento-cartao { padding: var(--espaco-5); background: var(--cor-fundo); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); }
+/* Grade, e não faixa contínua: são três depoimentos, e numa faixa a mesma pessoa apareceria duas
+   vezes ao mesmo tempo em tela larga; texto corrido também se lê mal andando. O acabamento é o
+   dos cartões de mentor da vitrine: branco, fio, sombra, fio azul no hover e o mesmo anel no avatar. */
+.depoimento-cartao { padding: var(--espaco-5); background: var(--cor-superficie); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); transition: border-color 150ms; }
+.depoimento-cartao:hover { border-color: var(--cor-primaria); }
+.depoimento-cartao__aspas { margin-bottom: var(--espaco-3); font-size: 1.75rem; color: var(--cor-primaria); }
+.depoimento-cartao__avatar { border-radius: 50%; box-shadow: 0 0 0 2px var(--cor-primaria-suave); }
 .depoimento-cartao__texto { font-style: italic; }
 .depoimento-cartao__autor { margin-top: var(--espaco-4); padding-top: var(--espaco-3); border-top: 1px solid var(--cor-borda-suave); }
 .depoimento-cartao h3 { font-size: 1rem; font-weight: 700; }

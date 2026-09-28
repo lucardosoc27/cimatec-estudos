@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 /** Nomes dos ícones desenhados no projeto. */
 export type NomeIcone =
   | 'escola' | 'relogio' | 'busca' | 'estrela' | 'pausa' | 'continuar' | 'seta-esquerda' | 'seta-direita'
-  | 'mao-coracao' | 'livro'
+  | 'mao-coracao' | 'livro' | 'aspas'
   | 'codigo' | 'rede' | 'frasco' | 'bequer' | 'gota' | 'raio' | 'predio' | 'engrenagem' | 'video';
 
 /**
@@ -28,6 +28,7 @@ export type NomeIcone =
         @case ('seta-esquerda') { <path d="m14.5 6-6 6 6 6"/> }
         @case ('seta-direita') { <path d="m9.5 6 6 6-6 6"/> }
         @case ('mao-coracao') { <path d="M12 5.5c-1.3-2-4.5-1.5-4.5 1 0 1.9 2.6 3.4 4.5 4.8 1.9-1.4 4.5-2.9 4.5-4.8 0-2.5-3.2-3-4.5-1Z"/><path d="M2.5 16.5h3l3-1.5H13a1.8 1.8 0 0 1 0 3.5H9.5M5.5 21l2.5-1h6l6.5-4a1.6 1.6 0 0 0-2-2.5l-3.5 2"/> }
+        @case ('aspas') { <path d="M4 18.5c0-5 2-8.5 6-11l1.2 1.6C8.8 11 8 12.7 8 14.5h2.5V20H4v-1.5ZM13.5 18.5c0-5 2-8.5 6-11l1.2 1.6c-2.4 1.9-3.2 3.6-3.2 5.4H20V20h-6.5v-1.5Z" fill="currentColor" stroke="none"/> }
         @case ('livro') { <path d="M12 6.5C9.5 4.8 6.5 4.5 3 5v13.5c3.5-.5 6.5-.2 9 1.5 2.5-1.7 5.5-2 9-1.5V5c-3.5-.5-6.5-.2-9 1.5Zm0 0V20"/> }
         @case ('codigo') { <path d="m8 7-5 5 5 5M16 7l5 5-5 5M13.5 5l-3 14"/> }
         @case ('rede') { <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/> }

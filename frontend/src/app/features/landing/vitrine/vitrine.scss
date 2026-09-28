@@ -16,10 +16,15 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -
    duração da maquete). Cada metade termina com um respiro igual ao espaço entre cartões, senão o
    reinício daria um pulo. Para com ponteiro em cima, com foco dentro ou pelo botão. A barra de
    rolagem some da tela, mas a rolagem por teclado, toque e pelas setas continua. */
-.faixa-mentores { margin-top: var(--espaco-5); overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; border-radius: var(--raio); }
+/* --vao é o espaço entre cartões E a largura do desvanecimento nas duas pontas: um acompanha o
+   outro. A máscara vai de transparente, na borda da página, a opaco, depois de um --vao: é ela que
+   faz o cartão parecer passar por trás da página. (Máscara é transparência, não cor: por isso
+   "black" e "transparent", sem token.) A folga em cima e embaixo da trilha é para a sombra dos
+   cartões caber; antes ela era cortada numa tira reta embaixo dos cartões. */
+.faixa-mentores { --vao: var(--espaco-4); margin-top: var(--espaco-4); overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; mask-image: linear-gradient(to right, transparent, black var(--vao), black calc(100% - var(--vao)), transparent); }
 .faixa-mentores::-webkit-scrollbar { display: none; }
-.trilha { display: flex; width: max-content; padding-block: var(--espaco-2); animation: letreiro 38s linear infinite; }
-.trilha__metade { display: flex; gap: var(--espaco-4); margin: 0; padding: 0 var(--espaco-4) 0 0; list-style: none; }
+.trilha { display: flex; width: max-content; padding-block: var(--espaco-3) var(--espaco-5); animation: letreiro 38s linear infinite; }
+.trilha__metade { display: flex; gap: var(--vao); margin: 0; padding: 0 var(--vao) 0 0; list-style: none; }
 .faixa-mentores:hover .trilha, .faixa-mentores:focus-within .trilha, .faixa-mentores--parada .trilha { animation-play-state: paused; }
 @keyframes letreiro { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 /* Menos movimento pedido: a animação nem existe (e não só fica curta, como a regra global faria),

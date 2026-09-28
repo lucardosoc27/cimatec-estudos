@@ -16,27 +16,34 @@
         </div>
       }
     </div>
+  </div>
 
-    @if (estadoVitrine() === 'carregando') {
-      <div class="aviso vitrine__estado" role="status" aria-busy="true"><p>Carregando os mentores em destaque…</p></div>
-    } @else if (estadoVitrine() === 'erro') {
+  @if (estadoVitrine() === 'carregando') {
+    <div class="largura"><div class="aviso vitrine__estado" role="status" aria-busy="true"><p>Carregando os mentores em destaque…</p></div></div>
+  } @else if (estadoVitrine() === 'erro') {
+    <div class="largura">
       <div class="aviso aviso--erro vitrine__estado" role="alert">
         <p>Não conseguimos carregar os mentores agora.</p>
         <button class="botao botao--secundario" type="button" (click)="carregarVitrine()">Tentar novamente</button>
       </div>
-    } @else if (!mentores().length) {
+    </div>
+  } @else if (!mentores().length) {
+    <div class="largura">
       <div class="aviso vitrine__estado">
         <p>Ainda não há mentores na vitrine pública.</p>
         <p>Entre na sua conta para buscar ajuda nas matérias do seu curso.</p>
         <a class="link-acao" routerLink="/entrar">Entrar →</a>
       </div>
-    } @else {
+    </div>
+  } @else {
       <!-- Letreiro contínuo. A trilha tem os cartões DUAS vezes e desliza de 0 a -50%: quando a
            animação reinicia, a segunda metade está exatamente onde a primeira começou, e ninguém
            percebe o salto. A segunda metade é só enfeite para esse truque: aria-hidden tira do
            leitor de tela (senão cada mentor seria lido duas vezes) e inert tira do teclado (senão
            o Tab passaria duas vezes por cada link). A faixa recebe foco (tabindex) para as setas
-           do teclado rolarem, e para qualquer foco dentro dela parar o movimento. -->
+           do teclado rolarem, e para qualquer foco dentro dela parar o movimento. Ela fica fora
+           da .largura, de ponta a ponta da página, e desvanece nas bordas: o cartão parece
+           entrar e sair por trás da página, em vez de ser cortado. -->
       <div #faixa id="faixa-mentores" class="faixa-mentores" [class.faixa-mentores--parada]="pausado()" [class.faixa-mentores--escolhida]="escolheuMovimento()" tabindex="0" role="region" aria-label="Mentores em destaque. A faixa anda sozinha e para com o foco; use as setas do teclado para rolar.">
         <div class="trilha">
           <ul class="trilha__metade">
@@ -70,5 +77,4 @@
         </div>
       </div>
     }
-  </div>
 </section>

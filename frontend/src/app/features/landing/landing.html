@@ -115,12 +115,13 @@
     <div class="depoimentos__grade grid gap-6 md:grid-cols-3">
       @for (d of depoimentos; track d.nome) {
         <article class="depoimento-cartao flex flex-col">
+          <app-icone nome="aspas" class="depoimento-cartao__aspas" />
           <div class="flex-1">
             @if (d.mentor) { <p class="pilula-mentor">Mentor voluntário</p> }
-            <p class="depoimento-cartao__texto">“{{ d.texto }}”</p>
+            <p class="depoimento-cartao__texto">{{ d.texto }}</p>
           </div>
           <div class="depoimento-cartao__autor flex items-center gap-3">
-            <app-avatar [nome]="d.nome" [foto]="d.foto" [tamanho]="40" />
+            <app-avatar class="depoimento-cartao__avatar" [nome]="d.nome" [foto]="d.foto" [tamanho]="44" />
             <div class="min-w-0"><h3>{{ d.nome }}</h3><p>{{ d.curso }}</p></div>
           </div>
         </article>
