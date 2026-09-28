@@ -199,7 +199,7 @@ function criar(corpo: Record<string, string>, conta: Conta, base: Base) {
   const pedido: Pedido = {
     id: `p-${agora.getTime()}`,
     alunoId: conta.usuarioId, alunoNome: conta.nome, alunoCurso: conta.curso, alunoFoto: null,
-    mentorId: mentor.id, mentorNome: mentor.nome, mentorCurso: mentor.curso, mentorFoto: publico(mentor).foto,
+    mentorId: mentor.id, mentorNome: mentor.nome, mentorCurso: mentor.curso, mentorFoto: mentor.consentimentos.fotoParaLogadosEm ? mentor.fotoPequena : null,
     materiaId: materia.id, materiaNome: materia.nome,
     horarioId: horario.id, data: corpo['data'], hora: horario.hora, modalidade: horario.modalidade,
     local: horario.modalidade === 'online' ? 'Online' : LOCAL_PRESENCIAL,
@@ -218,7 +218,7 @@ function verificados(base: Base): MentorMock[] {
 }
 
 /** Visão pública: sem consentimentos nem simulação, e foto null sem consentimento. */
-function publico({ respostaSimulada, consentimentos, ...mentor }: MentorMock): Mentor {
+function publico({ respostaSimulada, consentimentos, fotoPequena, ...mentor }: MentorMock): Mentor {
   return { ...mentor, foto: consentimentos.fotoParaLogadosEm ? mentor.foto : null };
 }
 
@@ -234,7 +234,8 @@ function vitrine(base: Base) {
     .map((m) => ({
       id: m.id,
       nome: m.nome.split(' ')[0],
-      foto: m.consentimentos.fotoParaLogadosEm && m.foto ? m.foto : null,
+      // O retrato pequeno: na vitrine a foto tem 56 px, e o de 960 px pesaria de seis a sete vezes mais.
+      foto: m.consentimentos.fotoParaLogadosEm && m.fotoPequena ? m.fotoPequena : null,
       curso: m.curso,
       descricao: m.descricao,
       materias: m.materias.map((id) => base.materias.find((x) => x.id === id)?.nome).filter(Boolean),
