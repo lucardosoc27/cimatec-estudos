@@ -55,7 +55,15 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/auth/verificacao").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/reenviar").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                // Negar por padrão: tudo o mais exige login (/api/auth/eu incluído).
+                // Negar por padrão na API: tudo o mais em /api exige login (/api/auth/eu incluído).
+                .requestMatchers("/api/**").authenticated()
+                // Fora de /api só existe o Angular compilado, dentro do jar: index.html, os .js e
+                // .css e a pasta assets/ (RotasDoAngular). GET liberado, senão a própria página de
+                // entrada responderia 401 e ninguém chegaria à tela de login. As telas privadas
+                // continuam protegidas onde importa: qualquer dado delas vem de /api/** e, sem
+                // sessão, responde 401. O guard de rota do Angular é conveniência, não segurança.
+                .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                // Qualquer outro método fora de /api continua negado.
                 .anyRequest().authenticated())
             // Logout pela configuração: o LogoutFilter invalida a HttpSession no servidor, limpa o
             // contexto e apaga o cookie XSRF-TOKEN. Só aceita POST com token CSRF, e roda antes

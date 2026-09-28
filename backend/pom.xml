@@ -76,6 +76,31 @@
 
 	<build>
 		<plugins>
+			<!-- Angular dentro do jar: o que o "ng build" gerou em frontend/dist vai para static/ dentro
+			     do jar, e o Spring serve tudo na mesma origem que a API (config/RotasDoAngular). Se a
+			     pasta não existir (clone sem o front compilado), a cópia é pulada e o jar sobe só com a
+			     API. O ng build continua um passo à parte, antes do package. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>angular-dentro-do-jar</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/../frontend/dist/frontend/browser</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
