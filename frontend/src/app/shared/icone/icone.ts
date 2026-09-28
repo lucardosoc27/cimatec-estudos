@@ -5,7 +5,7 @@ export type NomeIcone =
   | 'escola' | 'relogio' | 'busca' | 'estrela' | 'pausa' | 'continuar' | 'seta-esquerda' | 'seta-direita'
   | 'mao-coracao' | 'livro' | 'aspas' | 'verificado' | 'calendario' | 'info' | 'bandeja-entrada' | 'bandeja-saida' | 'pilha' | 'lista' | 'local' | 'prancheta'
   | 'codigo' | 'rede' | 'frasco' | 'bequer' | 'gota' | 'raio' | 'predio' | 'engrenagem' | 'video'
-  | 'cadeado' | 'envelope' | 'copiar' | 'fechar-circulo';
+  | 'cadeado' | 'envelope' | 'copiar' | 'fechar-circulo' | 'lixeira';
 
 /**
  * Ícones em SVG escritos à mão, dentro do projeto: nenhuma fonte de ícone nem nada que dependa de
@@ -51,6 +51,7 @@ export type NomeIcone =
         @case ('cadeado') { <rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3M12 14.5v2"/> }
         @case ('envelope') { <rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/> }
         @case ('copiar') { <rect x="8.5" y="8.5" width="11.5" height="12" rx="2"/><path d="M15.5 8.5V5.5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2V15a2 2 0 0 0 2 2h2.5"/> }
+        @case ('lixeira') { <path d="M4 6.5h16M9.5 6.5V4.5h5v2M6.5 6.5l1 13.5h9l1-13.5M10 10.5v6M14 10.5v6"/> }
         @case ('fechar-circulo') { <circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/> }
         @case ('video') { <rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m10.5 9.2 4.5 2.8-4.5 2.8V9.2Z" fill="currentColor"/> }
       }

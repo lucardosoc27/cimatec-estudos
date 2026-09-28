@@ -1,17 +1,21 @@
 :host { display: block; }
 /* Sem padding próprio: o respiro vem do <main class="conteudo"> (app.scss), como nas outras telas */
+/* Medidas da maquete docs/telas/15-minha-conta: 24 px entre os cartões no celular e 32 no computador,
+   20 e 32 px de respiro dentro deles, 24 px entre os campos e botões de 52 px. */
 .conta { max-width: 736px; margin-inline: auto; display: flex; flex-direction: column; gap: var(--espaco-4); }
 .titulo { margin-bottom: 0; }
 
 /* Mesmo acabamento do cartão global (styles.scss); aqui só o espaçamento interno das seções */
-.cartao { display: flex; flex-direction: column; gap: var(--espaco-3); align-items: flex-start; padding: var(--espaco-3); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); background: var(--cor-superficie); box-shadow: var(--sombra-cartao); }
-.cartao form { width: 100%; gap: var(--espaco-3); }
+.cartao { display: flex; flex-direction: column; gap: var(--espaco-4); align-items: flex-start; padding: 20px; border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); background: var(--cor-superficie); box-shadow: var(--sombra-cartao); }
+.cartao form { width: 100%; gap: var(--espaco-4); }
+.cartao .botao { min-height: 52px; padding-inline: var(--espaco-5); }
 
 /* .campo, .erro-campo e .mensagem são globais (styles.scss); aqui só o que esta tela tem de diferente:
    o campo ocupa a largura do cartão, o e-mail (só leitura) fica com fundo azul-claro, e o aviso é verde
    ("Alterações salvas"). O .mensagem--erro se repete aqui porque o .mensagem desta tela pesa mais que
    o global e deixaria o erro verde. */
 .campo { width: 100%; }
+.campo label { font-weight: 600; }
 .campo input[readonly] { background: var(--cor-primaria-suave); color: var(--cor-texto-suave); }
 .mensagem { width: 100%; background: var(--cor-sucesso-fundo); color: var(--cor-sucesso); }
 .mensagem--erro { background: var(--cor-erro-fundo); color: var(--cor-erro); }
@@ -25,7 +29,8 @@
 .escolha:first-child { border-top: 0; padding-top: 0; }
 /* Lista de um item só ("Ajudar colegas"): nada vem embaixo, então o respiro inferior sobraria. */
 .escolha:only-child { padding-bottom: 0; }
-.escolha > :first-child { flex: 1 1 14rem; }
+/* 12rem: com o respiro de 20 px do cartão, o texto e a chave ainda cabem lado a lado em 360 px */
+.escolha > :first-child { flex: 1 1 12rem; }
 .escolha label { display: flex; flex-direction: column; gap: 2px; cursor: pointer; }
 
 /* Chave liga/desliga: é um checkbox de verdade (role="switch"), só com outra aparência.
@@ -40,12 +45,21 @@
 .botao--contorno-perigo { border-color: var(--cor-erro); background: var(--cor-superficie); color: var(--cor-erro); }
 .botao--contorno-perigo:hover { background: var(--cor-erro-fundo); border-color: var(--cor-erro-escura); color: var(--cor-erro-escura); box-shadow: none; }
 
-.janela { width: min(100% - 2 * var(--espaco-3), 480px); padding: var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); color: var(--cor-texto); }
+/* margin: auto centraliza o <dialog> aberto com showModal(); o reset do Tailwind zera a margem de
+   tudo, e sem isto a janela abria no canto de cima da tela. */
+.janela { margin: auto; width: min(100% - 2 * var(--espaco-3), 440px); padding: 28px; box-shadow: var(--sombra-flutuante); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); color: var(--cor-texto); }
 .janela::backdrop { background: rgb(23 32 51 / .55); }
 .janela form { gap: var(--espaco-3); }
-.janela__acoes { display: flex; flex-wrap: wrap; gap: var(--espaco-2); }
+.janela__cabeca { display: flex; align-items: center; gap: var(--espaco-3); }
+.janela__icone { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: var(--cor-erro-fundo); color: var(--cor-erro); font-size: 1.25rem; }
+.janela p { color: var(--cor-texto-suave); }
+/* No celular os dois botões não cabem lado a lado: um embaixo do outro, na largura da janela. */
+/* width: 100% porque o form global alinha os filhos à esquerda e a fileira encolheria até o conteúdo. */
+.janela__acoes { display: flex; flex-direction: column; gap: var(--espaco-3); width: 100%; margin-top: var(--espaco-2); }
 
+@media (min-width: 40rem) { .janela__acoes { flex-direction: row; justify-content: flex-end; } }
 @media (min-width: 48rem) {
-  .cartao { padding: var(--espaco-4); }
+  .conta { gap: var(--espaco-5); }
+  .cartao { padding: var(--espaco-5); }
 }
 @media (prefers-reduced-motion: reduce) { .chave, .chave::after { transition: none; } }

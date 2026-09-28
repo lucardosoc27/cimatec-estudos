@@ -90,17 +90,18 @@
 
     <dialog #janelaExcluir class="janela" aria-labelledby="titulo-janela" (close)="aoFecharJanela()" (cancel)="excluindo() && $event.preventDefault()">
       <form (submit)="$event.preventDefault(); excluir()" novalidate [attr.aria-busy]="excluindo()">
-        <h2 id="titulo-janela" class="subtitulo">Excluir sua conta?</h2>
+        <div class="janela__cabeca"><span class="janela__icone" aria-hidden="true"><app-icone nome="lixeira" /></span><h2 id="titulo-janela" class="subtitulo">Excluir sua conta?</h2></div>
         <p>Essa ação não pode ser desfeita. Para confirmar, digite sua senha.</p>
         <input type="text" name="username" autocomplete="username" [value]="u.emailInstitucional" hidden>
         <div class="campo">
           <label for="senha-excluir">Senha</label>
-          <input id="senha-excluir" type="password" name="senha" [value]="senha()" (input)="senha.set($any($event.target).value)" required autocomplete="current-password" [attr.aria-invalid]="erroExclusao()" aria-describedby="senha-excluir-erro">
+          <input id="senha-excluir" type="password" name="senha" [value]="senha()" (input)="senha.set($any($event.target).value)" required autocomplete="current-password" placeholder="Digite sua senha" [attr.aria-invalid]="erroExclusao()" aria-describedby="senha-excluir-erro">
           <span id="senha-excluir-erro" class="erro-campo" role="alert">@if (erroExclusao()) { {{ senha() ? 'Não foi possível excluir a conta. Confira a senha e tente de novo.' : 'Digite sua senha para confirmar.' }} }</span>
         </div>
+        <!-- "Cancelar" antes de "Excluir definitivamente", como na maquete: a saída segura vem primeiro -->
         <div class="janela__acoes">
-          <button type="submit" class="botao botao--perigo" [disabled]="excluindo()">{{ excluindo() ? 'Excluindo…' : 'Excluir definitivamente' }}</button>
           <button type="button" class="botao botao--secundario" (click)="fecharExclusao()">Cancelar</button>
+          <button type="submit" class="botao botao--perigo" [disabled]="excluindo()">{{ excluindo() ? 'Excluindo…' : 'Excluir definitivamente' }}</button>
         </div>
       </form>
     </dialog>

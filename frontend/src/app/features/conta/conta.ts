@@ -16,6 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CURSOS } from '../../models/curso';
 import { AuthService } from '../../services/auth.service';
 import { MentoresService } from '../../services/mentores.service';
+import { Icone } from '../../shared/icone/icone';
 
 type Consentimento = 'fotoParaLogados' | 'vitrinePublica';
 
@@ -25,7 +26,7 @@ type Consentimento = 'fotoParaLogados' | 'vitrinePublica';
  */
 @Component({
   selector: 'app-conta',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, Icone],
   templateUrl: './conta.html',
   styleUrl: './conta.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
