@@ -47,7 +47,7 @@
 
 /* margin: auto centraliza o <dialog> aberto com showModal(); o reset do Tailwind zera a margem de
    tudo, e sem isto a janela abria no canto de cima da tela. */
-.janela { margin: auto; width: min(100% - 2 * var(--espaco-3), 440px); padding: 28px; box-shadow: var(--sombra-flutuante); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); color: var(--cor-texto); }
+.janela { margin: auto; width: min(100% - 2 * var(--espaco-3), 440px); padding: 28px; background: var(--cor-superficie); box-shadow: var(--sombra-flutuante); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); color: var(--cor-texto); }
 .janela::backdrop { background: rgb(23 32 51 / .55); }
 .janela form { gap: var(--espaco-3); }
 .janela__cabeca { display: flex; align-items: center; gap: var(--espaco-3); }

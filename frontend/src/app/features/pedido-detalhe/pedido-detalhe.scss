@@ -57,7 +57,7 @@
 
 /* Janela de confirmação do cancelamento. margin: auto é o que centraliza o <dialog> aberto com
    showModal(); o reset do Tailwind zera a margem de tudo e a janela iria para o canto de cima. */
-.janela { margin: auto; width: min(100% - 2 * var(--espaco-3), 440px); padding: var(--espaco-5) var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); color: var(--cor-texto); text-align: center; box-shadow: var(--sombra-flutuante); }
+.janela { margin: auto; width: min(100% - 2 * var(--espaco-3), 440px); padding: var(--espaco-5) var(--espaco-4); background: var(--cor-superficie); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); color: var(--cor-texto); text-align: center; box-shadow: var(--sombra-flutuante); }
 .janela::backdrop { background: color-mix(in srgb, var(--cor-texto) 45%, transparent); }
 .janela__icone { display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--cor-alerta-fundo); color: var(--cor-acao); font-size: 1.75rem; }
 .janela__titulo { margin-top: var(--espaco-3); font-size: var(--texto-subtitulo); }
