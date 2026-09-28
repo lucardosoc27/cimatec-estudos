@@ -14,7 +14,12 @@
 .curso { min-height: var(--alvo-toque); padding: var(--espaco-2) var(--espaco-3); border-radius: var(--raio-pilula); border: 1px solid var(--cor-borda); background: var(--cor-superficie); color: var(--cor-texto); font: inherit; font-weight: 600; cursor: pointer; }
 .curso[aria-pressed='true'] { background: var(--cor-primaria); border-color: var(--cor-primaria); color: var(--cor-superficie); }
 .materias { gap: var(--espaco-2); margin-top: var(--espaco-4); max-width: 860px; }
-.materia { display: inline-flex; align-items: center; gap: var(--espaco-2); min-height: var(--alvo-toque); padding: var(--espaco-2) var(--espaco-3); border-radius: var(--raio-pequeno); background: var(--cor-superficie); border: 1px solid var(--cor-borda-suave); font-weight: 600; text-align: left; }
+/* Matéria: mesma pílula dos cursos (altura, espaçamento, peso), mas é um LINK que leva direto ao
+   pedido, e o curso é uma ESCOLHA. A diferença fica na cor e na seta: curso com borda cinza e
+   texto escuro; matéria com borda e texto azuis (7,84:1 sobre o branco) e ↗. Sem sublinhado no
+   estado normal, porque não é link dentro de frase: a pílula e a seta já dizem que é clicável. */
+.materia { display: inline-flex; align-items: center; gap: var(--espaco-2); min-height: var(--alvo-toque); padding: var(--espaco-2) var(--espaco-3); border-radius: var(--raio-pilula); background: var(--cor-superficie); border: 1px solid var(--cor-primaria); color: var(--cor-primaria); font-weight: 600; text-align: left; text-decoration: none; }
+.materia:hover { background: var(--cor-primaria-suave); text-decoration: underline; }
 .link-botao { border: 0; background: transparent; font: inherit; text-decoration: underline; color: var(--cor-primaria); cursor: pointer; }
 .faixa { padding: var(--espaco-6) var(--espaco-3); }
 .vitrine, .faq { background: var(--cor-superficie); }
