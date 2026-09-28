@@ -1,6 +1,7 @@
 <div class="termos">
   <h1 class="titulo">Termos de Uso e Política de Privacidade</h1>
   <p class="versao">Versão 1.0 · atualizada em 24/09/2026</p>
+  <p class="preliminar"><strong>Versão preliminar.</strong> Este texto é de um projeto acadêmico, ainda está em revisão pela equipe e não substitui orientação jurídica.</p>
 
   <section class="resumo" aria-labelledby="titulo-resumo">
     <h2 id="titulo-resumo" class="subtitulo linha-icone"><app-icone nome="verificado" />Resumo em linguagem simples</h2>
@@ -12,8 +13,6 @@
       <li class="linha-icone"><app-icone nome="verificado" />O Cimatec Estudos é gratuito e é um projeto acadêmico.</li>
     </ul>
   </section>
-
-  <p class="em-elaboracao"><strong>Texto em elaboração.</strong> A equipe ainda está preparando a versão final dos Termos de Uso e da Política de Privacidade.</p>
 
   <div class="documento grid gap-6">
     <aside class="indice" aria-label="Índice dos termos e da política">
@@ -38,7 +37,13 @@
           @for (secao of parte.secoes; track secao.id) {
             <section class="secao" [attr.aria-labelledby]="secao.id">
               <h3 [id]="secao.id" tabindex="-1">{{ secao.titulo }}</h3>
-              <p>Texto em elaboração pela equipe, com base no Guia de Elaboração de Termo de Uso e Política de Privacidade do gov.br.</p>
+              @for (bloco of secao.blocos; track $index) {
+                @if (bloco.lista) {
+                  <ul class="secao__lista">@for (item of bloco.lista; track $index) { <li>{{ item }}</li> }</ul>
+                } @else {
+                  <p>{{ bloco.p }}</p>
+                }
+              }
             </section>
           }
         </section>

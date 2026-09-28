@@ -7,7 +7,9 @@
 .resumo ul { margin-top: var(--espaco-4); }
 .resumo li { gap: var(--espaco-3); }
 .resumo app-icone { color: var(--cor-primaria); }  /* azul sobre o azul-claro do resumo: 6,73:1 */
-.em-elaboracao { margin-block: var(--espaco-4); color: var(--cor-texto-suave); }
+/* Aviso curto no topo: o texto é preliminar e não é orientação jurídica */
+.preliminar { margin-top: var(--espaco-3); color: var(--cor-texto-suave); }
+.documento { margin-top: var(--espaco-5); }
 .indice { background: var(--cor-superficie); padding: var(--espaco-3); align-self: start; }
 .indice__titulo { display: none; }
 .indice__abrir { display: flex; width: 100%; min-height: var(--alvo-toque); align-items: center; justify-content: space-between; gap: var(--espaco-3); background: transparent; border: 0; color: var(--cor-texto); font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
@@ -22,7 +24,10 @@
 .parte h2 { padding-bottom: var(--espaco-3); border-bottom: 1px solid var(--cor-borda-suave); font-size: clamp(1.25rem, 3vw, 1.75rem); }
 .secao { margin-top: var(--espaco-4); }
 .secao h3 { font-size: var(--texto-destaque); }
-.secao p { margin-top: var(--espaco-2); color: var(--cor-texto-suave); font-style: italic; }
+/* Texto corrido na cor do texto, e não cinza e em itálico como era o aviso de "em elaboração" */
+.secao p, .secao__lista { margin-top: var(--espaco-2); }
+.secao__lista { padding-left: var(--espaco-4); list-style: disc; }
+.secao__lista li + li { margin-top: var(--espaco-1); }
 .parte h2, .secao h3 { scroll-margin-top: var(--espaco-4); }
 .voltar { text-align: center; margin-top: var(--espaco-6); }
 @media (min-width: 48rem) {
