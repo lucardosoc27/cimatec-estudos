@@ -72,7 +72,7 @@
         <li class="escolha">
           <label for="chave-vitrine">
             <strong>Aparecer na vitrine pública da página inicial</strong>
-            <span class="suave">Vale só para quem é mentor</span>
+            <span class="suave">Vale só para quem é mentor. Com a sua foto, se a chave da foto também estiver ligada</span>
             @if (u.consentimentos.vitrinePublicaEm; as em) { <span class="suave pequeno">Ligado em {{ em | date: 'dd/MM/yyyy' }}</span> }
           </label>
           <input id="chave-vitrine" type="checkbox" role="switch" class="chave" [checked]="!!u.consentimentos.vitrinePublicaEm" [disabled]="gravando() === 'vitrinePublica'" (change)="alternar('vitrinePublica', $event)">

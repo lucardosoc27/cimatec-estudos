@@ -33,13 +33,14 @@ export interface Consentimentos {
   /** Obrigatório no cadastro: sem ele a conta não existe. */
   termosEPoliticaEm: string;
   /**
-   * Foto visível só para quem está logado. Não vale para a vitrine pública, que é
-   * outro consentimento e nunca mostra foto, mesmo com este ligado.
+   * Mostrar a foto a quem está logado. Também é condição para a foto aparecer na vitrine
+   * pública: lá ela só aparece com este E o vitrinePublicaEm (DECISOES.md, 2026-09-28).
    */
   fotoParaLogadosEm: string | null;
   /**
-   * Aparecer na vitrine pública da landing, com primeiro nome, curso, matérias e descrição.
-   * Sem foto: DECISOES.md, entrada de 2026-09-22.
+   * Aparecer na vitrine pública da landing, com primeiro nome, curso, matérias e descrição, e
+   * com a foto se fotoParaLogadosEm também estiver dado. Revisto em 2026-09-28: até então a
+   * vitrine nunca mostrava foto (DECISOES.md, 2026-09-22 e 2026-09-28).
    */
   vitrinePublicaEm: string | null;
 }

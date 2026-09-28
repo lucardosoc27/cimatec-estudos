@@ -340,8 +340,8 @@ Existe para a Política de Privacidade ser verdadeira: os direitos do titular (v
 Aprovada no Stitch, mas **desatualizada** com as decisões de 24/09. Corrigir antes de implementar:
 - As abas de curso têm "Internet das Coisas", que não é curso. Usar os 9 cursos reais.
 - Tirar Cálculo e Física do campo de busca e do rodapé ("Matérias frequentes").
-- O carrossel tem de usar **os mesmos mentores da lista de 18**, com o mesmo curso. Tirar o Lucas; a Beatriz é de Edificações. **Sem foto**: DECISOES.md, entrada de 2026-09-22 (esta seção, escrita em 24/09, ainda citava "o mesmo retrato"; a decisão de 22/09 é anterior e vale).
-- **Só entram no carrossel público os mentores com `vitrinePublicaEm`**: primeiro nome, curso, matérias e descrição, sem idade, sem horário e sem foto.
+- O carrossel tem de usar **os mesmos mentores da lista de 18**, com o mesmo curso. Tirar o Lucas; a Beatriz é de Edificações. **Foto só com os dois consentimentos** (foto para quem está logado E vitrine pública); sem eles, a inicial. Revisto em 2026-09-28 (DECISOES.md); de 22/09 a 27/09 a regra era "sem foto".
+- **Só entram no carrossel público os mentores com `vitrinePublicaEm`**: primeiro nome, curso, matérias e descrição, sem idade e sem horário; foto só para quem também tem `fotoParaLogadosEm` (revisto em 2026-09-28).
 - Trocar o nome do depoimento "Bernardo", porque Bernardo é o usuário de exemplo.
 - "Como funciona": ilustração no lugar das fotos, ou sem imagem.
 - O rodapé diz "© 2025". Trocar para 2026.
@@ -380,8 +380,9 @@ Aprovada no Stitch, mas **desatualizada** com as decisões de 24/09. Corrigir an
 
 Eduarda e Felipe ficam como **não verificados**: não aparecem nas buscas.
 
-**Decidido em 2026-09-27:** a vitrine pública nunca mostra foto (DECISOES.md, entrada de
-2026-09-22), então "quais têm vitrine pública" não depende de ter foto. Hoje, 10 dos 18
+**Decidido em 2026-09-27, revisto em 2026-09-28:** a vitrine pública mostra a foto só de quem deu
+os dois consentimentos (foto e vitrine); os outros aparecem com a inicial (DECISOES.md, entrada
+de 2026-09-28, que revê a de 2026-09-22). Hoje, 10 dos 18
 mentores verificados têm `vitrinePublicaEm`; os outros 8 não aparecem no carrossel, e isso é
 esperado, não pendência.
 

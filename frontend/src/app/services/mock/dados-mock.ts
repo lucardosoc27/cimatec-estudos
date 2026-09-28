@@ -224,8 +224,9 @@ function publico({ respostaSimulada, consentimentos, ...mentor }: MentorMock): M
 
 /**
  * Vitrine da landing: só quem consentiu, primeiro nome, sem horário.
- * Sem foto, nunca: DECISOES.md, entrada de 2026-09-22. O campo nem existe nesta resposta —
- * a regra é tirada na origem, não escondida depois no template.
+ * Foto: só com os DOIS consentimentos, o de mostrar a foto a quem está logado e o de aparecer na
+ * vitrine; sem eles, foto null e a tela mostra a inicial (DECISOES.md, 2026-09-28, que revê
+ * 2026-09-22). A regra é aplicada aqui, na origem, e não escondida depois no template.
  */
 function vitrine(base: Base) {
   return verificados(base)
@@ -233,6 +234,7 @@ function vitrine(base: Base) {
     .map((m) => ({
       id: m.id,
       nome: m.nome.split(' ')[0],
+      foto: m.consentimentos.fotoParaLogadosEm && m.foto ? m.foto : null,
       curso: m.curso,
       descricao: m.descricao,
       materias: m.materias.map((id) => base.materias.find((x) => x.id === id)?.nome).filter(Boolean),
