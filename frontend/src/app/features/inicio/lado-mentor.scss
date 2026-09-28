@@ -6,6 +6,7 @@
 .retorno:empty { display: none; }
 .retorno { margin-bottom: var(--espaco-3); font-weight: 600; }
 
+/* 16 px entre cartões em qualquer largura, como na maquete. */
 .lista { display: flex; flex-direction: column; gap: var(--espaco-3); }
 
 /* "Bernardo · Redes de Computadores": o nome pesa, o curso fica em texto secundário */
@@ -30,6 +31,3 @@
 /* Selo ciano: o único uso do ciano em texto, e sempre com texto escuro (8,97:1). Não é status. */
 .selo-sessao { display: inline-flex; gap: 6px; align-items: center; padding: 5px 12px; border-radius: var(--raio-pilula); background: var(--cor-marca-ciano); color: var(--cor-texto); font-weight: 700; }
 
-@media (min-width: 48rem) {
-  .lista { gap: var(--espaco-4); }
-}

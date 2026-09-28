@@ -1,23 +1,56 @@
+/* Miolo de até 1000 px, centralizado, como nas maquetes do início (docs/telas/10-inicio). */
+:host { display: block; max-width: 1000px; margin-inline: auto; }
 .apoio { color: var(--cor-texto-suave); }
 .secao-titulo { margin-bottom: var(--espaco-3); }
 
+/* 16 px entre cartões em qualquer largura, como na maquete (antes 24 px a partir de 768 px). */
 .lista {
   display: flex;
   flex-direction: column;
   gap: var(--espaco-3);
 }
 
-@media (min-width: 48rem) {
-  .lista { gap: var(--espaco-4); }
-}
-
 /* .pedido (cartão) é global, em src/styles.scss. O nome do mentor abre o cartão, como no print. */
-.pedido__nome { font-size: var(--texto-destaque); }
+.pedido__nome { font-size: var(--texto-subtitulo); line-height: 1.25; }
 .pedido__detalhe { margin-top: var(--espaco-2); }
+
+/* Cartão de pedido em grade. Celular: foto ao lado do nome e do status; matéria, data e prazo na
+   largura toda; "Ver pedido" à direita, embaixo. O status fica embaixo do nome, e não ao lado como
+   na maquete, porque a pílula tem 16 px (corpo de texto) e não cabe ao lado do nome em 360 px. */
+.pedido-cartao { display: grid; grid-template-columns: auto 1fr; column-gap: var(--espaco-3); align-items: center; }
+/* Cada peça diz a própria coluna. Uma regra geral ".pedido-cartao > *" não serve: com o atributo que o
+   Angular põe em cada parte do seletor ela pesa 0-3-0 e venceria as regras de cada peça (0-2-0). */
+.pedido-cartao__materia, .pedido-cartao__data, .pedido-cartao .pedido__detalhe, .pedido-cartao__acao { grid-column: 1 / -1; }
+.pedido-cartao__avatar { grid-column: 1; grid-row: 1 / 3; }
+.pedido-cartao__nome { grid-column: 2; grid-row: 1; align-self: end; }
+.pedido-cartao__status { grid-column: 2; grid-row: 2; justify-self: start; align-self: start; margin-top: var(--espaco-1); }
+.pedido-cartao__materia { margin-top: var(--espaco-3); }
+.pedido-cartao__data { margin-top: var(--espaco-1); }
+.pedido-cartao__acao { justify-self: end; }
+
+/* Computador: foto à esquerda, o texto no meio e, à direita, o status em cima do "Ver pedido", os
+   dois centralizados na altura do cartão. */
+@media (min-width: 40rem) {
+  .pedido-cartao { grid-template-columns: auto 1fr auto; column-gap: var(--espaco-4); }
+  .pedido-cartao__avatar { grid-row: 1 / 5; }
+  .pedido-cartao__materia { grid-column: 2; grid-row: 2; margin-top: var(--espaco-1); }
+  .pedido-cartao__data { grid-column: 2; grid-row: 3; }
+  .pedido-cartao .pedido__detalhe { grid-column: 2; grid-row: 4; }
+  .pedido-cartao__status { grid-column: 3; grid-row: 1 / 3; justify-self: end; align-self: end; margin: 0 0 var(--espaco-1); }
+  .pedido-cartao__acao { grid-column: 3; grid-row: 3 / 5; align-self: start; }
+}
 
 /* Vazio da mentora em "Pedidos que você fez": uma linha de cartão, texto à esquerda e saída à direita */
 .aviso--linha { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; }
-.icone-info { color: var(--cor-primaria); }
+/* O ícone de informação num círculo azul-claro de 36 px, como na maquete (inicio-mentor-v1). */
+.aviso--linha .linha-icone { align-items: center; gap: var(--espaco-3); }
+.aviso--linha .linha-icone > app-icone { margin-top: 0; }
+.icone-info { box-sizing: content-box; padding: 10px; border-radius: 50%; background: var(--cor-primaria-suave); color: var(--cor-primaria); }
 
 /* Vazio do aluno: cartão centralizado, sem ilustração e sem números (especificação, Tela 1) */
-.aviso--centralizado { align-items: center; text-align: center; max-width: 600px; margin-inline: auto; }
+/* Medidas da maquete inicio-vazio-v1: cartão de até 672 px com 32 px de respiro, 8 px entre o título
+   e o texto, texto de no máximo 448 px (a quebra cai depois de "encontra") e 24 px até o botão. */
+.aviso--centralizado { gap: 0; align-items: center; max-width: 672px; margin: var(--espaco-2) auto 0; padding: var(--espaco-5) var(--espaco-4); text-align: center; }
+.aviso--centralizado .subtitulo { margin-bottom: var(--espaco-2); }
+.aviso__texto { max-width: 28rem; margin-bottom: var(--espaco-4); line-height: 1.625; }
+@media (min-width: 48rem) { .aviso--centralizado { padding: var(--espaco-5); } }

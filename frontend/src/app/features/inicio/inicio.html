@@ -38,7 +38,7 @@
       } @else {
         <div class="aviso aviso--centralizado">
           <h2 id="titulo-feitos" class="subtitulo">Você ainda não pediu ajuda</h2>
-          <p class="apoio">Quando travar numa matéria, é por aqui que você encontra um colega do seu curso que já passou por isso.</p>
+          <p class="apoio aviso__texto">Quando travar numa matéria, é por aqui que você encontra um colega do seu curso que já passou por isso.</p>
           <a routerLink="/pedir-ajuda" class="botao">Pedir ajuda →</a>
         </div>
       }
@@ -47,42 +47,41 @@
     @case ('sucesso') {
       <ul class="lista">
         @for (pedido of pedidos(); track pedido.id) {
-          <li class="pedido flex flex-wrap sm:flex-nowrap items-start gap-3 sm:gap-4">
-            <app-avatar [nome]="pedido.mentorNome" [foto]="pedido.mentorFoto" [tamanho]="56" />
-            <div class="min-w-0 flex-1">
-              <h3 class="pedido__nome">{{ pedido.mentorNome }}</h3>
-              <p class="linha-icone"><app-icone nome="livro" />{{ pedido.materiaNome }}</p>
-              <p class="apoio linha-icone"><app-icone nome="calendario" />{{ pedido.data | diaEData }} às {{ pedido.hora }} · {{ rotuloModalidade[pedido.modalidade] }}</p>
+          <!-- Grade em vez de colunas aninhadas: no celular a matéria e a data usam a largura toda do
+               cartão e "Ver pedido" vai para a direita, embaixo; no computador o status e o link
+               ficam numa coluna à direita (maquetes inicio-mobile-v1 e inicio-v1). A ordem do HTML,
+               que é a de leitura, não mudou: nome, matéria, data, prazo, status e link. -->
+          <li class="pedido pedido-cartao">
+            <app-avatar class="pedido-cartao__avatar" [nome]="pedido.mentorNome" [foto]="pedido.mentorFoto" [tamanho]="56" />
+            <h3 class="pedido__nome pedido-cartao__nome">{{ pedido.mentorNome }}</h3>
+            <p class="linha-icone pedido-cartao__materia"><app-icone nome="livro" />{{ pedido.materiaNome }}</p>
+            <p class="apoio linha-icone pedido-cartao__data"><app-icone nome="calendario" />{{ pedido.data | diaEData }} às {{ pedido.hora }} · {{ rotuloModalidade[pedido.modalidade] }}</p>
 
-              @switch (pedido.status) {
-                @case ('aguardando') {
-                  <p class="pedido__detalhe">
-                    O mentor tem até {{ pedido.expiraEm | date: "EEEE, dd/MM 'às' HH:mm" }} para responder.
-                  </p>
-                }
-                @case ('expirado') {
-                  <p class="pedido__detalhe">
-                    O mentor não respondeu no prazo.
-                    <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
-                      Ver outros mentores de {{ pedido.materiaNome }}
-                    </a>
-                  </p>
-                }
-                @case ('recusado') {
-                  <p class="pedido__detalhe">
-                    Este mentor não pôde atender.
-                    <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
-                      Ver outros mentores de {{ pedido.materiaNome }}
-                    </a>
-                  </p>
-                }
+            @switch (pedido.status) {
+              @case ('aguardando') {
+                <p class="pedido__detalhe">
+                  O mentor tem até {{ pedido.expiraEm | date: "EEEE, dd/MM 'às' HH:mm" }} para responder.
+                </p>
               }
-            </div>
-            <!-- Status e ação à direita no computador; embaixo, lado a lado, no celular -->
-            <div class="w-full sm:w-auto flex sm:flex-col flex-wrap items-center sm:items-end gap-x-4 gap-y-1">
-              <app-status [status]="pedido.status" />
-              <a [routerLink]="['/pedidos', pedido.id]" class="link-acao" [attr.aria-label]="'Ver pedido de ' + pedido.materiaNome + ' com ' + pedido.mentorNome">Ver pedido →</a>
-            </div>
+              @case ('expirado') {
+                <p class="pedido__detalhe">
+                  O mentor não respondeu no prazo.
+                  <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
+                    Ver outros mentores de {{ pedido.materiaNome }}
+                  </a>
+                </p>
+              }
+              @case ('recusado') {
+                <p class="pedido__detalhe">
+                  Este mentor não pôde atender.
+                  <a routerLink="/pedir-ajuda" [queryParams]="{ materia: pedido.materiaId }">
+                    Ver outros mentores de {{ pedido.materiaNome }}
+                  </a>
+                </p>
+              }
+            }
+            <app-status class="pedido-cartao__status" [status]="pedido.status" />
+            <a [routerLink]="['/pedidos', pedido.id]" class="link-acao pedido-cartao__acao" [attr.aria-label]="'Ver pedido de ' + pedido.materiaNome + ' com ' + pedido.mentorNome">Ver pedido →</a>
           </li>
         }
       </ul>
