@@ -1,0 +1,13 @@
+:host { display: block; }
+.largura--faq { max-width: 860px; }
+
+/* Perguntas frequentes. O <summary> continua nativo (Enter e Espaço); o triângulo do navegador
+   dá lugar a uma seta desenhada com duas bordas, que gira ao abrir. */
+.faq__itens { margin-top: var(--espaco-6); }
+.faq details { background: var(--cor-superficie); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-medio); box-shadow: var(--sombra-cartao); overflow: clip; }
+.faq summary { display: flex; align-items: center; justify-content: space-between; gap: var(--espaco-3); list-style: none; padding: var(--espaco-4); min-height: var(--alvo-toque); font-weight: 700; cursor: pointer; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: ''; flex-shrink: 0; width: 9px; height: 9px; margin-right: var(--espaco-1); border-right: 2px solid var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); transform: translateY(-3px) rotate(45deg); transition: transform 200ms ease-out; }
+.faq details[open] summary::after { transform: translateY(3px) rotate(225deg); }
+.faq details[open] summary { color: var(--cor-primaria); border-bottom: 1px solid var(--cor-borda-suave); }
+.faq details p { padding: var(--espaco-4); color: var(--cor-texto-suave); }

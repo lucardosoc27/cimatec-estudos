@@ -2,21 +2,15 @@
    Contrastes das combinações novas medidos em DECISOES.md, 2026-09-28. Tailwind no template só
    para disposição. */
 :host { display: block; }
-.largura { width: min(100%, 1240px); margin-inline: auto; padding-inline: var(--espaco-3); }
+/* .largura, .faixa-cheia, .sobretitulo, .secao-apoio, .secao-central e o h2 das faixas estão em
+   styles.scss: a vitrine e as perguntas usam os mesmos. Aqui ficam só as variações da landing. */
 .largura--estreita { max-width: 1080px; }
-.largura--faq { max-width: 860px; }
-.faixa-cheia { padding-block: var(--espaco-7); }
-.sobretitulo { color: var(--cor-primaria); font-size: .8125rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: var(--espaco-2); }
-.sobretitulo app-icone { font-size: 1.1rem; }
 .sobretitulo--laranja { color: var(--cor-acao); }
-h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -.02em; }
-.secao-apoio { margin-top: var(--espaco-2); color: var(--cor-texto-suave); }
 .secao-apoio--pequena { font-size: .875rem; }
-.secao-central { text-align: center; max-width: 680px; margin-inline: auto; }
 
 /* Herói */
 .heroi { padding-block: var(--espaco-6); text-align: center; border-bottom: 1px solid var(--cor-borda-suave); }
-.heroi h1 { max-width: 960px; font-size: clamp(2rem, 5vw, 3.75rem); font-weight: 800; line-height: 1.12; letter-spacing: -.045em; }
+.heroi h1 { max-width: 960px; font-size: clamp(2rem, 5vw, 3.75rem); line-height: 1.12; letter-spacing: -.045em; }
 .heroi h1 span { color: var(--cor-primaria); text-decoration: underline; text-decoration-color: var(--cor-acao); text-decoration-thickness: .08em; text-underline-offset: .12em; }
 .heroi__descricao { max-width: 560px; margin-top: var(--espaco-4); color: var(--cor-texto-suave); font-size: var(--texto-destaque); }
 .busca { width: min(100%, 780px); margin-top: var(--espaco-5); gap: var(--espaco-2); padding: var(--espaco-2); background: var(--cor-superficie); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: 0 8px 30px rgb(27 62 140 / .12); text-align: left; }
@@ -25,21 +19,24 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -
 .busca__icone--azul { color: var(--cor-primaria); }
 .busca__icone--laranja { color: var(--cor-acao); }
 .busca label { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--cor-texto-suave); }
-/* Borda no campo, que a maquete não tem: borda de campo precisa de 3:1 (3,66:1 sobre o branco). */
-.busca select { width: 100%; min-height: var(--alvo-toque); padding: 0 var(--espaco-2); border: 1px solid var(--cor-borda); border-radius: var(--raio-pequeno); background: var(--cor-superficie); font: inherit; font-weight: 600; color: var(--cor-texto); }
+/* Borda, raio, fundo e cor vêm da regra global de campo (styles.scss). A maquete não tem borda no
+   campo, e ela fica de propósito: borda de campo precisa de 3:1 (3,66:1 sobre o branco). */
+.busca select { width: 100%; min-height: var(--alvo-toque); padding: 0 var(--espaco-2); font-weight: 600; }
 .busca__divisor { display: none; }
 .busca__botao { min-height: 48px; gap: var(--espaco-2); white-space: nowrap; }
 .busca__botao app-icone { font-size: 1.2rem; }
 .rotulo-secao { margin-top: var(--espaco-5); font-size: .8125rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--cor-texto-suave); }
 .cursos { max-width: 920px; margin-top: var(--espaco-3); gap: var(--espaco-2); }
-.curso { min-height: var(--alvo-toque); padding: var(--espaco-2) var(--espaco-3); border-radius: var(--raio-pilula); border: 1px solid var(--cor-borda-suave); background: var(--cor-superficie); color: var(--cor-texto); font: inherit; font-size: .875rem; font-weight: 700; cursor: pointer; }
+.curso { min-height: var(--alvo-toque); padding: var(--espaco-2) var(--espaco-3); border-radius: var(--raio-pilula); border: 1px solid var(--cor-borda-suave); background: var(--cor-superficie); color: var(--cor-texto); font-size: .875rem; font-weight: 700; cursor: pointer; }
 .curso[aria-pressed='true'] { background: var(--cor-primaria); border-color: var(--cor-primaria); color: var(--cor-superficie); }
 /* Matéria: link com ícone, em caixa de canto 12px; o curso é pílula. Forma diferente = coisa diferente. */
 .materias { gap: var(--espaco-2); margin-top: var(--espaco-3); max-width: 860px; }
 .materia { display: inline-flex; align-items: center; gap: var(--espaco-2); min-height: var(--alvo-toque); padding: var(--espaco-2) var(--espaco-3); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-medio); background: var(--cor-superficie); color: var(--cor-texto); font-size: .875rem; font-weight: 600; text-decoration: none; text-align: left; box-shadow: var(--sombra-cartao); }
 .materia:hover { border-color: var(--cor-primaria); color: var(--cor-primaria); }
 .materia__icone { font-size: 1.05rem; color: var(--cor-primaria); }
-.link-botao { border: 0; background: transparent; font: inherit; text-decoration: underline; color: var(--cor-primaria); cursor: pointer; }
+/* Sem borda e sem fundo pelo preflight do Tailwind. O font: inherit fica: é ele que desfaz o peso
+   600 do .link-acao global, e o "Tentar novamente" segue o peso da frase em volta. */
+.link-botao { font: inherit; text-decoration: underline; color: var(--cor-primaria); cursor: pointer; }
 
 /* Como funciona */
 .passos { margin: var(--espaco-6) 0 0; padding: 0; list-style: none; }
@@ -49,7 +46,7 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -
 .passo__numero--1 { color: var(--cor-primaria); }
 .passo__numero--2 { color: var(--cor-acao); }
 .passo__numero--3 { color: var(--cor-avatar-1); }
-.passo h3 { margin-top: var(--espaco-4); font-size: 1.25rem; font-weight: 700; }
+.passo h3 { margin-top: var(--espaco-4); font-size: 1.25rem; }
 .passo p { margin-top: var(--espaco-2); color: var(--cor-texto-suave); }
 .passo__imagem { display: block; width: calc(100% - 2 * var(--espaco-3)); height: auto; aspect-ratio: 16 / 10; object-fit: cover; margin: 0 var(--espaco-3) var(--espaco-3); border-radius: var(--raio-medio); }
 .convite { margin-top: var(--espaco-6); padding: var(--espaco-5); border-radius: var(--raio); background: var(--cor-primaria-escura); color: var(--cor-superficie); box-shadow: var(--sombra-cartao); }
@@ -70,25 +67,12 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -
 .depoimento-cartao__avatar { border-radius: 50%; box-shadow: 0 0 0 2px var(--cor-primaria-suave); }
 .depoimento-cartao__texto { font-style: italic; }
 .depoimento-cartao__autor { margin-top: var(--espaco-4); padding-top: var(--espaco-3); border-top: 1px solid var(--cor-borda-suave); }
-.depoimento-cartao h3 { font-size: 1rem; font-weight: 700; }
+.depoimento-cartao h3 { font-size: 1rem; }
 .depoimento-cartao__autor p { color: var(--cor-texto-suave); font-size: .875rem; }
 .pilula-mentor { display: inline-block; margin-bottom: var(--espaco-3); padding: 2px var(--espaco-2); border-radius: var(--raio-pilula); background: var(--cor-primaria-suave); color: var(--cor-primaria); font-size: .8125rem; font-weight: 700; }
 
-/* Perguntas frequentes. O <summary> continua nativo (Enter e Espaço); o triângulo do navegador
-   dá lugar a uma seta desenhada com duas bordas, que gira ao abrir. */
-.faq__itens { margin-top: var(--espaco-6); }
-.faq details { background: var(--cor-superficie); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-medio); box-shadow: var(--sombra-cartao); overflow: clip; }
-.faq summary { display: flex; align-items: center; justify-content: space-between; gap: var(--espaco-3); list-style: none; padding: var(--espaco-4); min-height: var(--alvo-toque); font-weight: 700; cursor: pointer; }
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: ''; flex-shrink: 0; width: 9px; height: 9px; margin-right: var(--espaco-1); border-right: 2px solid var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); transform: translateY(-3px) rotate(45deg); transition: transform 200ms ease-out; }
-.faq details[open] summary::after { transform: translateY(3px) rotate(225deg); }
-.faq details[open] summary { color: var(--cor-primaria); border-bottom: 1px solid var(--cor-borda-suave); }
-.faq details p { padding: var(--espaco-4); color: var(--cor-texto-suave); }
-
 @media (min-width: 48rem) {
-  .largura { padding-inline: var(--espaco-5); }
   .heroi { padding-block: var(--espaco-7); }
-  .faixa-cheia:not(.heroi) { padding-block: 80px; }
   .busca { padding: var(--espaco-2) var(--espaco-2) var(--espaco-2) var(--espaco-3); gap: 0; border-radius: var(--raio-pilula); }
   .busca__divisor { display: block; align-self: stretch; width: 1px; margin: var(--espaco-2) var(--espaco-2); background: var(--cor-borda-suave); }
   .busca__botao { margin-left: var(--espaco-2); }

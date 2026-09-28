@@ -7,6 +7,7 @@ import { Materia } from '../../models/materia';
 import { MateriasService } from '../../services/materias.service';
 import { Avatar } from '../../shared/avatar/avatar';
 import { Icone, NomeIcone } from '../../shared/icone/icone';
+import { Perguntas } from './perguntas/perguntas';
 import { Vitrine } from './vitrine/vitrine';
 
 interface Depoimento {
@@ -35,7 +36,7 @@ const ICONE_DO_CURSO: Record<string, NomeIcone> = {
 
 @Component({
   selector: 'app-landing',
-  imports: [RouterLink, Avatar, Icone, Vitrine],
+  imports: [RouterLink, Avatar, Icone, Vitrine, Perguntas],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
