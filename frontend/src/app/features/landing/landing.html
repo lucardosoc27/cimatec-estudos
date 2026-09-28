@@ -66,6 +66,11 @@
       <h2 id="titulo-como-funciona">Como funciona o Cimatec Estudos</h2>
       <p class="secao-apoio">Em apenas 3 passos você encontra alguém do seu curso para te orientar nas listas e provas.</p>
     </div>
+    <!-- Cada ilustração tem dois arquivos, de 480 e 960 px (originais em docs/ilustracoes). O navegador
+         escolhe pelo srcset: a largura em que a imagem aparece (sizes) vezes a densidade da tela. O sizes
+         foi medido na tela: 342 px em três colunas, a partir de 768 px; numa coluna só, a largura da tela
+         menos 66 px (16 da página, 16 da margem da imagem e 1 da borda do cartão, dos dois lados). Numa
+         tela comum de computador vem o de 480; em celular de tela densa, o de 960. -->
     <ol class="passos grid gap-6 md:grid-cols-3">
       <li class="passo">
         <div class="passo__texto">
@@ -73,7 +78,7 @@
           <h3>Escolha a matéria</h3>
           <p>Indique onde você travou: a matéria do seu curso e os turnos em que você pode estudar.</p>
         </div>
-        <img class="passo__imagem" src="/assets/ilustracoes/estudante-landing.png" alt="" loading="lazy" width="1376" height="768" />
+        <img class="passo__imagem" src="/assets/ilustracoes/estudante-landing-960.webp" srcset="/assets/ilustracoes/estudante-landing-480.webp 480w, /assets/ilustracoes/estudante-landing-960.webp 960w" sizes="(min-width: 48rem) 342px, calc(100vw - 66px)" alt="" loading="lazy" width="960" height="536" />
       </li>
       <li class="passo">
         <div class="passo__texto">
@@ -81,7 +86,7 @@
           <h3>Combine com o mentor</h3>
           <p>Escolha um horário livre e envie o pedido. Assim que o mentor aceitar, vocês combinam o formato ideal.</p>
         </div>
-        <img class="passo__imagem" src="/assets/ilustracoes/mentoria-online.png" alt="" loading="lazy" width="1376" height="768" />
+        <img class="passo__imagem" src="/assets/ilustracoes/mentoria-online-960.webp" srcset="/assets/ilustracoes/mentoria-online-480.webp 480w, /assets/ilustracoes/mentoria-online-960.webp 960w" sizes="(min-width: 48rem) 342px, calc(100vw - 66px)" alt="" loading="lazy" width="960" height="536" />
       </li>
       <li class="passo">
         <div class="passo__texto">
@@ -89,7 +94,7 @@
           <h3>Destrave os estudos</h3>
           <p>Encontrem-se no campus ou online. Sem custos, sem notas e com foco mútuo no aprendizado.</p>
         </div>
-        <img class="passo__imagem" src="/assets/ilustracoes/mentoria-presencial.png" alt="" loading="lazy" width="1376" height="768" />
+        <img class="passo__imagem" src="/assets/ilustracoes/mentoria-presencial-960.webp" srcset="/assets/ilustracoes/mentoria-presencial-480.webp 480w, /assets/ilustracoes/mentoria-presencial-960.webp 960w" sizes="(min-width: 48rem) 342px, calc(100vw - 66px)" alt="" loading="lazy" width="960" height="536" />
       </li>
     </ol>
     <!-- Na maquete o botão é "Cadastrar como mentor", que não existe como tela própria: virar

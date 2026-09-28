@@ -58,18 +58,21 @@ export class Landing {
     turnos: this.turno() || null,
   }));
 
-  /** Exemplos ilustrativos escritos pela equipe, não depoimentos reais. Fixos, sem estado de carregamento. */
+  /**
+   * Exemplos ilustrativos escritos pela equipe, não depoimentos reais. Fixos, sem estado de carregamento.
+   * O retrato tem 132 px, o triplo dos 44 px em que aparece (originais em docs/ilustracoes).
+   */
   readonly depoimentos: readonly Depoimento[] = [
     {
-      nome: 'Rodrigo', curso: 'Edificações', foto: 'assets/ilustracoes/rodrigo.png',
+      nome: 'Rodrigo', curso: 'Edificações', foto: 'assets/ilustracoes/rodrigo-132.webp',
       texto: 'Travei em Fundamentos de Topografia e quase desisti antes da prova. Uma colega do curso me mostrou como organizar os dados numa sessão só, e o resto fez sentido.',
     },
     {
-      nome: 'Carolina', curso: 'Redes de Computadores', foto: 'assets/ilustracoes/depoimento-carolina.png',
+      nome: 'Carolina', curso: 'Redes de Computadores', foto: 'assets/ilustracoes/depoimento-carolina-132.webp',
       texto: 'Configuração de Servidores de Rede parecia impossível sozinha. Depois de uma sessão com uma colega mais experiente, entendi a lógica e terminei o laboratório.',
     },
     {
-      nome: 'Cibele', curso: 'Desenvolvimento de Sistemas', foto: 'assets/ilustracoes/depoimento-cibele.png', mentor: true,
+      nome: 'Cibele', curso: 'Desenvolvimento de Sistemas', foto: 'assets/ilustracoes/depoimento-cibele-132.webp', mentor: true,
       texto: 'Comecei ajudando colegas em Lógica de Programação só para revisar o que eu já sabia. Hoje é uma das partes do curso que eu mais gosto de fazer.',
     },
   ];
