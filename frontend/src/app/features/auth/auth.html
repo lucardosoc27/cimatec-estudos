@@ -11,10 +11,10 @@
         <span class="encontro__selo">em comum</span>
       </button>
       <h2>Alguém do seu curso já passou por <span>isso.</span></h2>
-      <p>Encontre um colega do SENAI CIMATEC que já aprendeu o caminho.</p>
-      <div class="beneficios grid sm:grid-cols-2 gap-6">
-        <div class="flex gap-3"><app-icone nome="verificado" class="beneficio__icone" /><div><strong>Exclusivo CIMATEC</strong><p>Acesso com seu e-mail institucional</p></div></div>
-        <div class="flex gap-3"><app-icone nome="relogio" class="beneficio__icone" /><div><strong>No seu ritmo</strong><p>Você escolhe: no campus ou online</p></div></div>
+      <p class="apresentacao__apoio">Encontre um colega do SENAI CIMATEC que já aprendeu o caminho.</p>
+      <div class="beneficios grid sm:grid-cols-2 gap-4">
+        <div class="flex gap-3"><app-icone nome="verificado" class="beneficio__icone" /><div><strong>Exclusivo CIMATEC</strong><p>Acesso restrito ao e-mail institucional</p></div></div>
+        <div class="flex gap-3"><app-icone nome="relogio" class="beneficio__icone" /><div><strong>No seu ritmo</strong><p>Vocês escolhem: no campus ou online</p></div></div>
       </div>
     </div>
   </aside>
@@ -65,7 +65,7 @@
           @if (cadastro()) {
             <div id="senha-regras" class="senha-regras">
               <strong>Sua senha deve conter:</strong>
-              <ul>@for (regra of regras(); track regra.texto) { <li [class.atendida]="regra.atendida"><span aria-hidden="true">{{ regra.atendida ? '✓' : '○' }}</span> {{ regra.texto }} — {{ regra.atendida ? 'atendido' : 'pendente' }}</li> }</ul>
+              <ul>@for (regra of regras(); track regra.texto) { <li [class.atendida]="regra.atendida"><span class="regra__marca" aria-hidden="true">{{ regra.atendida ? '✓' : '' }}</span> {{ regra.texto }} — {{ regra.atendida ? 'atendido' : 'pendente' }}</li> }</ul>
             </div>
           }
         </div>
@@ -75,7 +75,7 @@
             <input id="confirmar" [type]="mostrarSenha() ? 'text' : 'password'" name="confirmacao" [ngModel]="confirmacao()" (ngModelChange)="confirmacao.set($event)" required autocomplete="new-password" placeholder="Repita a senha criada" [attr.aria-invalid]="tentou() && senha() !== confirmacao()" aria-describedby="confirmacao-erro">
             <span id="confirmacao-erro" class="erro-campo">@if (tentou() && senha() !== confirmacao()) { As senhas precisam ser iguais. }</span>
           </div>
-          <fieldset class="consentimentos flex flex-col gap-4 w-full">
+          <fieldset class="consentimentos flex flex-col gap-3 w-full">
             <legend>Seus dados e privacidade</legend>
             <label class="consentimento flex gap-3 items-start"><input type="checkbox" name="termos" [ngModel]="termos()" (ngModelChange)="termos.set($event)" required [attr.aria-invalid]="tentou() && !termos()" [attr.aria-describedby]="tentou() && !termos() ? 'termos-erro' : null"><span><strong>Obrigatório:</strong> Li e aceito os <a routerLink="/termos" target="_blank" rel="noopener">Termos de Uso</a> e a <a routerLink="/termos" fragment="privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
             @if (tentou() && !termos()) { <p id="termos-erro" class="erro-campo">É necessário aceitar os termos e a política para criar sua conta.</p> }
