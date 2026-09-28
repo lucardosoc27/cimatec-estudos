@@ -7,8 +7,8 @@
     </header>
     @if (estado() === 'sucesso') {
       <div class="alternador flex shrink-0 self-start" role="group" aria-label="Forma de exibir os mentores">
-        <button type="button" [attr.aria-pressed]="exibicao() === 'pilha'" (click)="exibicao.set('pilha')">Pilha de cartões</button>
-        <button type="button" [attr.aria-pressed]="exibicao() === 'lista'" (click)="exibicao.set('lista')">Em lista</button>
+        <button type="button" class="flex items-center gap-2" [attr.aria-pressed]="exibicao() === 'pilha'" (click)="exibicao.set('pilha')"><app-icone nome="pilha" />Pilha de cartões</button>
+        <button type="button" class="flex items-center gap-2" [attr.aria-pressed]="exibicao() === 'lista'" (click)="exibicao.set('lista')"><app-icone nome="lista" />Em lista</button>
       </div>
     }
   </div>
@@ -29,7 +29,7 @@
         @if (exibicao() === 'pilha') {
           @if (atual(); as item) {
             <div class="mx-auto max-w-lg px-2 sm:px-4">
-              <p class="centralizado mb-5 texto-suave" aria-live="polite">{{ indice() + 1 }} de {{ resultado.recomendados.length }}</p>
+              <p class="centralizado mb-5" aria-live="polite"><span class="contador">{{ indice() + 1 }} de {{ resultado.recomendados.length }}</span></p>
               <div class="pilha relative" (touchstart)="iniciarToque($event)" (touchend)="terminarToque($event)">
                 @if (resultado.recomendados.length > 1) { <div class="pilha__fundo pilha__fundo--um" inert aria-hidden="true"></div> }
                 @if (resultado.recomendados.length > 2) { <div class="pilha__fundo pilha__fundo--dois" inert aria-hidden="true"></div> }
@@ -37,13 +37,13 @@
                   <div class="retrato flex items-center justify-center relative">
                     @if (item.mentor.foto) { <img [src]="item.mentor.foto" alt="" class="absolute inset-0 w-full h-full object-cover" /> }
                     @else { <app-avatar [nome]="item.mentor.nome" [foto]="null" [tamanho]="132" /> }
-                    @if (idComSelo() === item.mentor.id) { <span class="selo-combina absolute top-4 left-4"><span aria-hidden="true">✓</span> Combina bem com você</span> }
+                    @if (idComSelo() === item.mentor.id) { <span class="selo-combina absolute top-4 left-4"><app-icone nome="verificado" /> Combina bem com você</span> }
                     <ul class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2" aria-label="Em comum">
                       @for (etiqueta of etiquetas(item); track etiqueta) { <li class="etiqueta">{{ etiqueta }}</li> }
                     </ul>
                   </div>
                   <div class="p-5 sm:p-6">
-                    <div class="flex flex-wrap justify-between gap-3 items-baseline"><h2 #nomeMentor tabindex="-1" class="subtitulo">{{ item.mentor.nome }}</h2><p class="texto-suave">{{ item.mentor.sessoesConcluidas }} sessões concluídas</p></div>
+                    <div class="flex flex-wrap justify-between gap-3 items-baseline"><h2 #nomeMentor tabindex="-1" class="subtitulo">{{ item.mentor.nome }}</h2><p class="texto-suave linha-icone"><app-icone nome="escola" />{{ item.mentor.sessoesConcluidas }} sessões concluídas</p></div>
                     <p class="curso mt-2">Técnico em {{ item.mentor.curso }}</p>
                     <p class="texto-suave mt-4">{{ motivo(item) }}</p>
                   </div>
@@ -64,11 +64,11 @@
               <li><article class="cartao-mentor p-5 md:p-6 flex flex-col sm:flex-row gap-5 sm:items-center">
                 <app-avatar [nome]="item.mentor.nome" [foto]="item.mentor.foto" [tamanho]="80" />
                 <div class="flex-1 min-w-0">
-                  @if (idComSelo() === item.mentor.id) { <span class="selo-combina mb-3"><span aria-hidden="true">✓</span> Combina bem com você</span> }
+                  @if (idComSelo() === item.mentor.id) { <span class="selo-combina selo-combina--claro mb-3"><app-icone nome="verificado" /> Combina bem com você</span> }
                   <h2 class="subtitulo">{{ item.mentor.nome }}</h2><p class="curso mt-1">Técnico em {{ item.mentor.curso }}</p>
-                  <p class="texto-suave mt-2">{{ item.mentor.sessoesConcluidas }} sessões concluídas</p><p class="texto-suave mt-2">{{ motivo(item) }}</p>
+                  <p class="texto-suave linha-icone mt-2"><app-icone nome="escola" />{{ item.mentor.sessoesConcluidas }} sessões concluídas</p><p class="texto-suave mt-2">{{ motivo(item) }}</p>
                 </div>
-                <button type="button" class="botao botao--secundario" (click)="verPerfil(item.mentor.id)" [attr.aria-label]="'Ver perfil e horários de ' + item.mentor.nome">Ver perfil e horários →</button>
+                <button type="button" class="botao" (click)="verPerfil(item.mentor.id)" [attr.aria-label]="'Ver perfil e horários de ' + item.mentor.nome">Ver perfil e horários →</button>
               </article></li>
             }
           </ul>

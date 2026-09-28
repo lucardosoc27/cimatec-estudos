@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 /** Nomes dos ícones desenhados no projeto. */
 export type NomeIcone =
   | 'escola' | 'relogio' | 'busca' | 'estrela' | 'pausa' | 'continuar' | 'seta-esquerda' | 'seta-direita'
-  | 'mao-coracao' | 'livro' | 'aspas' | 'verificado' | 'calendario' | 'info' | 'bandeja-entrada' | 'bandeja-saida'
+  | 'mao-coracao' | 'livro' | 'aspas' | 'verificado' | 'calendario' | 'info' | 'bandeja-entrada' | 'bandeja-saida' | 'pilha' | 'lista' | 'local' | 'prancheta'
   | 'codigo' | 'rede' | 'frasco' | 'bequer' | 'gota' | 'raio' | 'predio' | 'engrenagem' | 'video';
 
 /**
@@ -25,6 +25,10 @@ export type NomeIcone =
         @case ('info') { <circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.01"/> }
         @case ('bandeja-entrada') { <path d="M3.5 13.5V18a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-4.5M3.5 13.5h4.5l1.5 2.5h5l1.5-2.5h4.5M12 3.5v8M8.5 8l3.5 3.5L15.5 8"/> }
         @case ('bandeja-saida') { <path d="M3.5 13.5V18a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-4.5M3.5 13.5h4.5l1.5 2.5h5l1.5-2.5h4.5M12 11.5v-8M8.5 7 12 3.5 15.5 7"/> }
+        @case ('pilha') { <rect x="6.5" y="3.5" width="11" height="17" rx="2"/><path d="M3 7v10M21 7v10"/> }
+        @case ('lista') { <path d="M9 6.5h11M9 12h11M9 17.5h11M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01"/> }
+        @case ('local') { <path d="M12 21s-6.5-5.8-6.5-11a6.5 6.5 0 0 1 13 0c0 5.2-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/> }
+        @case ('prancheta') { <rect x="5" y="4.5" width="14" height="16.5" rx="2"/><path d="M9 4.5v-1h6v1M9 10h6M9 14h6"/> }
         @case ('verificado') { <circle cx="12" cy="12" r="9"/><path d="m8.5 12.3 2.4 2.4 4.6-4.9"/> }
         @case ('busca') { <circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/> }
         @case ('estrela') { <circle cx="12" cy="12" r="9.5"/><path d="m12 7 1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5L12 7Z"/> }

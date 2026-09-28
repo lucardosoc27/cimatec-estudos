@@ -7,11 +7,12 @@ import { MentorRecomendado, Recomendacao } from '../../models/mentor';
 import { MentoresService } from '../../services/mentores.service';
 import { PedidoRascunhoService } from '../../services/pedido-rascunho.service';
 import { Avatar } from '../../shared/avatar/avatar';
+import { Icone } from '../../shared/icone/icone';
 import { EstadoTela } from '../../shared/estado-tela';
 import { descreverHorario, idDoMentorComSelo } from '../../shared/util/recomendacao';
 
 @Component({
-  selector: 'app-mentores', imports: [RouterLink, Avatar],
+  selector: 'app-mentores', imports: [RouterLink, Avatar, Icone],
   templateUrl: './mentores.html', styleUrl: './mentores.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

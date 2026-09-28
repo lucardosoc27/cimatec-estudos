@@ -12,6 +12,7 @@ import { MentoresService } from '../../services/mentores.service';
 import { PedidoRascunhoService } from '../../services/pedido-rascunho.service';
 import { PedidoDuplicadoError, PedidosService } from '../../services/pedidos.service';
 import { Avatar } from '../../shared/avatar/avatar';
+import { Icone } from '../../shared/icone/icone';
 import { DiaEDataPipe } from '../../shared/dia-e-data.pipe';
 import { EstadoTela } from '../../shared/estado-tela';
 import { proximaData } from '../../shared/util/datas';
@@ -21,7 +22,7 @@ interface OpcaoHorario { horario: HorarioLivre; data: string; }
 class HorarioIndisponivelError extends Error {}
 
 @Component({
-  selector: 'app-mentor-perfil', imports: [RouterLink, Avatar, DiaEDataPipe],
+  selector: 'app-mentor-perfil', imports: [RouterLink, Avatar, DiaEDataPipe, Icone],
   templateUrl: './mentor-perfil.html', styleUrl: './mentor-perfil.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

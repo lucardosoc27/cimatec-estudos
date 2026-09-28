@@ -2,15 +2,20 @@
 .texto-suave { color: var(--cor-texto-suave); }
 /* Texto secundário, não azul: em azul o curso parecia link */
 .curso { color: var(--cor-texto-suave); font-weight: 600; }
-.alternador { padding: 4px; border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-pilula); background: white; }
+.alternador { padding: 4px; border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-pilula); background: var(--cor-superficie); }
 .alternador button { min-height: 44px; padding: 8px 14px; border-radius: var(--raio-pilula); color: var(--cor-texto-suave); cursor: pointer; }
-.alternador button[aria-pressed='true'] { background: var(--cor-primaria); color: white; }
-.cartao-mentor,.pilha__fundo { background: white; border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); }
+.alternador button[aria-pressed='true'] { background: var(--cor-primaria); color: var(--cor-superficie); }
+.cartao-mentor,.pilha__fundo { background: var(--cor-superficie); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); }
 .pilha__fundo { position: absolute; inset: 10px 1px -8px; transform: rotate(-3deg); }
 .pilha__fundo--dois { transform: rotate(3deg); }
 .retrato { min-height: 286px; background: linear-gradient(140deg,var(--cor-primaria-suave),var(--cor-superficie)); padding-bottom: 45px; }
-.selo-combina { display: inline-flex; gap: 8px; align-items: center; padding: 7px 12px; border-radius: var(--raio-pilula); background: var(--cor-primaria); color: white; font-weight: 600; }
-.etiqueta { border-radius: var(--raio-pilula); background: white; padding: 5px 10px; color: var(--cor-texto); box-shadow: var(--sombra-cartao); }
+.selo-combina { display: inline-flex; gap: 8px; align-items: center; padding: 7px 12px; border-radius: var(--raio-pilula); background: var(--cor-primaria); color: var(--cor-superficie); font-weight: 600; }
+/* Na lista o selo é discreto, como na maquete: azul sobre azul-claro, 6,73:1 */
+.selo-combina--claro { padding: 4px 10px; background: var(--cor-primaria-suave); color: var(--cor-primaria); font-size: .875rem; }
+/* "1 de 2" numa pílula, como na maquete (texto normal sobre branco: 16,27:1) */
+.contador { display: inline-block; padding: 4px 12px; border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-pilula); background: var(--cor-superficie); font-size: .875rem; font-weight: 700; }
+/* Rótulo, não corpo de texto: 14px como as pílulas da landing, para as três caberem numa linha */
+.etiqueta { border-radius: var(--raio-pilula); background: var(--cor-superficie); padding: 4px 10px; font-size: .875rem; font-weight: 600; color: var(--cor-texto); box-shadow: var(--sombra-cartao); }
 .link-botao { min-height: 44px; color: var(--cor-primaria); text-decoration: underline; cursor: pointer; }
 .link-botao:disabled { color: var(--cor-texto-suave); cursor: default; text-decoration: none; }
 .botao:disabled { cursor: default; }
