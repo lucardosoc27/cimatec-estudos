@@ -5,8 +5,8 @@
 .resumo, .indice, .parte { border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); }
 .resumo { background: var(--cor-primaria-suave); padding: var(--espaco-4); margin-top: var(--espaco-5); }
 .resumo ul { margin-top: var(--espaco-4); }
-.resumo li { display: flex; align-items: baseline; gap: var(--espaco-3); }
-.resumo li span { color: var(--cor-primaria); font-weight: 800; }
+.resumo li { gap: var(--espaco-3); }
+.resumo app-icone { color: var(--cor-primaria); }  /* azul sobre o azul-claro do resumo: 6,73:1 */
 .em-elaboracao { margin-block: var(--espaco-4); color: var(--cor-texto-suave); }
 .indice { background: var(--cor-superficie); padding: var(--espaco-3); align-self: start; }
 .indice__titulo { display: none; }

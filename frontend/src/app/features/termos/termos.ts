@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Icone } from '../../shared/icone/icone';
 
 @Component({
   selector: 'app-termos',
-  imports: [RouterLink],
+  imports: [RouterLink, Icone],
   templateUrl: './termos.html',
   styleUrl: './termos.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
