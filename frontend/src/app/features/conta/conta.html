@@ -27,7 +27,7 @@
           @case ('salvo') { <p class="mensagem" role="status">Alterações salvas.</p> }
           @case ('erro') { <p class="mensagem mensagem--erro" role="alert">Não foi possível salvar agora. O que você digitou foi mantido; tente de novo.</p> }
         }
-        <button type="submit" class="botao" [disabled]="salvando()">{{ salvando() ? 'Salvando…' : 'Salvar alterações' }}</button>
+        <button type="submit" class="botao w-full sm:w-auto" [disabled]="salvando()">{{ salvando() ? 'Salvando…' : 'Salvar alterações' }}</button>
       </form>
     </section>
 
@@ -85,7 +85,7 @@
     <section class="cartao" aria-labelledby="titulo-excluir">
       <h2 id="titulo-excluir" class="subtitulo">Excluir conta</h2>
       <p class="suave">Seus dados e pedidos são apagados. Sessões já aceitas são canceladas e o mentor é avisado.</p>
-      <button #botaoExcluir type="button" class="botao botao--contorno-perigo" (click)="abrirExclusao()">Excluir minha conta</button>
+      <button #botaoExcluir type="button" class="botao botao--contorno-perigo w-full sm:w-auto" (click)="abrirExclusao()">Excluir minha conta</button>
     </section>
 
     <dialog #janelaExcluir class="janela" aria-labelledby="titulo-janela" (close)="aoFecharJanela()" (cancel)="excluindo() && $event.preventDefault()">
