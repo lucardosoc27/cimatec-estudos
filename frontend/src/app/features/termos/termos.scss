@@ -3,7 +3,7 @@
 .titulo { margin-bottom: var(--espaco-2); }
 .versao { color: var(--cor-texto-suave); }
 .resumo, .indice, .parte { border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); }
-.resumo { background: var(--cor-primaria-suave); padding: var(--espaco-4); margin-top: var(--espaco-5); }
+.resumo { background: var(--cor-primaria-suave); padding: var(--espaco-3); margin-top: var(--espaco-5); }
 .resumo ul { margin-top: var(--espaco-4); }
 .resumo li { gap: var(--espaco-3); }
 .resumo app-icone { color: var(--cor-primaria); }  /* azul sobre o azul-claro do resumo: 6,73:1 */
@@ -14,7 +14,10 @@
 .indice__conteudo { display: none; }
 .indice__conteudo--aberto { display: block; }
 .indice__parte { padding-top: var(--espaco-3); margin-top: var(--espaco-3); border-top: 1px solid var(--cor-borda-suave); font-weight: 700; }
-.indice .link-acao { font-weight: 400; padding-block: var(--espaco-2); line-height: 1.4; }
+/* Como na maquete (docs/telas/03-termos): o nome de cada parte vira rótulo pequeno em caixa alta e os
+   links ficam em 14 px. A altura de 44 px de cada link (.link-acao) continua: é a regra de toque. */
+.indice__parte { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--cor-texto-suave); }
+.indice .link-acao { font-weight: 400; font-size: .875rem; padding-block: var(--espaco-2); line-height: 1.4; }
 .parte { padding: var(--espaco-4); background: var(--cor-superficie); }
 .parte h2 { padding-bottom: var(--espaco-3); border-bottom: 1px solid var(--cor-borda-suave); font-size: clamp(1.25rem, 3vw, 1.75rem); }
 .secao { margin-top: var(--espaco-4); }
