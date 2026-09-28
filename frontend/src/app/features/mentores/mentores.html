@@ -51,7 +51,7 @@
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-3 mt-7">
                 <button type="button" class="botao botao--secundario" [disabled]="indice() === resultado.recomendados.length - 1" (click)="mover(1)">Pular</button>
-                <button type="button" class="botao" (click)="verPerfil(item.mentor.id)">Ver perfil e horários →</button>
+                <button type="button" class="botao" (click)="verPerfil(item.mentor.id)" [attr.aria-label]="'Ver perfil e horários de ' + item.mentor.nome">Ver perfil e horários →</button>
               </div>
               <div class="centralizado mt-3"><button type="button" class="link-botao" [disabled]="indice() === 0" (click)="mover(-1)">↺ Voltar ao anterior</button></div>
               <p class="centralizado texto-suave mt-2">Pular não avisa ninguém e não fica registrado.</p>
@@ -68,7 +68,7 @@
                   <h2 class="subtitulo">{{ item.mentor.nome }}</h2><p class="curso mt-1">Técnico em {{ item.mentor.curso }}</p>
                   <p class="texto-suave mt-2">{{ item.mentor.sessoesConcluidas }} sessões concluídas</p><p class="texto-suave mt-2">{{ motivo(item) }}</p>
                 </div>
-                <button type="button" class="botao botao--secundario" (click)="verPerfil(item.mentor.id)">Ver perfil e horários →</button>
+                <button type="button" class="botao botao--secundario" (click)="verPerfil(item.mentor.id)" [attr.aria-label]="'Ver perfil e horários de ' + item.mentor.nome">Ver perfil e horários →</button>
               </article></li>
             }
           </ul>

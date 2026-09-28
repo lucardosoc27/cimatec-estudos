@@ -56,10 +56,10 @@
                 </div>
               } @else {
                 <div class="flex flex-wrap gap-3 mt-4">
-                  <button type="button" class="botao" [disabled]="respondendo() === p.id" (click)="aceitar(p)">
+                  <button type="button" class="botao" [disabled]="respondendo() === p.id" (click)="aceitar(p)" [attr.aria-label]="respondendo() === p.id ? null : 'Aceitar o pedido de ' + p.alunoNome + ', ' + p.materiaNome">
                     {{ respondendo() === p.id ? 'Aceitando…' : 'Aceitar →' }}
                   </button>
-                  <button type="button" id="recusar-{{ p.id }}" class="botao botao--secundario" [disabled]="respondendo() === p.id" (click)="pedirConfirmacaoRecusa(p)">Recusar</button>
+                  <button type="button" id="recusar-{{ p.id }}" class="botao botao--secundario" [disabled]="respondendo() === p.id" (click)="pedirConfirmacaoRecusa(p)" [attr.aria-label]="'Recusar o pedido de ' + p.alunoNome + ', ' + p.materiaNome">Recusar</button>
                 </div>
               }
             </li>

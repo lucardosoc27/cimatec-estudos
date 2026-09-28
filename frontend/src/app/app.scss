@@ -9,6 +9,9 @@
 
 .pular-conteudo { position: fixed; top: -100px; left: 16px; z-index: 100; padding: 12px 20px; background: var(--cor-superficie); border: 2px solid var(--cor-primaria); border-radius: var(--raio-pequeno); }
 .pular-conteudo:focus { top: 12px; }
+/* O <main> recebe foco por programa (link "pular" e troca de tela), mas não é um controle:
+   sem contorno em volta da página inteira. Os controles dentro dele têm o contorno normal. */
+.conteudo:focus { outline: none; }
 
 /* Em tela grande sobra largura: o respiro vertical cresce um passo a mais que o lateral */
 @media (min-width: 48rem) {

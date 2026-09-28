@@ -78,7 +78,7 @@
             <!-- Status e ação à direita no computador; embaixo, lado a lado, no celular -->
             <div class="flex sm:flex-col flex-wrap items-center sm:items-end gap-x-4 gap-y-1">
               <app-status [status]="pedido.status" />
-              <a [routerLink]="['/pedidos', pedido.id]" class="link-acao">Ver pedido →</a>
+              <a [routerLink]="['/pedidos', pedido.id]" class="link-acao" [attr.aria-label]="'Ver pedido de ' + pedido.materiaNome + ' com ' + pedido.mentorNome">Ver pedido →</a>
             </div>
           </li>
         }

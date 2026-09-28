@@ -18,9 +18,23 @@ export class App {
   protected readonly autenticacao = signal(false);
   /** O que a região aria-live do app.html lê em voz alta a cada troca de tela. */
   protected readonly anuncio = inject(TituloComAnuncio).anuncio;
+  private caminhoAnterior: string | null = null;
   constructor() {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntilDestroyed()).subscribe(e => {
       this.autenticacao.set(/^\/(entrar|cadastro)(\?|$)/.test(e.urlAfterRedirects));
+      const caminho = e.urlAfterRedirects.split(/[?#]/)[0];
+      const trocouDeTela = this.caminhoAnterior !== null && caminho !== this.caminhoAnterior;
+      this.caminhoAnterior = caminho;
+      // Quando o botão ou link usado para trocar de tela some, o foco cai no <body> e quem usa
+      // teclado recomeça do topo da página. Nesse caso, e SÓ nesse caso, o foco vai para o
+      // começo do conteúdo (#conteudo). Telas que já põem o foco em algo (a pilha de cartões,
+      // por exemplo) não são tocadas, porque aí o foco não está no <body>.
+      if (trocouDeTela) {
+        setTimeout(() => {
+          const ativo = document.activeElement;
+          if (!ativo || ativo === document.body) document.getElementById('conteudo')?.focus({ preventScroll: true });
+        }, 50);
+      }
     });
   }
 }

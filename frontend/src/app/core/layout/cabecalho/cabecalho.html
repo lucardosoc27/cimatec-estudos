@@ -8,7 +8,7 @@
       <a routerLink="/inicio" routerLinkActive="ativo" ariaCurrentWhenActive="page">Início</a>
       <a routerLink="/pedir-ajuda" [class.ativo]="pedindoAjuda()" [attr.aria-current]="pedindoAjuda() ? 'page' : null">Pedir ajuda</a>
     </nav>
-    <div class="usuario">
+    <div class="usuario" (focusout)="focoSaiu($event)">
       <button #gatilho type="button" class="usuario__gatilho" aria-controls="menu-usuario" [attr.aria-expanded]="aberto()" (click)="alternar()">
         <app-avatar [nome]="usuario.nome" [foto]="usuario.foto" [tamanho]="36" />
         <span class="usuario__nome">{{ primeiroNome() }}</span><span class="usuario__menu">☰ Menu</span><span class="usuario__seta" aria-hidden="true">⌄</span>

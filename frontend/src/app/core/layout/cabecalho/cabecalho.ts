@@ -33,6 +33,11 @@ export class Cabecalho {
   protected fechar(): void {
     if (this.aberto()) { this.aberto.set(false); this.gatilho()?.nativeElement.focus(); }
   }
+  /** Tab para fora do menu aberto fecha o menu, sem mexer no foco (ele já foi para onde a pessoa quis). */
+  protected focoSaiu(event: FocusEvent): void {
+    const destino = event.relatedTarget as Node | null;
+    if (this.aberto() && destino && !this.elemento.nativeElement.contains(destino)) this.aberto.set(false);
+  }
   @HostListener('document:click', ['$event'])
   protected clicarFora(event: MouseEvent): void {
     if (this.aberto() && !this.elemento.nativeElement.contains(event.target)) this.fechar();
