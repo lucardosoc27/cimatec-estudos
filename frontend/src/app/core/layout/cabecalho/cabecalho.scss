@@ -17,6 +17,10 @@ svg { width: 26px; height: 26px; }
 .menu button:hover, .menu a:hover { background: var(--cor-primaria-suave); }
 .menu .menu__mobile { display: none; }
 .menu p { color: var(--cor-erro); padding: 8px; }
+/* Visitante: "Entrar" como na maquete, texto escuro em negrito; o sublinhado volta no hover.
+   Não é link dentro de frase, então não depende do sublinhado para ser reconhecido. */
+.visitante .link-acao { padding-inline: 12px; color: var(--cor-texto); font-weight: 700; text-decoration: none; }
+.visitante .link-acao:hover { color: var(--cor-primaria); text-decoration: underline; }
 @media (max-width: 47.99rem) {
   .cabecalho { padding: 12px 16px; min-height: 76px; flex-wrap: wrap; }
   .marca { gap: 8px; }.marca__nome { font-size: 1rem; }.marca__icone { width: 36px; height: 36px; }

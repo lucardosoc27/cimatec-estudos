@@ -72,8 +72,15 @@ O ✓ que aparece na tela é só visual.
 "Expirado", "Cancelado": o componente `shared/status` mostra a palavra, e a cor é um reforço. É
 um requisito do caderno de IHC e serve igual para quem não vê cor.
 
-**Contagens são anunciadas.** Na pilha de cartões, "2 de 5"; no carrossel da página inicial,
-"2 de 10 · Bruno". Os dois ficam em regiões que o leitor lê quando mudam.
+**Contagens são anunciadas.** Na pilha de cartões, "2 de 5", numa região que o leitor lê quando
+muda.
+
+**A faixa de mentores da página inicial não duplica ninguém para o leitor de tela.** Ela é um
+letreiro contínuo: os cartões aparecem duas vezes em sequência, e a faixa desliza sem parar, para
+o recomeço não dar um pulo. A segunda cópia existe só para os olhos: ela está marcada com
+`aria-hidden` (o leitor de tela não a lê) e com `inert` (o Tab não passa por ela). Conferido na
+árvore de acessibilidade do Chromium: 10 mentores, 10 links, nenhum repetido
+(`features/landing/vitrine/`).
 
 ## Quem usa só o teclado
 
@@ -100,8 +107,11 @@ de cima e leva direto ao conteúdo, sem passar pelo menu de novo. Está no come�
 atalho no celular; os botões "Pular", "Voltar ao anterior" e "Ver perfil e horários" fazem o mesmo.
 E existe o modo "Em lista", que mostra todos os mentores de uma vez.
 
-**O carrossel funciona com as setas.** Na página inicial, o carrossel de mentores recebe o foco e
-anda com as setas do teclado, além dos botões "Anterior" e "Próximo".
+**A faixa de mentores para e se controla pelo teclado.** Ela para sozinha quando o ponteiro
+está em cima ou quando qualquer coisa dentro dela recebe foco, e tem um botão Pausar/Continuar,
+que é o primeiro dos controles. A faixa recebe foco e rola com as setas do teclado; os botões
+Anterior e Próximo rolam um cartão e pouco. A barra de rolagem fica escondida, mas a rolagem por
+teclado e por toque continua. Quem pediu menos movimento no sistema encontra a faixa parada.
 
 ## Quem enxerga com dificuldade, ou não distingue cores
 
@@ -166,7 +176,7 @@ Feito no Chromium, apertando Tab do topo ao fim de cada tela e anotando onde o f
 aparecia e se tinha contorno. Telas: página inicial, entrar, cadastro, verificar e-mail, termos,
 início (aluno e mentora), pedir ajuda, mentores (pilha e lista), perfil do mentor, pedido e Minha
 conta. Também foram feitos, só com teclado: enviar um pedido, abrir e fechar o menu da conta,
-recusar e desistir, e andar pelo carrossel.
+recusar e desistir, e parar e rolar a faixa de mentores.
 
 Resultado: nenhuma armadilha de foco (o foco sempre chegou ao fim da página e saiu dela), nenhum
 elemento focado invisível e nenhum foco sem contorno. Três coisas foram corrigidas no caminho,

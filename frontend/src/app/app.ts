@@ -16,12 +16,15 @@ import { TituloComAnuncio } from './core/titulo-com-anuncio';
 export class App {
   private readonly router = inject(Router);
   protected readonly autenticacao = signal(false);
+  /** Página inicial: faixas de ponta a ponta e rodapé completo, como na maquete (docs/telas/00-landing). */
+  protected readonly landing = signal(false);
   /** O que a região aria-live do app.html lê em voz alta a cada troca de tela. */
   protected readonly anuncio = inject(TituloComAnuncio).anuncio;
   private caminhoAnterior: string | null = null;
   constructor() {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd), takeUntilDestroyed()).subscribe(e => {
       this.autenticacao.set(/^\/(entrar|cadastro)(\?|$)/.test(e.urlAfterRedirects));
+      this.landing.set(/^\/(\?|#|$)/.test(e.urlAfterRedirects));
       const caminho = e.urlAfterRedirects.split(/[?#]/)[0];
       const trocouDeTela = this.caminhoAnterior !== null && caminho !== this.caminhoAnterior;
       this.caminhoAnterior = caminho;

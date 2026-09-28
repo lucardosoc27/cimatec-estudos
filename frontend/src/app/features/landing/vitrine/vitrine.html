@@ -1,0 +1,74 @@
+<section class="vitrine faixa-cheia" aria-labelledby="titulo-vitrine">
+  <div class="largura">
+    <div class="secao-topo flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="sobretitulo flex items-center gap-2"><app-icone nome="estrela" /> Mentores em destaque</p>
+        <h2 id="titulo-vitrine">Colegas que escolheram aparecer aqui</h2>
+        <p class="secao-apoio">Alunos voluntários dispostos a ajudar de forma solidária e sem cobranças.</p>
+      </div>
+      @if (estadoVitrine() === 'sucesso' && mentores().length) {
+        <!-- O Pausar vem primeiro, como pede o padrão de carrossel da WAI-ARIA. As setas têm texto
+             ao lado do ícone (regra do projeto), e não só o ícone da maquete. -->
+        <div class="controles flex flex-wrap gap-2" role="group" aria-label="Controles da faixa de mentores">
+          <button class="controle" type="button" (click)="alternarPausa()" aria-controls="faixa-mentores" [attr.aria-label]="pausado() ? 'Continuar o movimento da faixa de mentores' : 'Pausar o movimento da faixa de mentores'"><app-icone [nome]="pausado() ? 'continuar' : 'pausa'" /> {{ pausado() ? 'Continuar' : 'Pausar' }}</button>
+          <button class="controle" type="button" (click)="rolar(-1)" aria-controls="faixa-mentores"><app-icone nome="seta-esquerda" /> Anterior</button>
+          <button class="controle" type="button" (click)="rolar(1)" aria-controls="faixa-mentores">Próximo <app-icone nome="seta-direita" /></button>
+        </div>
+      }
+    </div>
+
+    @if (estadoVitrine() === 'carregando') {
+      <div class="aviso vitrine__estado" role="status" aria-busy="true"><p>Carregando os mentores em destaque…</p></div>
+    } @else if (estadoVitrine() === 'erro') {
+      <div class="aviso aviso--erro vitrine__estado" role="alert">
+        <p>Não conseguimos carregar os mentores agora.</p>
+        <button class="botao botao--secundario" type="button" (click)="carregarVitrine()">Tentar novamente</button>
+      </div>
+    } @else if (!mentores().length) {
+      <div class="aviso vitrine__estado">
+        <p>Ainda não há mentores na vitrine pública.</p>
+        <p>Entre na sua conta para buscar ajuda nas matérias do seu curso.</p>
+        <a class="link-acao" routerLink="/entrar">Entrar →</a>
+      </div>
+    } @else {
+      <!-- Letreiro contínuo. A trilha tem os cartões DUAS vezes e desliza de 0 a -50%: quando a
+           animação reinicia, a segunda metade está exatamente onde a primeira começou, e ninguém
+           percebe o salto. A segunda metade é só enfeite para esse truque: aria-hidden tira do
+           leitor de tela (senão cada mentor seria lido duas vezes) e inert tira do teclado (senão
+           o Tab passaria duas vezes por cada link). A faixa recebe foco (tabindex) para as setas
+           do teclado rolarem, e para qualquer foco dentro dela parar o movimento. -->
+      <div #faixa id="faixa-mentores" class="faixa-mentores" [class.faixa-mentores--parada]="pausado()" [class.faixa-mentores--escolhida]="escolheuMovimento()" tabindex="0" role="region" aria-label="Mentores em destaque. A faixa anda sozinha e para com o foco; use as setas do teclado para rolar.">
+        <div class="trilha">
+          <ul class="trilha__metade">
+            @for (mentor of mentores(); track mentor.id) {
+              <li class="mentor-publico flex flex-col">
+                <div class="flex items-center gap-3">
+                  <app-avatar class="mentor-publico__avatar" [nome]="primeiroNome(mentor.nome)" [foto]="mentor.foto" [tamanho]="56" />
+                  <div class="min-w-0"><h3>{{ primeiroNome(mentor.nome) }}</h3><p class="mentor-publico__curso">{{ mentor.curso }}</p></div>
+                </div>
+                @if (mentor.materias?.length) {
+                  <div><p class="mentor-publico__rotulo">Ensina:</p><p class="mentor-publico__materias">{{ mentor.materias!.join(', ') }}</p></div>
+                }
+                <a class="link-acao mentor-publico__acao" routerLink="/entrar" [queryParams]="{ voltar: '/pedir-ajuda' }" [attr.aria-label]="'Entre para pedir ajuda a ' + primeiroNome(mentor.nome)">Entre para pedir ajuda →</a>
+              </li>
+            }
+          </ul>
+          <ul class="trilha__metade" aria-hidden="true" inert>
+            @for (mentor of mentores(); track mentor.id) {
+              <li class="mentor-publico flex flex-col">
+                <div class="flex items-center gap-3">
+                  <app-avatar class="mentor-publico__avatar" [nome]="primeiroNome(mentor.nome)" [foto]="mentor.foto" [tamanho]="56" />
+                  <div class="min-w-0"><h3>{{ primeiroNome(mentor.nome) }}</h3><p class="mentor-publico__curso">{{ mentor.curso }}</p></div>
+                </div>
+                @if (mentor.materias?.length) {
+                  <div><p class="mentor-publico__rotulo">Ensina:</p><p class="mentor-publico__materias">{{ mentor.materias!.join(', ') }}</p></div>
+                }
+                <a class="link-acao mentor-publico__acao" routerLink="/entrar" [queryParams]="{ voltar: '/pedir-ajuda' }" tabindex="-1">Entre para pedir ajuda →</a>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    }
+  </div>
+</section>

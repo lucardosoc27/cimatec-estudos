@@ -1,0 +1,43 @@
+/* Vitrine da página inicial: letreiro de mentores (ver vitrine.ts). Os títulos e o sobretítulo
+   repetem o padrão das outras faixas da landing (landing.scss). */
+:host { display: block; }
+.largura { width: min(100%, 1240px); margin-inline: auto; padding-inline: var(--espaco-3); }
+.faixa-cheia { padding-block: var(--espaco-7); }
+.sobretitulo { color: var(--cor-primaria); font-size: .8125rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: var(--espaco-2); }
+.sobretitulo app-icone { font-size: 1.1rem; }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -.02em; }
+.secao-apoio { margin-top: var(--espaco-2); color: var(--cor-texto-suave); }
+.vitrine { background: var(--cor-superficie); border-bottom: 1px solid var(--cor-borda-suave); overflow-x: clip; }
+.controle { display: inline-flex; align-items: center; gap: var(--espaco-2); min-height: var(--alvo-toque); padding: 0 var(--espaco-3); border-radius: var(--raio-pequeno); background: var(--cor-neutro-fundo); color: var(--cor-texto); font-size: .875rem; font-weight: 600; cursor: pointer; }
+.controle:hover { background: var(--cor-primaria); color: var(--cor-superficie); }
+.controle app-icone { font-size: 1.1rem; }
+.vitrine__estado { margin-top: var(--espaco-5); }
+/* Letreiro: a trilha tem os cartões duas vezes e anda de 0 a -50%, linear, sem fim, 38 s (a
+   duração da maquete). Cada metade termina com um respiro igual ao espaço entre cartões, senão o
+   reinício daria um pulo. Para com ponteiro em cima, com foco dentro ou pelo botão. A barra de
+   rolagem some da tela, mas a rolagem por teclado, toque e pelas setas continua. */
+.faixa-mentores { margin-top: var(--espaco-5); overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; border-radius: var(--raio); }
+.faixa-mentores::-webkit-scrollbar { display: none; }
+.trilha { display: flex; width: max-content; padding-block: var(--espaco-2); animation: letreiro 38s linear infinite; }
+.trilha__metade { display: flex; gap: var(--espaco-4); margin: 0; padding: 0 var(--espaco-4) 0 0; list-style: none; }
+.faixa-mentores:hover .trilha, .faixa-mentores:focus-within .trilha, .faixa-mentores--parada .trilha { animation-play-state: paused; }
+@keyframes letreiro { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* Menos movimento pedido: a animação nem existe (e não só fica curta, como a regra global faria),
+   até a pessoa apertar Continuar. Aí ela escolheu o movimento, e ele volta inteiro. */
+@media (prefers-reduced-motion: reduce) {
+  .faixa-mentores:not(.faixa-mentores--escolhida) .trilha { animation: none; }
+  .faixa-mentores--escolhida .trilha { animation-duration: 38s !important; animation-iteration-count: infinite !important; }
+}
+.mentor-publico { width: 280px; gap: var(--espaco-3); padding: var(--espaco-4); background: var(--cor-superficie); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); box-shadow: var(--sombra-cartao); }
+.mentor-publico:hover { border-color: var(--cor-primaria); }
+.mentor-publico__avatar { border-radius: 50%; box-shadow: 0 0 0 2px var(--cor-primaria-suave); }
+.mentor-publico h3 { font-size: 1.125rem; font-weight: 800; overflow-wrap: anywhere; }
+.mentor-publico__curso { color: var(--cor-primaria); font-size: .875rem; font-weight: 600; }
+.mentor-publico__rotulo { color: var(--cor-texto-suave); font-size: .8125rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.mentor-publico__materias { margin-top: var(--espaco-1); font-weight: 600; }
+.mentor-publico__acao { margin-top: auto; padding-top: var(--espaco-2); border-top: 1px solid var(--cor-borda-suave); }
+
+@media (min-width: 48rem) {
+  .largura { padding-inline: var(--espaco-5); }
+  .faixa-cheia { padding-block: 80px; }
+}

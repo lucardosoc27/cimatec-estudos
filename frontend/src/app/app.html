@@ -1,8 +1,8 @@
 <a href="#conteudo" class="pular-conteudo">Pular para o conteúdo</a>
 @if (!autenticacao()) { <app-cabecalho /> }
-<main class="conteudo" [class.conteudo--autenticacao]="autenticacao()" id="conteudo" tabindex="-1">
+<main class="conteudo" [class.conteudo--autenticacao]="autenticacao()" [class.conteudo--larga]="landing()" id="conteudo" tabindex="-1">
   <router-outlet />
 </main>
-<app-rodape />
+<app-rodape [completo]="landing()" />
 <!-- Lida pelo leitor de tela a cada troca de tela; invisível na tela (core/titulo-com-anuncio.ts). -->
 <p class="sr-only" aria-live="polite" aria-atomic="true">{{ anuncio() }}</p>

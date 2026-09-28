@@ -1,36 +1,45 @@
-<section class="hero" aria-labelledby="titulo-landing">
-  <div class="landing-largura flex flex-col items-center">
+<!-- Especificação visual: docs/telas/00-landing (landing-v3.html, design.md, desktop.png). Onde a
+     maquete diverge de uma regra do projeto (nome da ação principal, contraste, texto junto do
+     ícone, dados inventados), vale a regra: ver DECISOES.md, 2026-09-28, "Landing igual à maquete". -->
+<section class="heroi faixa-cheia" aria-labelledby="titulo-landing">
+  <div class="largura flex flex-col items-center">
     <h1 id="titulo-landing">Travou numa matéria? Alguém do seu curso já <span>passou por isso</span>.</h1>
-    <p class="hero__descricao">Mentoria acolhedora entre colegas dos cursos técnicos do SENAI CIMATEC.</p>
+    <p class="heroi__descricao">Mentoria acolhedora entre colegas dos cursos técnicos do SENAI&nbsp;CIMATEC.</p>
 
-    <div class="busca grid items-center" aria-label="Comece seu pedido de ajuda">
-      <div class="busca__campo">
-        <label for="materia-landing">Matéria</label>
-        <select id="materia-landing" [value]="materiaSelecionada()" (change)="selecionarMateria($event)" [disabled]="estadoMaterias() !== 'sucesso' || !materiasDoCurso().length">
-          <option value="">{{ estadoMaterias() === 'carregando' ? 'Carregando matérias…' : 'Escolha uma matéria' }}</option>
-          @for (materia of materiasDoCurso(); track materia.id) {
-            <option [value]="materia.id">{{ materia.nome }}</option>
-          }
-        </select>
+    <div class="busca flex flex-col md:flex-row md:items-center" role="search" aria-label="Comece seu pedido de ajuda">
+      <div class="busca__campo flex items-center gap-3 md:flex-1">
+        <app-icone nome="escola" class="busca__icone busca__icone--azul" />
+        <div class="flex flex-col flex-1 min-w-0">
+          <label for="materia-landing">Matéria</label>
+          <select id="materia-landing" [value]="materiaSelecionada()" (change)="selecionarMateria($event)" [disabled]="estadoMaterias() !== 'sucesso' || !materiasDoCurso().length">
+            <option value="">{{ estadoMaterias() === 'carregando' ? 'Carregando matérias…' : 'Escolha uma matéria' }}</option>
+            @for (materia of materiasDoCurso(); track materia.id) {
+              <option [value]="materia.id">{{ materia.nome }}</option>
+            }
+          </select>
+        </div>
       </div>
-      <div class="busca__campo">
-        <label for="turno-landing">Turno</label>
-        <select id="turno-landing" [value]="turno()" (change)="selecionarTurno($event)">
-          <option value="">Qualquer turno</option>
-          <option value="manha">Manhã</option>
-          <option value="tarde">Tarde</option>
-          <option value="noite">Noite</option>
-        </select>
+      <span class="busca__divisor" aria-hidden="true"></span>
+      <div class="busca__campo flex items-center gap-3 md:flex-1">
+        <app-icone nome="relogio" class="busca__icone busca__icone--laranja" />
+        <div class="flex flex-col flex-1 min-w-0">
+          <label for="turno-landing">Turno</label>
+          <select id="turno-landing" [value]="turno()" (change)="selecionarTurno($event)">
+            <option value="">Qualquer turno</option>
+            <option value="manha">Manhã</option>
+            <option value="tarde">Tarde</option>
+            <option value="noite">Noite</option>
+          </select>
+        </div>
       </div>
-      <a class="botao" routerLink="/pedir-ajuda" [queryParams]="filtros()">Pedir ajuda →</a>
+      <!-- "Pedir ajuda", e não "Ver mentores" como na maquete: é a ação principal do sistema (CLAUDE.md). -->
+      <a class="botao busca__botao" routerLink="/pedir-ajuda" [queryParams]="filtros()"><app-icone nome="busca" /> Pedir ajuda</a>
     </div>
 
-    <p class="hero__rotulo" id="cursos-landing">Comece pelo seu curso</p>
-    <div class="cursos flex flex-wrap justify-center" role="group" aria-labelledby="cursos-landing">
+    <p class="rotulo-secao">Comece pela sua matéria</p>
+    <div class="cursos flex flex-wrap justify-center" role="group" aria-label="Cursos: escolha o seu para ver as matérias">
       @for (item of cursos; track item.nome) {
-        <button type="button" class="curso" [attr.aria-pressed]="curso() === item.nome" (click)="selecionarCurso(item.nome)">
-          @if (curso() === item.nome) { <span aria-hidden="true">✓ </span> }{{ item.nome }}
-        </button>
+        <button type="button" class="curso" [attr.aria-pressed]="curso() === item.nome" (click)="selecionarCurso(item.nome)">{{ item.nome }}</button>
       }
     </div>
 
@@ -41,118 +50,78 @@
         <p>A grade deste curso está em confirmação. Você pode escolher outro curso para consultar as matérias.</p>
       } @else if (estadoMaterias() === 'sucesso') {
         @for (materia of materiasDoCurso().slice(0, 4); track materia.id) {
-          <a class="materia" routerLink="/pedir-ajuda" [queryParams]="{ materia: materia.id, turnos: turno() || null }">{{ materia.nome }} <span aria-hidden="true">↗</span></a>
+          <a class="materia" routerLink="/pedir-ajuda" [queryParams]="{ materia: materia.id, turnos: turno() || null }"><app-icone [nome]="iconeDoCurso()" class="materia__icone" />{{ materia.nome }}</a>
         }
       }
     </div>
   </div>
 </section>
 
-<section class="vitrine faixa" aria-labelledby="titulo-vitrine" (mouseenter)="ponteiroSobre.set(true)" (mouseleave)="ponteiroSobre.set(false)" (focusin)="focoDentro.set(true)" (focusout)="focoSaiu($event)">
-  <div class="landing-largura">
-    <div class="secao-topo flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <p class="sobretitulo">Mentores em destaque</p>
-        <h2 id="titulo-vitrine">Colegas que escolheram aparecer aqui</h2>
-        <p>Alunos voluntários dispostos a ajudar de forma solidária e sem cobranças.</p>
-      </div>
-      @if (estadoVitrine() === 'sucesso' && mentores().length > 1) {
-        <div class="flex flex-wrap gap-2" role="group" aria-label="Controles dos mentores em destaque">
-          <!-- Primeiro dos controles, como pede o padrão de carrossel da WAI-ARIA: quem chega por
-               teclado encontra o Pausar antes de tudo. -->
-          <button class="botao botao--secundario controle" type="button" (click)="alternarPausa()" aria-controls="carrossel-mentores" [attr.aria-label]="pausadoPelaPessoa() ? 'Continuar o avanço automático dos mentores' : 'Pausar o avanço automático dos mentores'">@if (pausadoPelaPessoa()) { <svg class="controle__icone" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg> Continuar } @else { <svg class="controle__icone" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2.5" width="3.5" height="11" rx="1" fill="currentColor"/><rect x="9.5" y="2.5" width="3.5" height="11" rx="1" fill="currentColor"/></svg> Pausar }</button>
-          <button class="botao botao--secundario controle" type="button" (click)="mover(-1)" aria-controls="carrossel-mentores">← Anterior</button>
-          <button class="botao botao--secundario controle" type="button" (click)="mover(1)" aria-controls="carrossel-mentores">Próximo →</button>
-        </div>
-      }
-    </div>
+<app-vitrine />
 
-    @if (estadoVitrine() === 'carregando') {
-      <div class="aviso vitrine__estado" role="status" aria-busy="true"><p>Carregando os mentores em destaque…</p></div>
-    } @else if (estadoVitrine() === 'erro') {
-      <div class="aviso aviso--erro vitrine__estado" role="alert">
-        <p>Não conseguimos carregar os mentores agora.</p>
-        <button class="botao botao--secundario" type="button" (click)="carregarVitrine()">Tentar novamente</button>
-      </div>
-    } @else if (!mentores().length) {
-      <div class="aviso vitrine__estado">
-        <p>Ainda não há mentores na vitrine pública.</p>
-        <p>Entre na sua conta para buscar ajuda nas matérias do seu curso.</p>
-        <a class="link-acao" routerLink="/entrar">Entrar →</a>
-      </div>
-    } @else {
-      <div id="carrossel-mentores" class="carrossel grid gap-4" [class.carrossel--animado]="jaMoveu()" [class.carrossel--voltando]="direcao() < 0" role="region" aria-roledescription="carrossel" aria-label="Mentores em destaque. Use as setas do teclado para navegar." tabindex="0" (keydown)="teclaCarrossel($event)">
-        @for (mentor of mentoresVisiveis(); track mentor.chave; let posicao = $index) {
-          <article class="mentor-publico flex flex-col" [class.mentor-publico--segundo]="posicao === 1" [class.mentor-publico--terceiro]="posicao === 2" role="group" aria-roledescription="slide" [attr.aria-label]="primeiroNome(mentor.nome) + ', ' + mentor.curso">
-            <div class="flex items-center gap-4">
-              <app-avatar [nome]="primeiroNome(mentor.nome)" [foto]="mentor.foto" [tamanho]="64" />
-              <div class="min-w-0"><h3>{{ primeiroNome(mentor.nome) }}</h3><p class="mentor-publico__curso">{{ mentor.curso }}</p></div>
-            </div>
-            @if (mentor.materias?.length) {
-              <p class="mentor-publico__materias"><strong>Ensina</strong>{{ mentor.materias!.join(' · ') }}</p>
-            }
-            <p class="mentor-publico__descricao">{{ mentor.descricao }}</p>
-            <a class="link-acao" routerLink="/entrar" [queryParams]="{ voltar: '/pedir-ajuda' }" [attr.aria-label]="'Entre para pedir ajuda a ' + primeiroNome(mentor.nome)">Entre para pedir ajuda →</a>
-          </article>
-        }
-      </div>
-      <!-- Andando sozinho, o contador não é anunciado (senão o leitor de tela falaria a cada 6 s);
-           parado, anuncia cada troca feita pela pessoa. -->
-      <p class="carrossel__posicao" [attr.aria-live]="avancando() ? 'off' : 'polite'" aria-atomic="true">{{ indice() + 1 }} de {{ mentores().length }} · {{ primeiroNome(mentores()[indice()].nome) }}</p>
-    }
-  </div>
-</section>
-
-<section class="como-funciona faixa" aria-labelledby="titulo-como-funciona">
-  <div class="landing-largura">
+<section id="como-funciona" class="como-funciona faixa-cheia" aria-labelledby="titulo-como-funciona">
+  <div class="largura">
     <div class="secao-central">
-      <p class="sobretitulo">Um colega pode ajudar</p>
+      <p class="sobretitulo sobretitulo--laranja">Agendar é rápido e simples</p>
       <h2 id="titulo-como-funciona">Como funciona o Cimatec Estudos</h2>
-      <p>Em três passos, encontre alguém do seu curso para estudar junto.</p>
+      <p class="secao-apoio">Em apenas 3 passos você encontra alguém do seu curso para te orientar nas listas e provas.</p>
     </div>
-    <ol class="passos grid gap-4 md:grid-cols-3">
+    <ol class="passos grid gap-6 md:grid-cols-3">
       <li class="passo">
-        <span class="passo__numero" aria-hidden="true">01</span>
-        <h3>Escolha a matéria</h3>
-        <p>Conte onde você travou e marque os turnos em que pode estudar.</p>
+        <div class="passo__texto">
+          <span class="passo__numero passo__numero--1" aria-hidden="true">01</span>
+          <h3>Escolha a matéria</h3>
+          <p>Indique onde você travou: a matéria do seu curso e os turnos em que você pode estudar.</p>
+        </div>
         <img class="passo__imagem" src="/assets/ilustracoes/estudante-landing.png" alt="" loading="lazy" width="1376" height="768" />
       </li>
       <li class="passo">
-        <span class="passo__numero" aria-hidden="true">02</span>
-        <h3>Combine com o mentor</h3>
-        <p>Veja quem pode ajudar, escolha um horário livre e envie seu pedido. O mentor tem até 48h para responder.</p>
+        <div class="passo__texto">
+          <span class="passo__numero passo__numero--2" aria-hidden="true">02</span>
+          <h3>Combine com o mentor</h3>
+          <p>Escolha um horário livre e envie o pedido. Assim que o mentor aceitar, vocês combinam o formato ideal.</p>
+        </div>
         <img class="passo__imagem" src="/assets/ilustracoes/mentoria-online.png" alt="" loading="lazy" width="1376" height="768" />
       </li>
       <li class="passo">
-        <span class="passo__numero" aria-hidden="true">03</span>
-        <h3>Destrave os estudos</h3>
-        <p>Depois do aceite, o contato institucional é liberado. O encontro pode ser no CIMATEC - Orlando Gomes ou online.</p>
+        <div class="passo__texto">
+          <span class="passo__numero passo__numero--3" aria-hidden="true">03</span>
+          <h3>Destrave os estudos</h3>
+          <p>Encontrem-se no campus ou online. Sem custos, sem notas e com foco mútuo no aprendizado.</p>
+        </div>
         <img class="passo__imagem" src="/assets/ilustracoes/mentoria-presencial.png" alt="" loading="lazy" width="1376" height="768" />
       </li>
     </ol>
-    <div class="convite flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-      <div><h3>Aprender junto faz diferença.</h3><p>Encontre apoio para continuar os estudos no seu curso técnico.</p></div>
-      <a class="botao botao--secundario" routerLink="/cadastro">Criar conta →</a>
+    <!-- Na maquete o botão é "Cadastrar como mentor", que não existe como tela própria: virar
+         mentor é a chave "Quero receber pedidos de ajuda" em Minha conta, depois do cadastro. -->
+    <div class="convite flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+      <div class="flex items-center gap-4">
+        <span class="convite__icone" aria-hidden="true"><app-icone nome="mao-coracao" /></span>
+        <div><h3>Domina alguma matéria? Ajude um colega.</h3><p>Compartilhe o que você já aprendeu e fortaleça a comunidade acadêmica.</p></div>
+      </div>
+      <a class="botao convite__botao" routerLink="/cadastro">Criar conta</a>
     </div>
   </div>
 </section>
 
-<section class="depoimentos faixa" aria-labelledby="titulo-depoimentos">
-  <div class="landing-largura">
+<section class="depoimentos faixa-cheia" aria-labelledby="titulo-depoimentos">
+  <div class="largura largura--estreita">
     <div class="secao-central">
-      <p class="sobretitulo">Exemplos ilustrativos</p>
-      <!-- O trecho sr-only entra no nome do título e da região: quem navega por títulos ou por
-           regiões com leitor de tela ouve o aviso sem passar pelo sobretítulo nem pela linha de apoio -->
+      <!-- O trecho sr-only entra no nome do título e da região: quem navega por títulos com leitor
+           de tela ouve que são exemplos, sem depender da linha de apoio. -->
       <h2 id="titulo-depoimentos">O que dizem os colegas<span class="sr-only">, exemplos ilustrativos</span></h2>
-      <p>Situações criadas pela equipe para mostrar como a mentoria funciona. Não são depoimentos de pessoas reais.</p>
+      <p class="secao-apoio secao-apoio--pequena">Histórias que queremos ver acontecer no CIMATEC.</p>
     </div>
-    <div class="depoimentos__grade grid gap-4 md:grid-cols-3">
+    <div class="depoimentos__grade grid gap-6 md:grid-cols-3">
       @for (d of depoimentos; track d.nome) {
-        <article class="depoimento flex flex-col gap-4">
-          <p class="flex-1">“{{ d.texto }}”</p>
-          <div class="flex items-center gap-3">
-            <app-avatar [nome]="d.nome" [foto]="d.foto" [tamanho]="48" />
-            <div class="min-w-0"><h3>{{ d.nome }}</h3><p class="mentor-publico__curso">{{ d.curso }}</p></div>
+        <article class="depoimento-cartao flex flex-col">
+          <div class="flex-1">
+            @if (d.mentor) { <p class="pilula-mentor">Mentor voluntário</p> }
+            <p class="depoimento-cartao__texto">“{{ d.texto }}”</p>
+          </div>
+          <div class="depoimento-cartao__autor flex items-center gap-3">
+            <app-avatar [nome]="d.nome" [foto]="d.foto" [tamanho]="40" />
+            <div class="min-w-0"><h3>{{ d.nome }}</h3><p>{{ d.curso }}</p></div>
           </div>
         </article>
       }
@@ -160,15 +129,19 @@
   </div>
 </section>
 
-<section class="faq faixa" aria-labelledby="titulo-faq">
-  <div class="landing-largura">
-    <div class="secao-central"><p class="sobretitulo">Tire suas dúvidas</p><h2 id="titulo-faq">Perguntas frequentes</h2><p>Conheça a proposta de mentoria entre colegas.</p></div>
+<section id="perguntas" class="faq faixa-cheia" aria-labelledby="titulo-faq">
+  <div class="largura largura--faq">
+    <div class="secao-central">
+      <p class="sobretitulo">Tire suas dúvidas</p>
+      <h2 id="titulo-faq">Perguntas Frequentes</h2>
+      <p class="secao-apoio">Tudo o que você precisa saber sobre a mentoria solidária entre colegas.</p>
+    </div>
     <div class="faq__itens flex flex-col gap-4">
-      <details open><summary>A mentoria tem algum custo ou cobrança?</summary><p>Não. O Cimatec Estudos é um projeto acadêmico de apoio entre estudantes, sem pagamentos pela plataforma.</p></details>
-      <details><summary>Como e onde acontecem as mentorias?</summary><p>Você escolhe um horário disponível e envia um pedido. Depois que o mentor aceitar, o e-mail institucional dele aparece para vocês combinarem o encontro no CIMATEC - Orlando Gomes ou online, conforme a modalidade escolhida.</p></details>
-      <details><summary>Quem pode usar o Cimatec Estudos?</summary><p>A plataforma foi pensada para os estudantes dos cursos técnicos do SENAI CIMATEC. O cadastro usa o e-mail institucional, que precisa ser confirmado antes de entrar.</p></details>
+      <details open><summary>A mentoria tem algum custo ou cobrança?</summary><p>Não. O Cimatec Estudos é gratuito: é uma iniciativa de apoio mútuo entre colegas estudantes, sem cobranças, taxas ou transações financeiras.</p></details>
+      <details><summary>Como e onde acontecem as mentorias?</summary><p>A mentoria pode ser presencial, no CIMATEC - Orlando Gomes, ou online, combinada entre quem ensina e quem aprende conforme a disponibilidade dos dois. O contato institucional do mentor aparece depois que ele aceita o pedido.</p></details>
+      <details><summary>Quem pode ser mentor?</summary><p>Qualquer estudante dos cursos técnicos do SENAI CIMATEC que já tenha cursado a matéria e queira ajudar de forma voluntária. Depois de criar a conta com o e-mail institucional, é só ligar “Quero receber pedidos de ajuda” em Minha conta.</p></details>
       <details><summary>Minha foto aparece na página inicial?</summary><p>Só se você quiser, e só se marcar as duas escolhas: mostrar a sua foto e aparecer na vitrine. Sem as duas, você aparece com a inicial do nome. As duas são opcionais, começam desmarcadas, e você muda quando quiser em Minha conta.</p></details>
-      <details><summary>Por que não há estrelas ou um ranking público?</summary><p>A proposta é apoiar o aprendizado entre colegas. As recomendações consideram a matéria, os horários e as sessões concluídas, sem ranking público.</p></details>
+      <details><summary>Por que a plataforma não possui avaliação por estrelas ou notas?</summary><p>Para garantir um espaço acolhedor e horizontal, sem ranqueamentos ou pressão comercial. Acreditamos na troca justa e no aprendizado coletivo.</p></details>
     </div>
   </div>
 </section>
