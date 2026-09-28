@@ -49,6 +49,12 @@ class BackendApplicationTests {
 	 * Produção segura por omissão: sem o perfil dev (e os testes rodam sem ele), o cookie de
 	 * sessão é Secure. Quem desliga é o application-dev.properties, de forma explícita.
 	 */
+	/** Sem a variável PORT, a porta é a 8080 de sempre. */
+	@Test
+	void semAVariavelPortAPortaE8080() {
+		assertThat(ambiente.getProperty("server.port")).isEqualTo("8080");
+	}
+
 	@Test
 	void cookieDeSessaoESecureForaDoPerfilDev() throws Exception {
 		assertThat(ambiente.getProperty("server.servlet.session.cookie.secure", Boolean.class)).isTrue();
