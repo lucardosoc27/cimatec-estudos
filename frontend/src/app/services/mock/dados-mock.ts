@@ -223,7 +223,7 @@ function publico({ respostaSimulada, consentimentos, fotoPequena, ...mentor }: M
 }
 
 /**
- * Vitrine da landing: só quem consentiu, primeiro nome, sem horário.
+ * Vitrine da landing: só quem consentiu e tem matéria, primeiro nome, sem horário.
  * Foto: só com os DOIS consentimentos, o de mostrar a foto a quem está logado e o de aparecer na
  * vitrine; sem eles, foto null e a tela mostra a inicial (DECISOES.md, 2026-09-28, que revê
  * 2026-09-22). A regra é aplicada aqui, na origem, e não escondida depois no template.
@@ -231,6 +231,10 @@ function publico({ respostaSimulada, consentimentos, fotoPequena, ...mentor }: M
 function vitrine(base: Base) {
   return verificados(base)
     .filter((m) => m.consentimentos.vitrinePublicaEm)
+    // Só quem pode ser encontrado em /mentores: sem matéria cadastrada, a busca nunca mostra a pessoa,
+    // e anunciar na vitrine alguém que não se encontra é pior que um cartão a menos (DECISOES.md,
+    // 2026-09-28). Hoje isso tira o Igor, de Multimídia; ele volta sozinho quando tiver matérias.
+    .filter((m) => m.materias.some((id) => base.materias.some((x) => x.id === id)))
     .map((m) => ({
       id: m.id,
       nome: m.nome.split(' ')[0],

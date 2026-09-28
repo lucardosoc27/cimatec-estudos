@@ -384,13 +384,15 @@ Eduarda e Felipe ficam como **não verificados**: não aparecem nas buscas.
 os dois consentimentos (foto e vitrine); os outros aparecem com a inicial (DECISOES.md, entrada
 de 2026-09-28, que revê a de 2026-09-22). Hoje, 14 dos 18
 mentores verificados têm `vitrinePublicaEm`; Diego, Carla, Henrique e Júlia não aparecem no
-carrossel, e isso é esperado, não pendência.
+carrossel, e isso é esperado, não pendência. O Igor tem o consentimento, mas também fica fora: a
+vitrine só mostra quem pode ser encontrado em `/mentores`, e Multimídia ainda não tem matérias
+(decidido pelo Luã em 2026-09-28). Ele volta quando tiver matérias. São 13 na vitrine.
 
-**Decidido em 2026-09-28, revisto no mesmo dia pelo Luã:** ficam sem `fotoParaLogadosEm` o Diego e
-o Bruno, que têm retrato mas não consentiram mostrá-lo, e a Júlia, que não tem retrato. A Beatriz
-passou a ter os dois consentimentos e aparece com foto. Assim o avatar com a inicial aparece em
-`/mentores` e, só com o Bruno, também na vitrine: um cartão sem foto basta para mostrar que a foto
-é opcional.
+**Decidido em 2026-09-28, revisto duas vezes no mesmo dia pelo Luã:** ficam sem `fotoParaLogadosEm`
+o Diego, que tem retrato mas não consentiu mostrá-lo, e a Júlia, que não tem retrato. A Beatriz e o
+Bruno passaram a ter os dois consentimentos e aparecem com foto. O avatar com a inicial continua
+em `/mentores` (Diego e Júlia), mas **a vitrine não tem mais nenhum exemplo de foto negada**: todos
+os 13 aparecem com foto. Foi escolha do Luã, não descuido (DECISOES.md, 2026-09-28).
 
 ### Cursos e matérias
 Arquivo `materias-cursos-senai-ba.md`: grades reais do SENAI Bahia, com a fonte e o grau de confiança de cada uma. Química, Mecânica, Multimídia e Eletromecânica estão **a confirmar com a coordenação**.
