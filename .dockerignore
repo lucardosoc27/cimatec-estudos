@@ -1,0 +1,9 @@
+# Só o que a imagem precisa entra no contexto de build: o código do front e do back.
+.git
+docs
+**/node_modules
+frontend/dist
+frontend/.angular
+backend/target
+backend/dados
+**/*.md
