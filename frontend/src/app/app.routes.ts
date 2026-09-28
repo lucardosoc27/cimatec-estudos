@@ -7,6 +7,9 @@ export const routes: Routes = [
   { path: 'cadastro', title: 'Criar conta · Cimatec Estudos', canActivate: [visitanteGuard], loadComponent: () => import('./features/auth/auth').then(m => m.Auth) },
   { path: 'verificar-email', title: 'Verificar e-mail · Cimatec Estudos', loadComponent: () => import('./features/auth/verificar-email').then(m => m.VerificarEmail) },
   { path: 'termos', title: 'Termos e Privacidade · Cimatec Estudos', loadComponent: () => import('./features/termos/termos').then(m => m.Termos) },
+  // Portfólio do PROJETO (o que é, o problema, as telas, o que vem depois). Público, sem guard.
+  // Não é o portfólio de cada aluno das telas 9 e 10, por isso /projeto e não /portfolio.
+  { path: 'projeto', title: 'Portfólio do projeto · Cimatec Estudos', loadComponent: () => import('./features/projeto/projeto').then(m => m.Projeto) },
   {
     path: '', canActivateChild: [authGuard], children: [
       { path: 'inicio', title: 'Início · Cimatec Estudos', loadComponent: () => import('./features/inicio/inicio').then(m => m.Inicio) },

@@ -1,0 +1,7 @@
+/* Só tokens de styles.scss: nenhuma cor escrita aqui. */
+.projeto__rotulo { color: var(--cor-primaria); font-weight: 700; }
+.projeto__abertura { font-size: var(--texto-destaque); color: var(--cor-texto-suave); }
+.projeto__suave { color: var(--cor-texto-suave); }
+.projeto__item-titulo { font-weight: 700; }
+.projeto__numero { color: var(--cor-primaria); font-size: var(--texto-subtitulo); font-weight: 700; line-height: 1; }
+.projeto__lista { list-style: disc; padding-left: var(--espaco-3); }

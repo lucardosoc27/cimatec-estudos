@@ -1,0 +1,89 @@
+<article class="flex flex-col gap-12 mx-auto max-w-4xl">
+  <header class="flex flex-col gap-3">
+    <p class="projeto__rotulo">Portfólio do projeto</p>
+    <h1 class="titulo titulo--compacto">Cimatec Estudos</h1>
+    <p class="projeto__abertura">Mentoria entre colegas dos cursos técnicos do SENAI CIMATEC: quem travou numa matéria pede ajuda a quem já passou por ela.</p>
+  </header>
+
+  <section class="flex flex-col gap-3" aria-labelledby="projeto-o-que-e">
+    <h2 id="projeto-o-que-e" class="subtitulo">O que é</h2>
+    <p>Um sistema web em que o aluno diz em que matéria precisa de ajuda e em que turnos pode estudar, e recebe uma lista de colegas que ensinam aquela matéria, com o motivo de cada recomendação. Ele escolhe um horário livre e envia o pedido. O colega aceita ou recusa, e o contato entre os dois só aparece depois do aceite.</p>
+    <p>É o trabalho de conclusão individual do curso Ford Enter, no SENAI CIMATEC, com foco em front-end.</p>
+  </section>
+
+  <section class="flex flex-col gap-3" aria-labelledby="projeto-problema">
+    <h2 id="projeto-problema" class="subtitulo">O problema</h2>
+    <p>Quem trava numa matéria do curso técnico costuma depender de conhecer, por acaso, alguém que já passou por ela, e de achar um horário em comum. Plataformas de aula particular existem, mas são pagas e não conhecem as matérias de cada curso técnico. Colegas que já cursaram a matéria podem ajudar, mas não há um jeito organizado de saber quem, em que horário e com que confiança.</p>
+  </section>
+
+  <section class="flex flex-col gap-4" aria-labelledby="projeto-fluxo">
+    <h2 id="projeto-fluxo" class="subtitulo">O fluxo principal, em cinco telas</h2>
+    <ol class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      @for (passo of passos; track passo.titulo; let n = $index) {
+        <li class="perfil flex flex-col gap-2">
+          <p class="projeto__numero" aria-hidden="true">{{ n + 1 }}</p>
+          <h3 class="projeto__item-titulo">{{ passo.titulo }}</h3>
+          <p class="projeto__suave">{{ passo.texto }}</p>
+        </li>
+      }
+    </ol>
+  </section>
+
+  <section class="flex flex-col gap-4" aria-labelledby="projeto-telas">
+    <h2 id="projeto-telas" class="subtitulo">As outras telas</h2>
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      @for (tela of outrasTelas; track tela.titulo) {
+        <li class="perfil flex flex-col gap-2">
+          <h3 class="projeto__item-titulo">{{ tela.titulo }}</h3>
+          <p class="projeto__suave">{{ tela.texto }}</p>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="flex flex-col gap-4" aria-labelledby="projeto-escolhas">
+    <h2 id="projeto-escolhas" class="subtitulo">Escolhas de projeto</h2>
+    <ul class="grid gap-4 sm:grid-cols-2">
+      @for (escolha of escolhas; track escolha.titulo) {
+        <li class="flex flex-col gap-1">
+          <h3 class="projeto__item-titulo">{{ escolha.titulo }}</h3>
+          <p class="projeto__suave">{{ escolha.texto }}</p>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="perfil flex flex-col gap-5" aria-labelledby="projeto-versao">
+    <h2 id="projeto-versao" class="subtitulo">Esta é a primeira versão</h2>
+    <div class="grid gap-6 md:grid-cols-2">
+      <div class="flex flex-col gap-2">
+        <h3 class="projeto__item-titulo">O que já funciona de verdade</h3>
+        <ul class="projeto__lista flex flex-col gap-2">
+          @for (item of real; track item) { <li>{{ item }}</li> }
+        </ul>
+      </div>
+      <div class="flex flex-col gap-2">
+        <h3 class="projeto__item-titulo">O que ainda é simulado</h3>
+        <ul class="projeto__lista flex flex-col gap-2">
+          @for (item of simulado; track item) { <li>{{ item }}</li> }
+        </ul>
+      </div>
+    </div>
+    <div class="flex flex-col gap-2">
+      <h3 class="projeto__item-titulo">O que vem depois</h3>
+      <ul class="projeto__lista flex flex-col gap-2">
+        @for (item of depois; track item) { <li>{{ item }}</li> }
+      </ul>
+    </div>
+  </section>
+
+  <section class="flex flex-col gap-3" aria-labelledby="projeto-tecnologia">
+    <h2 id="projeto-tecnologia" class="subtitulo">Com o que foi feito</h2>
+    <p>Front-end em Angular 20, com CSS próprio. Servidor em Java 21 com Spring Boot 4.1 e Spring Security 7.1, senha guardada com BCrypt e banco H2.</p>
+  </section>
+
+  <p class="flex flex-wrap gap-x-6 gap-y-2">
+    <a routerLink="/" class="link-acao">← Página inicial</a>
+    <a routerLink="/termos" class="link-acao">Termos e privacidade</a>
+  </p>
+</article>
