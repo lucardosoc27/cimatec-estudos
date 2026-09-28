@@ -1,7 +1,11 @@
 <section class="verificacao mx-auto" [attr.aria-busy]="ocupado()" aria-labelledby="titulo-verificacao">
-  <div class="simbolo mx-auto" [class.simbolo--sucesso]="estado() === 'ativada'" [class.simbolo--alerta]="estado() === 'expirado'" aria-hidden="true">
-    @if (estado() === 'ativada' || estado() === 'ja-usado') {
+  <!-- Especificação visual: docs/telas/02-verificar-email (o padrão é verificar-email-v1). O ✓ verde é só
+       da conta ativada; o link já usado leva um "i" neutro, como na maquete: não é uma vitória nova. -->
+  <div class="simbolo mx-auto" [class.simbolo--sucesso]="estado() === 'ativada'" [class.simbolo--alerta]="estado() === 'expirado'" [class.simbolo--neutro]="estado() === 'ja-usado'" aria-hidden="true">
+    @if (estado() === 'ativada') {
       <svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m7 16 6 6L25 10"/></svg>
+    } @else if (estado() === 'ja-usado') {
+      <svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><circle cx="16" cy="16" r="11"/><path d="M16 14.5v7M16 10.5v.01"/></svg>
     } @else if (estado() === 'expirado') {
       <svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><circle cx="16" cy="16" r="11"/><path d="M16 9v7l5 3"/></svg>
     } @else {

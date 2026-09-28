@@ -1,25 +1,25 @@
 :host { display: block; padding: var(--espaco-4) 0 var(--espaco-6); }
-.verificacao { max-width: 500px; padding: var(--espaco-5) var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); background: var(--cor-superficie); box-shadow: var(--sombra-cartao); text-align: center; }
+/* Medidas da maquete docs/telas/02-verificar-email: cartão de 460 px, 36 px de respiro no computador,
+   título de 28 px e os dois links de apoio em 14 px, cada um na sua linha. */
+.verificacao { max-width: 460px; padding: var(--espaco-5) var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); background: var(--cor-superficie); box-shadow: var(--sombra-cartao); text-align: center; }
 .simbolo { display: grid; place-items: center; width: 72px; height: 72px; margin-bottom: var(--espaco-4); border-radius: 50%; color: var(--cor-primaria); background: var(--cor-primaria-suave); }
 .simbolo svg { width: 40px; height: 40px; }
 .simbolo--sucesso { color: var(--cor-sucesso); background: var(--cor-sucesso-fundo); }
 .simbolo--alerta { color: var(--cor-alerta); background: var(--cor-alerta-fundo); }
-h1 { font-size: clamp(1.7rem, 3vw, 2rem); margin-bottom: var(--espaco-3); }
+.simbolo--neutro { color: var(--cor-texto-suave); background: var(--cor-neutro-fundo); }
+h1 { font-size: 1.75rem; margin-bottom: var(--espaco-2); }
 p { color: var(--cor-texto-suave); overflow-wrap: anywhere; }
 p strong { color: var(--cor-texto); }
 .botao, form { margin-top: var(--espaco-4); }
 .separador { padding-top: var(--espaco-4); margin-top: var(--espaco-4); border-top: 1px solid var(--cor-borda-suave); }
+.reenviar, .voltar { display: flex; width: fit-content; margin-inline: auto; font-size: .875rem; }
 .reenviar { color: var(--cor-primaria); text-decoration: underline; cursor: pointer; }
-.voltar { margin-top: var(--espaco-5); justify-content: center; }
-/* .campo, .erro-campo e .mensagem são globais (styles.scss). Esta tela tinha regras próprias diferentes
-   das outras, e elas ficam aqui para ela não mudar: 8 px entre as partes do campo, borda do campo sem
-   vermelho no erro, erro em 16 px e ocupando o espaço mesmo vazio, e aviso com 16 px de respiro, sem
-   borda no erro. O .mensagem--erro se repete porque o .mensagem desta tela pesa mais que o global. */
-.campo { gap: 8px; text-align: left; }
-.campo input { padding: 10px 12px; border: 1px solid var(--cor-borda); }
+.voltar { margin-top: var(--espaco-4); }
+/* .campo, .erro-campo e .mensagem são globais (styles.scss), iguais aos de entrar e Minha conta. Aqui só
+   o alinhamento à esquerda dentro do cartão centralizado e a cor do texto: o "p" desta tela é cinza e
+   pesa mais que o global, então o aviso e o erro dizem a própria cor. */
+.campo { text-align: left; }
 form { gap: 0; }
-.erro-campo { font-size: 1rem; }
-.erro-campo:empty { display: inline; }
-.mensagem { margin-top: var(--espaco-4); padding: var(--espaco-3); color: var(--cor-texto); }
-.mensagem--erro { background: var(--cor-erro-fundo); color: var(--cor-erro); border: 0; }
-@media (min-width: 48rem) { :host { padding-top: var(--espaco-6); } .verificacao { padding: var(--espaco-6) var(--espaco-5); } }
+.mensagem { margin-top: var(--espaco-4); color: var(--cor-texto); }
+.mensagem--erro { color: var(--cor-erro); }
+@media (min-width: 48rem) { :host { padding-top: var(--espaco-6); } .verificacao { padding: 36px; } }
