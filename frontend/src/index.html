@@ -5,6 +5,17 @@
   <title>Cimatec Estudos</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- O site tem tema claro e escuro: o navegador já pinta o fundo no tom certo antes do CSS chegar. -->
+  <meta name="color-scheme" content="light dark">
+  <!-- Aplica o tema que a pessoa escolheu antes da primeira pintura, para a tela não piscar clara antes
+       de escurecer. Só lê a chave "tema" do localStorage; sem escolha, vale a preferência do sistema,
+       que o CSS resolve sozinho. A troca depois é do TemaService (core/tema/tema.service.ts). -->
+  <script>
+    try {
+      var tema = localStorage.getItem('tema');
+      if (tema === 'claro' || tema === 'escuro') document.documentElement.setAttribute('data-tema', tema);
+    } catch (e) { /* armazenamento bloqueado: segue o sistema */ }
+  </script>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
