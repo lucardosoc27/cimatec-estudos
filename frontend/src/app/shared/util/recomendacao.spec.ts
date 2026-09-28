@@ -1,7 +1,7 @@
 import { HorarioLivre } from '../../models/disponibilidade';
 import { Materia } from '../../models/materia';
 import { Mentor } from '../../models/mentor';
-import { descreverHorario, idDoMentorComSelo, materiasAlternativas, recomendarMentores, separarHorarios } from './recomendacao';
+import { descreverHorario, materiasAlternativas, recomendarMentores, separarHorarios } from './recomendacao';
 
 function horario(id: string, dia: HorarioLivre['dia'], turno: HorarioLivre['turno'], modalidade: HorarioLivre['modalidade']): HorarioLivre {
   const hora = { manha: '09:00', tarde: '14:00', noite: '19:00' }[turno];
@@ -104,36 +104,6 @@ describe('recomendarMentores', () => {
     const novo = mentor({ id: 'n', nome: 'Nina', horariosLivres: [horario('n1', 'ter', 'tarde', 'online')] });
     const r = recomendarMentores([novo], { materiaId: 'poo', turnos: ['tarde'] });
     expect(r.recomendados[0].motivos[2]).toBe('mentor novo nesta matéria');
-  });
-});
-
-describe('idDoMentorComSelo', () => {
-  const selo = (mentores: Mentor[]) =>
-    idDoMentorComSelo(recomendarMentores(mentores, { materiaId: 'poo', turnos: ['tarde'] }).recomendados, 'poo');
-
-  it('dá o selo ao primeiro quando ele vence por horários compatíveis', () => {
-    // ana: 2 horários à tarde; carla: 1
-    expect(selo([carla, ana])).toBe('ana');
-  });
-
-  it('dá o selo ao primeiro quando empata nos horários e vence por sessões na matéria', () => {
-    const muitas = mentor({ id: 'm', nome: 'Zeca', selos: [{ materiaId: 'poo', sessoesConcluidas: 5 }], horariosLivres: [horario('m1', 'ter', 'tarde', 'online')] });
-    const poucas = mentor({ id: 'p', nome: 'Alice', selos: [{ materiaId: 'poo', sessoesConcluidas: 2 }], horariosLivres: [horario('p1', 'ter', 'tarde', 'online')] });
-    expect(selo([poucas, muitas])).toBe('m');
-  });
-
-  it('não dá selo quando só o nome separa os dois primeiros', () => {
-    const zeca = mentor({ id: 'z', nome: 'Zeca', horariosLivres: [horario('z1', 'ter', 'tarde', 'online')] });
-    const alice = mentor({ id: 'a', nome: 'Alice', horariosLivres: [horario('a1', 'ter', 'tarde', 'online')] });
-    expect(selo([zeca, alice])).toBeNull();
-  });
-
-  it('não dá selo quando há um recomendado só', () => {
-    expect(selo([ana])).toBeNull();
-  });
-
-  it('não dá selo quando não há recomendados', () => {
-    expect(idDoMentorComSelo([], 'poo')).toBeNull();
   });
 });
 

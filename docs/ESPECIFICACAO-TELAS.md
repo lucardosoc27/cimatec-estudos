@@ -135,10 +135,10 @@ Usar as pílulas `[data-status]` do `styles.scss`.
 - **Não existe status em ciano.** O ciano `#00D4E8` é só o selo "Sessão marcada" (ver as animações) e os detalhes decorativos.
 - **A decidir com o Luã:** qual status tem um pedido cancelado? O CLAUDE.md lista só os cinco acima.
 
-### Selo "Combina bem com você"
-- Ícone de check em círculo, **o mesmo em todas as telas**.
-- Vem com as etiquetas do que os dois têm em comum: "mesma matéria", "livre terça à tarde", "presencial ou online".
-- Regra do `idDoMentorComSelo`: só o primeiro recomendado, e só se ele vencer o segundo por horário ou por sessões. Empate: ninguém recebe. Um recomendado só: ninguém recebe.
+### Motivo em comum (antes, selo "Combina bem com você")
+- **O selo "Combina bem com você" saiu em 2026-09-28** (DECISOES.md): destacava só o primeiro recomendado, e isso se lia como o sistema ranqueando pessoas.
+- No lugar, o motivo objetivo, **igual para todo cartão**: as etiquetas do que os dois têm em comum, "mesma matéria", o horário livre no turno que a pessoa marcou ("livre terça à tarde") e a modalidade ("presencial ou online").
+- Nenhum cartão recebe destaque próprio (selo, cor, estrela, "recomendado").
 
 ---
 
@@ -197,7 +197,7 @@ Não existe nesta tela: prévia de "N mentores disponíveis", cards "100% Volunt
 - Alternador "Pilha de cartões" / "Em lista".
 
 **Pilha:**
-- Cartão da frente com o **retrato ocupando o topo**. O selo "Combina bem com você" fica no topo da foto e as **etiquetas em comum na base da foto**.
+- Cartão da frente com o **retrato ocupando o topo** e as **etiquetas em comum na base da foto**. Sem selo no topo da foto (ver "Motivo em comum").
 - Abaixo da foto: nome, curso, "N sessões concluídas" (texto simples, sem estrelas) e o motivo: "Ensina <matéria> • livre <dia> à <turno>".
 - **Dois cartões atrás**, aparecendo só as bordas, levemente inclinados, e marcados com `inert`.
 - Contador "1 de N".
@@ -205,7 +205,7 @@ Não existe nesta tela: prévia de "N mentores disponíveis", cards "100% Volunt
 - No celular, também "ou arraste o cartão para o lado". **O botão é o caminho principal e o arraste é atalho** (WCAG 2.5.1 e 2.5.7).
 - O foco vai para o nome do próximo mentor.
 
-**Em lista:** cartões horizontais com a foto em círculo, o nome, o curso, as sessões, o motivo e "Ver perfil e horários →". O selo aparece só em quem o recebeu.
+**Em lista:** cartões horizontais com a foto em círculo, o nome, o curso, as sessões, o motivo e "Ver perfil e horários →". Sem selo.
 
 **Vazio (obrigatório, porque a tela 2 não tem prévia):** "Nenhum mentor nesse turno." + a sugestão "Tente marcar mais turnos ou escolher Ambos na modalidade." + "← Alterar pedido".
 
@@ -218,7 +218,7 @@ Não existe nesta tela: "SENAI CIMATEC • Salvador", "Disponível esta semana",
 - Retrato com o **ícone de chapéu de formando** embaixo da foto.
 - Nome, curso ("Técnico em Redes de Computadores") e "SENAI CIMATEC - Orlando Gomes".
 - **Sem semestre.**
-- O selo "Combina bem com você" com as etiquetas, se for o caso, e "N sessões concluídas".
+- "N sessões concluídas" e a caixa **"Em comum com o seu pedido"** com as etiquetas, para qualquer mentor compatível com o pedido.
 - **"Ensina"**: chips de matérias (só as matérias reais do curso).
 - **"Um pouco sobre mim"**: texto curto escrito pelo mentor. Texto da Ana: "Faço o Técnico em Redes de Computadores no CIMATEC. Configuração de Servidores foi a matéria em que eu mais travei, e hoje é a que mais gosto de explicar, sempre com a prática junto."
 

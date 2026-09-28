@@ -37,7 +37,8 @@
                   <div class="retrato flex items-center justify-center relative">
                     @if (item.mentor.foto) { <img [src]="item.mentor.foto" alt="" class="absolute inset-0 w-full h-full object-cover" /> }
                     @else { <app-avatar [nome]="item.mentor.nome" [foto]="null" [tamanho]="132" /> }
-                    @if (idComSelo() === item.mentor.id) { <span class="selo-combina absolute top-4 left-4"><app-icone nome="verificado" /> Combina bem com você</span> }
+                    <!-- Sem selo de destaque no primeiro cartão (DECISOES.md, 2026-09-28): o que aparece na foto
+                         é o motivo objetivo, igual para todos, nas etiquetas "Em comum" abaixo. -->
                     <ul class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2" aria-label="Em comum">
                       @for (etiqueta of etiquetas(item); track etiqueta) { <li class="etiqueta">{{ etiqueta }}</li> }
                     </ul>
@@ -64,7 +65,6 @@
               <li><article class="cartao-mentor p-5 md:p-6 flex flex-col sm:flex-row gap-5 sm:items-center">
                 <app-avatar [nome]="item.mentor.nome" [foto]="item.mentor.foto" [tamanho]="80" />
                 <div class="flex-1 min-w-0">
-                  @if (idComSelo() === item.mentor.id) { <span class="selo-combina selo-combina--claro mb-3"><app-icone nome="verificado" /> Combina bem com você</span> }
                   <h2 class="subtitulo">{{ item.mentor.nome }}</h2><p class="curso mt-1">Técnico em {{ item.mentor.curso }}</p>
                   <p class="texto-suave linha-icone mt-2"><app-icone nome="escola" />{{ item.mentor.sessoesConcluidas }} sessões concluídas</p><p class="texto-suave mt-2">{{ motivo(item) }}</p>
                 </div>

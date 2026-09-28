@@ -18,8 +18,10 @@
               <p class="texto-suave linha-icone mt-3"><app-icone nome="local" />SENAI CIMATEC - Orlando Gomes</p>
               <p class="sessoes linha-icone mt-3"><app-icone nome="escola" />{{ m.sessoesConcluidas }} sessões concluídas</p>
             </div>
-            @if (temSelo()) {
-              <section class="bloco-suave mt-6" aria-label="Afinidades com o seu pedido"><p class="combina linha-icone"><app-icone nome="verificado" />Combina bem com você</p><ul class="flex flex-wrap gap-2 mt-3">@for (etiqueta of etiquetas(); track etiqueta) { <li class="etiqueta">{{ etiqueta }}</li> }</ul></section>
+            <!-- O motivo objetivo, para qualquer mentor compatível; antes era o selo "Combina bem com você",
+                 só para o primeiro da lista (DECISOES.md, 2026-09-28). -->
+            @if (etiquetas().length) {
+              <section class="bloco-suave mt-6" aria-labelledby="em-comum"><h2 id="em-comum" class="combina linha-icone"><app-icone nome="lista" />Em comum com o seu pedido</h2><ul class="flex flex-wrap gap-2 mt-3">@for (etiqueta of etiquetas(); track etiqueta) { <li class="etiqueta">{{ etiqueta }}</li> }</ul></section>
             }
             <section class="mt-6"><h2 class="subtitulo mb-3">Ensina</h2><ul class="flex flex-wrap gap-2">@for (materia of materiasEnsinadas(); track materia.id) { <li class="materia-chip">{{ materia.nome }}</li> }</ul></section>
             <section class="bloco-suave mt-6"><h2 class="subtitulo mb-3">Um pouco sobre mim</h2><p class="texto-suave">{{ m.descricao || 'Este mentor ainda não adicionou uma apresentação.' }}</p></section>

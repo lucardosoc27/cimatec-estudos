@@ -16,7 +16,7 @@ import { Icone } from '../../shared/icone/icone';
 import { DiaEDataPipe } from '../../shared/dia-e-data.pipe';
 import { EstadoTela } from '../../shared/estado-tela';
 import { proximaData } from '../../shared/util/datas';
-import { descreverHorario, idDoMentorComSelo, separarHorarios } from '../../shared/util/recomendacao';
+import { descreverHorario, separarHorarios } from '../../shared/util/recomendacao';
 
 interface OpcaoHorario { horario: HorarioLivre; data: string; }
 class HorarioIndisponivelError extends Error {}
@@ -41,7 +41,6 @@ export class MentorPerfil {
   protected readonly materias = signal<Materia[]>([]);
   protected readonly pedidoEmAberto = signal<Pedido | null>(null);
   protected readonly recomendado = signal<MentorRecomendado | null>(null);
-  protected readonly temSelo = signal(false);
   protected readonly formulario = this.rascunhos.rascunho;
   protected readonly horarioId = computed(() => this.formulario()?.horarioId ?? null);
   protected readonly ocupados = signal<string[]>([]);
@@ -88,7 +87,6 @@ export class MentorPerfil {
         this.materias.set(materias);
         this.pedidoEmAberto.set(emAberto ?? null);
         this.recomendado.set(recomendacao?.recomendados.find(r => r.mentor.id === mentor.id) ?? null);
-        this.temSelo.set(idDoMentorComSelo(recomendacao?.recomendados ?? [], materia.id) === mentor.id);
         this.estado.set('sucesso');
       },
       error: () => this.estado.set('erro'),

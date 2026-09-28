@@ -9,7 +9,7 @@ import { PedidoRascunhoService } from '../../services/pedido-rascunho.service';
 import { Avatar } from '../../shared/avatar/avatar';
 import { Icone } from '../../shared/icone/icone';
 import { EstadoTela } from '../../shared/estado-tela';
-import { descreverHorario, idDoMentorComSelo } from '../../shared/util/recomendacao';
+import { descreverHorario } from '../../shared/util/recomendacao';
 
 @Component({
   selector: 'app-mentores', imports: [RouterLink, Avatar, Icone],
@@ -29,10 +29,6 @@ export class Mentores {
   protected readonly exibicao = signal<'pilha' | 'lista'>('pilha');
   protected readonly indice = signal(0);
   protected readonly atual = computed(() => this.resultado()?.recomendados[this.indice()] ?? null);
-  protected readonly idComSelo = computed(() => {
-    const resultado = this.resultado();
-    return resultado ? idDoMentorComSelo(resultado.recomendados, resultado.materia.id) : null;
-  });
   protected readonly resumo = computed(() => {
     const r = this.rascunhos.rascunho();
     return r ? `${r.turnos.map(t => ROTULO_TURNO[t]).join(', ')} · ${r.modalidade === 'ambos' ? 'Ambos' : r.modalidade === 'online' ? 'Online' : 'Presencial'}` : '';

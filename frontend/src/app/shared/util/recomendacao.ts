@@ -111,24 +111,6 @@ export function recomendarMentores(
 }
 
 /**
- * Selo "Combina bem com você" (DECISOES.md, 2026-09-22): só o primeiro recomendado, e só se
- * ele vencer o segundo por horários compatíveis ou por sessões concluídas na matéria.
- * Empate nos dois = nenhum selo. O nome desempata a ordem da lista, mas não dá destaque,
- * senão a ordem alfabética viraria mérito. Sem segundo também não há selo: não há contra
- * quem vencer, e o mentor sozinho na matéria teria o selo por estar sozinho.
- * Recebe `recomendados` já ordenado por `recomendarMentores`; `outrosTurnos` nunca recebe selo.
- * Assumindo má-fé: quem marca todos os horários como livres sobe e ganha o selo. Risco
- * conhecido e registrado, sem mitigação nesta etapa.
- */
-export function idDoMentorComSelo(recomendados: MentorRecomendado[], materiaId: string): string | null {
-  const [primeiro, segundo] = recomendados;
-  if (!primeiro || !segundo) {
-    return null;
-  }
-  return compararPorCriterios(primeiro, segundo, materiaId) < 0 ? primeiro.mentor.id : null;
-}
-
-/**
  * "Matérias parecidas" = outras matérias do mesmo semestre em que existe mentor livre
  * nos turnos pedidos. Só devolve as que têm resultado, para não levar a outra lista vazia.
  */
