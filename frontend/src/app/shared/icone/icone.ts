@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 /** Nomes dos ícones desenhados no projeto. */
 export type NomeIcone =
   | 'escola' | 'relogio' | 'busca' | 'estrela' | 'pausa' | 'continuar' | 'seta-esquerda' | 'seta-direita'
-  | 'mao-coracao' | 'livro' | 'aspas'
+  | 'mao-coracao' | 'livro' | 'aspas' | 'verificado'
   | 'codigo' | 'rede' | 'frasco' | 'bequer' | 'gota' | 'raio' | 'predio' | 'engrenagem' | 'video';
 
 /**
@@ -21,6 +21,7 @@ export type NomeIcone =
       @switch (nome()) {
         @case ('escola') { <path d="M2 9.5 12 5l10 4.5L12 14 2 9.5Z"/><path d="M6 11.5v4.5c3.5 2.3 8.5 2.3 12 0v-4.5M22 9.5V15"/> }
         @case ('relogio') { <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/> }
+        @case ('verificado') { <circle cx="12" cy="12" r="9"/><path d="m8.5 12.3 2.4 2.4 4.6-4.9"/> }
         @case ('busca') { <circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/> }
         @case ('estrela') { <circle cx="12" cy="12" r="9.5"/><path d="m12 7 1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5L12 7Z"/> }
         @case ('pausa') { <rect x="6.5" y="5" width="3.5" height="14" rx="1" fill="currentColor" stroke="none"/><rect x="14" y="5" width="3.5" height="14" rx="1" fill="currentColor" stroke="none"/> }

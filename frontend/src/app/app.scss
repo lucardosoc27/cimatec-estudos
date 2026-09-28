@@ -17,6 +17,6 @@
 @media (min-width: 48rem) {
   .conteudo { padding: var(--espaco-5) var(--espaco-4); }
 }
-.conteudo.conteudo--autenticacao { max-width: none; padding: 0; }
+.conteudo.conteudo--autenticacao { max-width: none; padding: 0; display: flex; flex-direction: column; }
 /* Página inicial: as faixas vão de ponta a ponta; cada uma cuida da própria largura. */
 .conteudo.conteudo--larga { max-width: none; padding: 0; }

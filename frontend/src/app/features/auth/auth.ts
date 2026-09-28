@@ -7,11 +7,12 @@ import { finalize } from 'rxjs';
 
 import { CURSOS } from '../../models/curso';
 import { AuthService } from '../../services/auth.service';
+import { Icone } from '../../shared/icone/icone';
 import { mensagemDoErro } from '../../shared/util/erros-http';
 
 @Component({
   selector: 'app-auth',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, Icone],
   templateUrl: './auth.html',
   styleUrl: './auth.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

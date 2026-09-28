@@ -1,5 +1,7 @@
-:host { display: block; width: 100%; }
-.acesso { min-height: 78vh; }
+/* O componente estica até o rodapé, e o painel azul junto (na maquete ele encosta no rodapé). No
+   celular, a sobra de altura vai para a área do formulário, não para a faixa da marca. */
+:host { display: flex; flex-direction: column; flex: 1; width: 100%; }
+.acesso { flex: 1; min-height: 78vh; grid-template-rows: auto 1fr; }
 .apresentacao { padding: var(--espaco-5); color: var(--cor-superficie); background: radial-gradient(ellipse at bottom left, rgb(0 212 232 / .13), transparent 65%), var(--cor-primaria-escura); }
 .marca { width: fit-content; color: var(--cor-superficie); text-decoration: none; }
 .marca:not(.botao):hover { color: var(--cor-superficie); }
@@ -13,10 +15,16 @@
 .apresentacao h2 > span { color: var(--cor-marca-laranja); }
 .apresentacao p { color: var(--cor-borda-suave); }
 .beneficios { margin-top: var(--espaco-4); padding-top: var(--espaco-4); border-top: 1px solid rgb(255 255 255 / .22); }
+/* Ciano sobre o azul do painel: 5,48:1, e 4,3:1 onde o degradê clareia; ícone pede 3:1. */
+.beneficio__icone { margin-top: 3px; font-size: 1.2rem; color: var(--cor-marca-ciano); }
 .encontro { display: flex; position: relative; align-items: center; justify-content: center; min-height: 224px; width: 100%; border: 0; background: none; color: inherit; cursor: pointer; }
 .pessoa { display: flex; flex-direction: column; justify-content: center; width: 168px; height: 168px; border-radius: 50%; text-align: center; }
 .pessoa--aluno { border: 3px solid var(--cor-marca-ciano); background: var(--cor-primaria); margin-right: -24px; }
 .pessoa--mentor { background: var(--cor-acao); }
+/* O texto de cada círculo se afasta da sobreposição, como na maquete: o selo "em comum" fica no
+   meio sem cobrir o fim de "você" nem o começo de "mentor" ("mentor" é mais larga, pede mais). */
+.pessoa--aluno { padding-right: 36px; }
+.pessoa--mentor { padding-left: 48px; }
 .pessoa small { font-size: .7rem; letter-spacing: .1em; font-weight: 700; }
 .pessoa strong { font-size: 1.6rem; font-weight: 800; }
 .pessoa > span { font-size: .85rem; }
@@ -45,7 +53,8 @@ form { gap: 18px; }
 .senha-regras li { color: var(--cor-texto-suave); margin-top: 4px; }
 .senha-regras .atendida { color: var(--cor-sucesso); }
 .consentimentos { border: 0; padding: 0; margin: 0; }
-.consentimentos legend { margin-bottom: var(--espaco-3); padding: 0; }
+.consentimentos legend { display: flex; align-items: center; gap: var(--espaco-3); width: 100%; margin-bottom: var(--espaco-3); padding: 0; }
+.consentimentos legend::after { content: ''; flex: 1; border-top: 1px solid var(--cor-borda-suave); }
 .consentimento { min-height: 44px; cursor: pointer; }
 .consentimento input { flex-shrink: 0; width: 22px; height: 22px; margin-top: 2px; accent-color: var(--cor-primaria); }
 .consentimentos p, .tentativas { color: var(--cor-texto-suave); font-size: .875rem; }
@@ -59,5 +68,5 @@ form { gap: 18px; }
 @keyframes encontro-mentor { from { transform: translateX(25px); opacity: .3; } to { transform: translateX(0); opacity: 1; } }
 @keyframes encontro-selo { 0%, 55% { opacity: 0; transform: scale(.9); } 100% { opacity: 1; transform: scale(1); } }
 @media (max-width: 63.99rem) { .apresentacao { padding: 24px; } .apresentacao__conteudo { display: none; } }
-@media (min-width: 64rem) { .acesso { grid-template-columns: .95fr 1.05fr; } .apresentacao { padding: 40px; } .formulario-area { padding: 48px; } .cartao-acesso { padding: 32px; } }
+@media (min-width: 64rem) { .acesso { grid-template-columns: .95fr 1.05fr; grid-template-rows: none; } .apresentacao { padding: 40px; } .formulario-area { padding: 48px; } .cartao-acesso { padding: 32px; } }
 @media (prefers-reduced-motion: reduce) { .encontro--animar .pessoa, .encontro--animar .encontro__selo { animation: none; } }
