@@ -1,30 +1,78 @@
-/* .pedido, .pedido__materia, .pedido__mentor, .pedido__quando e .pedido__status são globais
-   (src/styles.scss), mesmo desenho da tela 1. margin-bottom é só desta tela, para separar
-   o cartão do bloco .detalhe logo abaixo. */
-.pedido { margin-bottom: var(--espaco-4); }
+/* Tela 5 conforme a maquete docs/telas/14-pedido (padrão pedido-aguardando-v1), só com tokens. */
+:host { display: block; }
+.pagina-pedido { max-width: 672px; margin-inline: auto; }
 
-.detalhe {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-2);
-  align-items: flex-start;
-  margin-bottom: var(--espaco-4);
+/* Cartão único com tudo dentro, como na maquete. Mesmo acabamento dos outros cartões. */
+.cartao-pedido { padding: var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); background: var(--cor-superficie); box-shadow: var(--sombra-cartao); }
+.titulo-pedido { font-size: 1.5rem; letter-spacing: -.02em; }
+.apoio { margin-top: var(--espaco-1); color: var(--cor-texto-suave); }
+.status-pedido { margin-top: var(--espaco-3); }
+.status-pedido:focus-visible { outline-offset: 4px; }
+.aviso-encerrado { margin-top: var(--espaco-2); color: var(--cor-texto-suave); }
+
+/* Etapas. No celular, uma embaixo da outra, numa caixa clara, ligadas por um fio vertical; a partir de
+   640 px, em linha, ligadas por um fio que é contínuo depois de uma etapa feita e tracejado depois da
+   atual ou de uma que não aconteceu. */
+.etapas { display: flex; flex-direction: column; gap: var(--espaco-3); margin-top: var(--espaco-5); padding: var(--espaco-3); border-radius: var(--raio-medio); background: color-mix(in srgb, var(--cor-fundo) 50%, var(--cor-superficie)); }
+.etapa { position: relative; display: flex; align-items: center; gap: var(--espaco-3); font-weight: 600; }
+.etapa:not(:last-child)::after { content: ''; position: absolute; left: 15px; top: 34px; bottom: -14px; border-left: 2px solid var(--cor-primaria); }
+.etapa[data-estado='atual']::after, .etapa[data-estado='pendente']::after { border-left-style: dashed; border-color: var(--cor-borda); }
+.etapa__marca { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border: 1px solid transparent; border-radius: 50%; font-size: 1.125rem; }
+.etapa[data-estado='feita'] .etapa__marca { background: var(--cor-primaria-suave); color: var(--cor-primaria); }
+.etapa[data-estado='atual'] .etapa__marca { background: var(--cor-alerta-fundo); border-color: color-mix(in srgb, var(--cor-alerta) 35%, transparent); color: var(--cor-alerta); }
+.etapa[data-estado='atual'] .etapa__rotulo { color: var(--cor-alerta); }
+.etapa[data-estado='pendente'] .etapa__marca { background: var(--cor-neutro-fundo); color: var(--cor-texto-suave); }
+.etapa[data-estado='pendente'] .etapa__rotulo { color: var(--cor-texto-suave); }
+.etapa[data-estado='aceita'] .etapa__marca { background: var(--cor-sucesso-fundo); color: var(--cor-sucesso); }
+.etapa[data-estado='aceita'] .etapa__rotulo { color: var(--cor-sucesso); }
+.etapa[data-estado='encerrada'] .etapa__marca { background: var(--cor-neutro-fundo); color: var(--cor-neutro); }
+
+/* Resumo de com quem e quando, numa caixa clara */
+.resumo-mentor { margin-top: var(--espaco-4); padding: var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); background: color-mix(in srgb, var(--cor-fundo) 50%, var(--cor-superficie)); }
+.resumo-mentor__nome { font-size: var(--texto-destaque); }
+.resumo-mentor__materia { margin-top: var(--espaco-1); font-weight: 600; }
+.resumo-mentor__quando { margin-top: var(--espaco-1); color: var(--cor-texto-suave); }
+
+/* Caixas de aviso por status */
+.caixa { gap: var(--espaco-3); margin-top: var(--espaco-3); padding: var(--espaco-3); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-medio); }
+.caixa:first-of-type { margin-top: var(--espaco-4); }
+/* Prazo: azul escuro sobre azul-claro (9,43:1); o fio é o azul da marca a 25%. */
+.caixa--prazo { background: var(--cor-primaria-suave); border-color: color-mix(in srgb, var(--cor-primaria) 25%, transparent); color: var(--cor-primaria-escura); }
+.caixa--bloqueado, .caixa--encerrado { background: color-mix(in srgb, var(--cor-fundo) 50%, var(--cor-superficie)); color: var(--cor-texto-suave); }
+.caixa--encerrado .caixa__titulo { color: var(--cor-texto); }
+.caixa__titulo { font-weight: 700; }
+.caixa__apoio { margin-top: var(--espaco-1); font-size: .875rem; }
+.caixa__apoio:empty { display: none; }
+/* Contato liberado: verde de sucesso (título 5,75:1 sobre o fundo verde) */
+.caixa--contato { display: block; background: var(--cor-sucesso-fundo); border-color: color-mix(in srgb, var(--cor-sucesso) 30%, transparent); }
+.caixa--contato .caixa__titulo { color: var(--cor-sucesso); }
+.contato { margin-top: var(--espaco-3); padding: var(--espaco-2) var(--espaco-2) var(--espaco-2) var(--espaco-3); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio-pequeno); background: var(--cor-superficie); }
+.contato__email { overflow-wrap: anywhere; }
+.contato__copiar { align-items: center; min-height: var(--alvo-toque); padding: 0 var(--espaco-3); border: 1px solid var(--cor-sucesso); border-radius: var(--raio-pequeno); color: var(--cor-sucesso); font-weight: 600; cursor: pointer; }
+.contato__copiar:hover { background: var(--cor-sucesso-fundo); }
+.contato__copiar > app-icone { margin-top: 0; }
+
+/* Botões na base do cartão, separados por um fio */
+.acoes { margin-top: var(--espaco-5); padding-top: var(--espaco-4); border-top: 1px solid var(--cor-borda-suave); }
+
+/* Janela de confirmação do cancelamento. margin: auto é o que centraliza o <dialog> aberto com
+   showModal(); o reset do Tailwind zera a margem de tudo e a janela iria para o canto de cima. */
+.janela { margin: auto; width: min(100% - 2 * var(--espaco-3), 440px); padding: var(--espaco-5) var(--espaco-4); border: 1px solid var(--cor-borda-suave); border-radius: var(--raio); color: var(--cor-texto); text-align: center; box-shadow: var(--sombra-flutuante); }
+.janela::backdrop { background: color-mix(in srgb, var(--cor-texto) 45%, transparent); }
+.janela__icone { display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--cor-alerta-fundo); color: var(--cor-acao); font-size: 1.75rem; }
+.janela__titulo { margin-top: var(--espaco-3); font-size: var(--texto-subtitulo); }
+.janela__titulo:focus { outline: none; }
+.janela__texto { margin-top: var(--espaco-2); color: var(--cor-texto-suave); }
+.janela__ciencia { margin-top: var(--espaco-3); text-align: left; }
+.janela .aviso { margin-top: var(--espaco-3); text-align: left; }
+.janela__acoes { margin-top: var(--espaco-4); }
+
+@media (min-width: 40rem) {
+  .cartao-pedido { padding: var(--espaco-6) 40px; }
+  .titulo-pedido { font-size: var(--texto-titulo); }
+  .etapas { flex-direction: row; align-items: center; gap: 0; padding: 0; background: none; }
+  .etapa:not(:last-child) { flex: 1; }
+  .etapa__rotulo { white-space: nowrap; }
+  .etapa:not(:last-child)::after { position: static; flex: 1; min-width: var(--espaco-4); margin-inline: var(--espaco-1); border-left: 0; border-top: 2px solid var(--cor-primaria); }
+  .etapa[data-estado='atual']::after, .etapa[data-estado='pendente']::after { border-top-style: dashed; border-color: var(--cor-borda); }
 }
-
-.pedido__aviso { margin-top: var(--espaco-2); }
-
-/* .confirmacao é cartão: padding, borda, fundo e sombra vêm da regra global (src/styles.scss) */
-.confirmacao {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-3);
-  align-items: flex-start;
-}
-
-.confirmacao__acoes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--espaco-2);
-}
-
-/* .opcao agora é global (src/styles.scss); mesmo desenho das telas 2 e 4 */

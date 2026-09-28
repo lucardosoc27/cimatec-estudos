@@ -1,129 +1,155 @@
-<a routerLink="/" class="link-acao">Voltar ao início</a>
-<h1 class="titulo">{{ titulo() }}</h1>
+<!-- Especificação visual: docs/telas/14-pedido (o padrão é pedido-aguardando-v1). Onde a maquete diverge
+     da especificação (textos com artigo, "×" sem texto na janela), vale a especificação. -->
+<div class="pagina-pedido">
+  @switch (estado()) {
+    @case ('carregando') {
+      <p class="aviso" role="status">Carregando o pedido…</p>
+    }
 
-@switch (estado()) {
-  @case ('carregando') {
-    <p class="aviso" role="status">Carregando o pedido…</p>
-  }
-
-  @case ('erro') {
-    <div class="aviso aviso--erro" role="alert">
-      <p>Não foi possível carregar o pedido. Verifique sua conexão.</p>
-      <button type="button" class="botao botao--secundario" (click)="carregar()">Tentar de novo</button>
-    </div>
-  }
-
-  @case ('vazio') {
-    <div class="aviso">
-      <p>Não encontramos este pedido. O link pode estar desatualizado.</p>
-      <a routerLink="/" class="botao botao--secundario">Ver seus pedidos</a>
-    </div>
-  }
-
-  @case ('sucesso') {
-    @if (pedido(); as p) {
-      <section class="pedido" aria-label="Dados do pedido">
-        <h2 class="pedido__materia">{{ p.materiaNome }}</h2>
-        <p class="pedido__mentor">com {{ p.mentorNome }}</p>
-        <p class="pedido__quando">
-          {{ p.data | diaEData }} às {{ p.hora }} · {{ rotuloModalidade[p.modalidade] }}
-        </p>
-        <!-- tabindex="-1": não entra na ordem do Tab, mas aceita foco por código depois do cancelamento -->
-        <p #statusPedido tabindex="-1" class="pedido__status">
-          Status: <app-status [status]="p.status" />
-        </p>
-        @if (cancelamentoNaoAconteceu()) {
-          <p class="pedido__aviso" role="status">
-            O cancelamento não foi feito: o pedido já estava com status "{{ rotuloStatus[p.status] }}".
-          </p>
-        }
-      </section>
-
-      <div class="detalhe">
-        @switch (p.status) {
-          @case ('aguardando') {
-            <p>
-              O mentor tem até <strong>{{ p.expiraEm | date: "EEEE, dd/MM 'às' HH:mm" }}</strong> para responder.
-              Se não responder até lá, o pedido expira e a gente sugere outros mentores.
-            </p>
-            <p>O contato do mentor só aparece aqui depois que ele aceitar.</p>
-          }
-          @case ('aceito') {
-            <h2 class="subtitulo">Contato do mentor</h2>
-            <p>{{ p.mentorNome }} aceitou. Combine os detalhes da sessão por e-mail:</p>
-            @if (p.contatoMentor; as contato) {
-              <a class="link-acao" href="mailto:{{ contato.email }}">{{ contato.email }}</a>
-            }
-          }
-          @case ('recusado') {
-            <p>{{ p.mentorNome }} não pôde atender este pedido.</p>
-            <a routerLink="/pedir-ajuda" [queryParams]="{ materia: p.materiaId }" class="botao">
-              Ver outros mentores de {{ p.materiaNome }}
-            </a>
-          }
-          @case ('expirado') {
-            <p>O mentor não respondeu no prazo de {{ prazoRespostaHoras }} horas, e o pedido expirou.</p>
-            <a routerLink="/pedir-ajuda" [queryParams]="{ materia: p.materiaId }" class="botao">
-              Ver outros mentores de {{ p.materiaNome }}
-            </a>
-          }
-          @case ('cancelado') {
-            <p>Você cancelou este pedido. Se ainda precisar de ajuda, é só pedir de novo.</p>
-            <a routerLink="/pedir-ajuda" [queryParams]="{ materia: p.materiaId }" class="botao">
-              Pedir ajuda em {{ p.materiaNome }}
-            </a>
-          }
-        }
+    @case ('erro') {
+      <div class="aviso aviso--erro" role="alert">
+        <p>Não foi possível carregar o pedido. Verifique sua conexão.</p>
+        <button type="button" class="botao botao--secundario" (click)="carregar()">Tentar de novo</button>
       </div>
+    }
 
-      @if (podeCancelar()) {
-        @if (!confirmando()) {
-          <button #botaoCancelar type="button" class="botao botao--secundario" (click)="abrirConfirmacao()">
-            {{ p.status === 'aceito' ? 'Cancelar sessão' : 'Cancelar pedido' }}
-          </button>
-        } @else {
-          <section class="confirmacao" aria-labelledby="titulo-confirmacao">
-            <h2 #tituloConfirmacao id="titulo-confirmacao" tabindex="-1" class="subtitulo">
-              {{ p.status === 'aceito' ? 'Cancelar a sessão?' : 'Cancelar o pedido?' }}
-            </h2>
+    @case ('vazio') {
+      <div class="aviso">
+        <p>Não encontramos este pedido. O link pode estar desatualizado.</p>
+        <a routerLink="/inicio" class="botao botao--secundario">Ver seus pedidos</a>
+      </div>
+    }
 
-            @if (p.status === 'aceito') {
-              <p>
-                {{ p.mentorNome }} reservou {{ p.data | date: 'EEEE, dd/MM' }} às {{ p.hora }} para você.
-                Cancelar libera esse horário para outros alunos.
-              </p>
-              <label class="opcao">
-                <input type="checkbox" [checked]="cienteDaReserva()" (change)="alternarCiencia($event)" />
-                <span>Entendo que o mentor reservou este horário para mim</span>
-              </label>
-            } @else {
-              <p>O pedido sai da lista do mentor. Você pode pedir de novo quando quiser.</p>
+    @case ('sucesso') {
+      @if (pedido(); as p) {
+        <article class="cartao-pedido" aria-labelledby="titulo-pedido">
+          <h1 id="titulo-pedido" class="titulo-pedido">{{ titulo() }}</h1>
+          <p class="apoio">Enviado em {{ p.criadoEm | date: "dd/MM, 'às' HH:mm" }}</p>
+          <!-- tabindex="-1": não entra na ordem do Tab, mas aceita foco por código depois do cancelamento -->
+          <p #statusPedido tabindex="-1" class="status-pedido"><span class="sr-only">Status: </span><app-status [status]="p.status" /></p>
+          @if (cancelamentoNaoAconteceu()) {
+            <p class="aviso-encerrado" role="status">
+              O cancelamento não foi feito: o pedido já estava com status "{{ rotuloStatus[p.status] }}".
+            </p>
+          }
+
+          <!-- Etapas com texto e ícone, nunca só cor. Em linha no computador, uma embaixo da outra no celular. -->
+          <ol class="etapas" aria-label="Etapas do pedido">
+            @for (etapa of etapas(); track etapa.rotulo) {
+              <li class="etapa" [attr.data-estado]="etapa.estado" [attr.aria-current]="etapa.estado === 'atual' ? 'step' : null">
+                <span class="etapa__marca"><app-icone [nome]="etapa.icone" /></span>
+                <span class="etapa__rotulo">{{ etapa.rotulo }}<span class="sr-only"> ({{ descricaoEtapa[etapa.estado] }})</span></span>
+              </li>
             }
+          </ol>
 
-            @switch (erroCancelamento()) {
-              @case ('ciencia') {
-                <p class="aviso aviso--erro" role="alert">Para cancelar a sessão, marque a caixa acima.</p>
-              }
-              @case ('falha') {
-                <p class="aviso aviso--erro" role="alert">Não foi possível cancelar agora. Tente de novo.</p>
-              }
-            }
-
-            <div class="confirmacao__acoes">
-              <button type="button" class="botao botao--perigo" [disabled]="cancelando()" (click)="confirmarCancelamento()">
-                @if (cancelando()) {
-                  Cancelando…
-                } @else {
-                  {{ p.status === 'aceito' ? 'Sim, cancelar sessão' : 'Sim, cancelar pedido' }}
-                }
-              </button>
-              <button type="button" class="botao botao--secundario" (click)="fecharConfirmacao()">
-                {{ p.status === 'aceito' ? 'Manter sessão' : 'Manter pedido' }}
-              </button>
+          <section class="resumo-mentor flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5" aria-label="Com quem e quando">
+            <app-avatar [nome]="p.mentorNome" [foto]="p.mentorFoto" [tamanho]="72" />
+            <div class="min-w-0">
+              <h2 class="resumo-mentor__nome">{{ p.mentorNome }} · Técnico em {{ p.mentorCurso }}</h2>
+              <p class="resumo-mentor__materia">{{ p.materiaNome }}</p>
+              <div class="resumo-mentor__quando flex flex-wrap gap-x-4 gap-y-1">
+                <p class="linha-icone"><app-icone nome="calendario" />{{ p.data | diaEData }} às {{ p.hora }}</p>
+                <p class="linha-icone"><app-icone nome="local" />{{ p.local }}</p>
+              </div>
             </div>
           </section>
-        }
+
+          @switch (p.status) {
+            @case ('aguardando') {
+              <p class="caixa caixa--prazo linha-icone"><app-icone nome="info" /><span>{{ p.mentorNome }} tem até <strong>{{ p.expiraEm | date: "EEEE, dd/MM 'às' HH:mm" }}</strong> para responder. Se não responder até lá, o pedido expira e a gente sugere outros mentores.</span></p>
+              <p class="caixa caixa--bloqueado linha-icone"><app-icone nome="cadeado" /><span>O contato de {{ p.mentorNome }} aparece aqui assim que o pedido for aceito.</span></p>
+            }
+            @case ('aceito') {
+              <section class="caixa caixa--contato" aria-labelledby="titulo-contato">
+                <h2 id="titulo-contato" class="caixa__titulo linha-icone"><app-icone nome="envelope" />Contato liberado: e-mail institucional de {{ p.mentorNome }}</h2>
+                <p class="caixa__apoio">Combine os detalhes da sessão respondendo por esse e-mail.</p>
+                @if (p.contatoMentor; as contato) {
+                  <div class="contato flex flex-wrap items-center justify-between gap-2">
+                    <a class="contato__email" href="mailto:{{ contato.email }}">{{ contato.email }}</a>
+                    <button type="button" class="contato__copiar linha-icone" (click)="copiarEmail(contato.email)"><app-icone nome="copiar" />Copiar e-mail</button>
+                  </div>
+                  <p class="caixa__apoio" role="status">
+                    @switch (copia()) {
+                      @case ('copiado') { E-mail copiado. }
+                      @case ('falhou') { Não foi possível copiar. Selecione o e-mail acima e copie. }
+                    }
+                  </p>
+                }
+              </section>
+            }
+            @case ('expirado') {
+              <div class="caixa caixa--encerrado linha-icone"><app-icone nome="info" />
+                <div><p class="caixa__titulo">{{ p.mentorNome }} não respondeu a tempo. Isso acontece, não é nada com você.</p>
+                <p class="caixa__apoio">O pedido expirou depois de {{ prazoRespostaHoras }} horas sem resposta. Outros colegas podem ajudar na mesma matéria.</p></div>
+              </div>
+            }
+            @case ('recusado') {
+              <div class="caixa caixa--encerrado linha-icone"><app-icone nome="info" />
+                <div><p class="caixa__titulo">{{ p.mentorNome }} não pôde atender este pedido.</p>
+                <p class="caixa__apoio">Outros colegas podem ajudar na mesma matéria.</p></div>
+              </div>
+            }
+            @case ('cancelado') {
+              <div class="caixa caixa--encerrado linha-icone"><app-icone nome="info" />
+                <div><p class="caixa__titulo">Você cancelou este pedido.</p>
+                <p class="caixa__apoio">Se ainda precisar de ajuda, é só pedir de novo.</p></div>
+              </div>
+            }
+          }
+
+          <!-- No HTML, a ação principal vem primeiro: é a ordem do celular (e do Tab). No computador ela vai
+               para a direita e a secundária para a esquerda, como na maquete. -->
+          <div class="acoes flex flex-col sm:flex-row-reverse sm:justify-between gap-3">
+            @switch (p.status) {
+              @case ('expirado') { <a routerLink="/pedir-ajuda" [queryParams]="{ materia: p.materiaId }" class="botao">Ver outros mentores →</a> }
+              @case ('recusado') { <a routerLink="/pedir-ajuda" [queryParams]="{ materia: p.materiaId }" class="botao">Ver outros mentores →</a> }
+              @case ('cancelado') { <a routerLink="/pedir-ajuda" [queryParams]="{ materia: p.materiaId }" class="botao">Pedir ajuda de novo →</a> }
+              @default { <a routerLink="/inicio" class="botao">Voltar ao início →</a> }
+            }
+            @if (podeCancelar()) {
+              <button #botaoCancelar type="button" class="botao botao--secundario" (click)="abrirConfirmacao()">
+                {{ p.status === 'aceito' ? 'Cancelar sessão' : 'Cancelar pedido' }}
+              </button>
+            } @else {
+              <a routerLink="/inicio" class="botao botao--secundario">Voltar ao início</a>
+            }
+          </div>
+        </article>
+
+        <!-- Confirmação do cancelamento numa janela (especificação, tela 5). <dialog> com showModal():
+             o foco fica preso nela e o Esc fecha; ao fechar, o foco volta ao botão de origem. Sessão já
+             aceita pede duas etapas: abrir a janela e marcar a caixa de ciência antes do "Sim, cancelar". -->
+        <dialog #janela class="janela" aria-labelledby="titulo-confirmacao" (close)="aoFecharJanela()" (cancel)="cancelando() && $event.preventDefault()">
+          <span class="janela__icone" aria-hidden="true"><app-icone nome="calendario" /></span>
+          <h2 #tituloConfirmacao id="titulo-confirmacao" tabindex="-1" class="janela__titulo">
+            {{ p.status === 'aceito' ? 'Cancelar a sessão com ' + p.mentorNome + '?' : 'Cancelar o pedido para ' + p.mentorNome + '?' }}
+          </h2>
+          @if (p.status === 'aceito') {
+            <p class="janela__texto">{{ p.mentorNome }} já reservou {{ p.data | date: 'EEEE, dd/MM' }} às {{ p.hora }} para você e vai receber o aviso do cancelamento.</p>
+            <label class="opcao janela__ciencia">
+              <input type="checkbox" [checked]="cienteDaReserva()" (change)="alternarCiencia($event)" />
+              <span>Entendo que {{ p.mentorNome }} reservou este horário para mim</span>
+            </label>
+          } @else {
+            <p class="janela__texto">O pedido sai da lista de {{ p.mentorNome }}. Você pode pedir de novo quando quiser.</p>
+          }
+
+          @switch (erroCancelamento()) {
+            @case ('ciencia') { <p class="aviso aviso--erro" role="alert">Para cancelar a sessão, marque a caixa acima.</p> }
+            @case ('falha') { <p class="aviso aviso--erro" role="alert">Não foi possível cancelar agora. Tente de novo.</p> }
+          }
+
+          <div class="janela__acoes flex flex-col sm:flex-row justify-center gap-3">
+            <button type="button" class="botao botao--perigo" [disabled]="cancelando()" (click)="confirmarCancelamento()">
+              @if (cancelando()) { Cancelando… } @else { Sim, cancelar }
+            </button>
+            <button type="button" class="botao" (click)="fecharConfirmacao()">
+              {{ p.status === 'aceito' ? 'Manter sessão' : 'Manter pedido' }}
+            </button>
+          </div>
+        </dialog>
       }
     }
   }
-}
+</div>

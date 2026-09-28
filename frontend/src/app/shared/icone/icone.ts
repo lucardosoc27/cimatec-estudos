@@ -4,7 +4,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 export type NomeIcone =
   | 'escola' | 'relogio' | 'busca' | 'estrela' | 'pausa' | 'continuar' | 'seta-esquerda' | 'seta-direita'
   | 'mao-coracao' | 'livro' | 'aspas' | 'verificado' | 'calendario' | 'info' | 'bandeja-entrada' | 'bandeja-saida' | 'pilha' | 'lista' | 'local' | 'prancheta'
-  | 'codigo' | 'rede' | 'frasco' | 'bequer' | 'gota' | 'raio' | 'predio' | 'engrenagem' | 'video';
+  | 'codigo' | 'rede' | 'frasco' | 'bequer' | 'gota' | 'raio' | 'predio' | 'engrenagem' | 'video'
+  | 'cadeado' | 'envelope' | 'copiar' | 'fechar-circulo';
 
 /**
  * Ícones em SVG escritos à mão, dentro do projeto: nenhuma fonte de ícone nem nada que dependa de
@@ -47,6 +48,10 @@ export type NomeIcone =
         @case ('raio') { <path d="M13.5 2.5 4.5 14h7l-1 7.5 9-11.5h-7l1-7.5Z"/> }
         @case ('predio') { <path d="M3 21h18M5 21V5.5L13 3v18M13 21h6V9.5L13 8M8.5 8v.01M8.5 12v.01M8.5 16v.01M16 13v.01M16 17v.01"/> }
         @case ('engrenagem') { <circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/> }
+        @case ('cadeado') { <rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3M12 14.5v2"/> }
+        @case ('envelope') { <rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/> }
+        @case ('copiar') { <rect x="8.5" y="8.5" width="11.5" height="12" rx="2"/><path d="M15.5 8.5V5.5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2V15a2 2 0 0 0 2 2h2.5"/> }
+        @case ('fechar-circulo') { <circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/> }
         @case ('video') { <rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m10.5 9.2 4.5 2.8-4.5 2.8V9.2Z" fill="currentColor"/> }
       }
     </svg>
