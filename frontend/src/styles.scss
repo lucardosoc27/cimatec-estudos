@@ -42,6 +42,14 @@
   --cor-luz-azul: #E0EAF9;
   --cor-luz-ciano: #E1F1F7;
   --cor-superficie: #FFFFFF;
+  /* Avatar sem foto: cinco azuis da marca, com matiz de 204° a 229°, um por pessoa (o nome decide,
+     sempre o mesmo para ela). Inicial branca sobre cada um: 6,96:1, 7,10:1, 7,84:1, 8,22:1 e
+     8,35:1, todos acima de 4,5:1 (DECISOES.md, 2026-09-28). */
+  --cor-avatar-1: #1C5E8A;
+  --cor-avatar-2: #1E5A96;
+  --cor-avatar-3: #1D4FA0;
+  --cor-avatar-4: #2B4A9B;
+  --cor-avatar-5: #34479A;
 
   /* Semânticas: cada status do pedido usa um par texto/fundo daqui, sempre com o rótulo escrito */
   --cor-sucesso: #0B6B3A;  --cor-sucesso-fundo: #DDF5E6;   /* Aceito, mentor verificado (5,75:1) */
