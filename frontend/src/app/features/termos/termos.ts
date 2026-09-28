@@ -105,7 +105,8 @@ export class Termos {
         ] },
         { id: 'retencao', titulo: 'Por quanto tempo guardamos', blocos: [
           { lista: [
-            'Os dados da conta e dos pedidos: enquanto a conta existir (veja "Cancelamento e exclusão da conta").',
+            'Os dados do cadastro (nome, e-mail, curso, senha e os aceites): enquanto a conta existir (veja "Cancelamento e exclusão da conta"). Uma correção feita depois, em Minha conta, vale só nesta sessão (veja "Seus direitos").',
+            'Os pedidos e as sessões: hoje ficam na memória do navegador e somem quando você sai da conta ou recarrega a página. Guardá-los no servidor é a próxima etapa do projeto, sem prazo definido.',
             'O link de confirmação do e-mail vale por 24 horas. A conta que nunca foi confirmada é apagada 7 dias depois que o link vence.',
             'A sessão de login termina depois de 30 minutos sem uso, ou quando você sai.',
             'Para frear quem tenta adivinhar senhas ou criar contas em massa, o servidor conta as tentativas de entrar, de criar conta e de pedir outro link, pelo e-mail e pelo endereço de rede (IP), por até meia hora. Essa contagem fica só na memória do servidor e não é gravada.',

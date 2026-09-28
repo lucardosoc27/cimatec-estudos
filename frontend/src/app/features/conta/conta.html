@@ -83,6 +83,8 @@
       </ul>
       @if (erroConsentimento()) { <p class="mensagem mensagem--erro" role="alert">Não foi possível gravar sua escolha. A chave voltou ao valor anterior; tente de novo.</p> }
       <p class="suave nota">Você pode mudar essas escolhas quando quiser. Desligar tem efeito imediato.</p>
+      <!-- Ao contrário da chave de mentoria (Ajudar colegas, real no Spring), estas duas ainda são só do mock. -->
+      <p class="suave pequeno">Nesta versão, ligar ou desligar as duas chaves acima vale só nesta sessão. Já "Quero receber pedidos de ajuda" fica guardada de verdade.</p>
     </section>
 
     <section class="cartao" aria-labelledby="titulo-excluir">
@@ -96,17 +98,19 @@
     <dialog #janelaExcluir class="janela" aria-labelledby="titulo-janela" (close)="aoFecharJanela()" (cancel)="excluindo() && $event.preventDefault()">
       <form (submit)="$event.preventDefault(); excluir()" novalidate [attr.aria-busy]="excluindo()">
         <div class="janela__cabeca"><span class="janela__icone" aria-hidden="true"><app-icone nome="lixeira" /></span><h2 id="titulo-janela" class="subtitulo">Excluir sua conta?</h2></div>
-        <p>Essa ação não pode ser desfeita. Para confirmar, digite sua senha.</p>
+        <p>Nesta versão, isso só encerra a sua sessão: seus dados continuam guardados. Para confirmar, digite sua senha.</p>
         <input type="text" name="username" autocomplete="username" [value]="u.emailInstitucional" hidden>
         <div class="campo">
           <label for="senha-excluir">Senha</label>
           <input id="senha-excluir" type="password" name="senha" [value]="senha()" (input)="senha.set($any($event.target).value)" required autocomplete="current-password" placeholder="Digite sua senha" [attr.aria-invalid]="erroExclusao()" aria-describedby="senha-excluir-erro">
           <span id="senha-excluir-erro" class="erro-campo" role="alert">@if (erroExclusao()) { {{ senha() ? 'Não foi possível excluir a conta. Confira a senha e tente de novo.' : 'Digite sua senha para confirmar.' }} }</span>
         </div>
-        <!-- "Cancelar" antes de "Excluir definitivamente", como na maquete: a saída segura vem primeiro -->
+        <!-- "Cancelar" antes de "Excluir conta", como na maquete: a saída segura vem primeiro. Sem
+             "definitivamente" (o texto que a maquete usava): nesta versão a conta não é apagada de verdade,
+             e o botão não pode prometer isso. -->
         <div class="janela__acoes">
           <button type="button" class="botao botao--secundario" (click)="fecharExclusao()">Cancelar</button>
-          <button type="submit" class="botao botao--perigo" [disabled]="excluindo()">{{ excluindo() ? 'Excluindo…' : 'Excluir definitivamente' }}</button>
+          <button type="submit" class="botao botao--perigo" [disabled]="excluindo()">{{ excluindo() ? 'Saindo…' : 'Excluir conta' }}</button>
         </div>
       </form>
     </dialog>
